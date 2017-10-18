@@ -7,16 +7,13 @@ C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/)
 
 ### Build
 
-    dotnet build Src/
+    dotnet build
 
 ### Running Tests
 
-    ./integration-tests-with-docker.sh
-
-### Start Mock Server using Docker
-
-    docker run -it -d --name mockserver -p 1080:1080 jamesdbloom/mockserver
+    docker run -d --name mockserver -p 1080:1080 jamesdbloom/mockserver
+    dotnet test
 
 ### Using the NuGet Package
 
-Get the latest version from https://www.nuget.org/packages/MockServerClientCSharp/ and refer to [this page](Docs/Samples.md) for usage examples.
+Get the latest version from https://www.nuget.org/packages/MockServerClientCSharp/ and refer to [this page](docs/Samples.md) for usage examples.
