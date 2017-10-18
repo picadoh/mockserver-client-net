@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.tests
+    command: dockerize -wait tcp://mockserver:1080 -timeout 30s dotnet test tests/MockServerClientCSharp.Tests
+    links:
+      - mockserver
+
+  mockserver:
+    image: jamesdbloom/mockserver
+    ports:
+      - 1080:1080
+

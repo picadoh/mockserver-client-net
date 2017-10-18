@@ -10,6 +10,9 @@ namespace MockServerClientCSharp.Tests
 
   public class MockServerClientTest
   {
+    private const string MockServerHost = "mockserver";
+    private const int MockServerPort = 1080;
+
     [Fact]
     public void ShouldRespondAccordingToExpectation()
     {
@@ -73,7 +76,7 @@ namespace MockServerClientCSharp.Tests
 
     void SetupResponseExpectation(bool ssl = false, bool unlimited = true, int times = 0)
     {
-      new MockServerClient("127.0.0.1", 1080)
+      new MockServerClient(MockServerHost, MockServerPort)
         .Reset()
         .When(Request()
               .WithMethod("POST")
@@ -98,7 +101,7 @@ namespace MockServerClientCSharp.Tests
       request.Method = HttpMethod.Post;
 
       string scheme = ssl ? "https" : "http";
-      request.RequestUri = new Uri(scheme + "://127.0.0.1:1080/login?returnUrl=/account");
+      request.RequestUri = new Uri(scheme + "://" + MockServerHost + ":" + MockServerPort + "/login?returnUrl=/account");
       request.Content = new StringContent("{\"username\": \"foo\", \"password\": \"bar\"}");
       return request;
     }
