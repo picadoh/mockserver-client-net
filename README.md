@@ -9,10 +9,9 @@ C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/)
 
     dotnet build
 
-### Running Tests
+### Building and Testing with Docker
 
-    docker run -d --name mockserver -p 1080:1080 jamesdbloom/mockserver
-    dotnet test
+    docker-compose run tests
 
 ### Using the NuGet Package
 
