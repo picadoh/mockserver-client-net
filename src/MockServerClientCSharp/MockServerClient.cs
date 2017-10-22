@@ -11,7 +11,9 @@
 
   public class MockServerClient : IDisposable
   {
-    readonly ExpectationSerializer ExpectationSerializer = new ExpectationSerializer();
+    readonly JsonSerializer<Expectation> ExpectationSerializer = new JsonSerializer<Expectation>();
+    readonly JsonSerializer<HttpRequest> HttpRequestSerializer = new JsonSerializer<HttpRequest>();
+
     readonly string Host;
     readonly int Port;
     readonly string ContextPath;
@@ -36,6 +38,15 @@
     public MockServerClient Reset()
     {
       SendRequest(new HttpRequestMessage().WithMethod("PUT").WithPath(CalculatePath("reset")));
+      return this;
+    }
+
+    public MockServerClient Clear(HttpRequest httpRequest)
+    {
+      SendRequest(new HttpRequestMessage()
+                  .WithMethod("PUT")
+                  .WithPath(CalculatePath("clear"))
+                  .WithBody(httpRequest != null ? HttpRequestSerializer.Serialize(httpRequest) : ""));
       return this;
     }
 
@@ -136,7 +147,7 @@
 
         return false;
       }
-      catch (Exception e)
+      catch
       {
         return false;
       }
