@@ -10,7 +10,7 @@
     public string Method { get; private set; } = "GET";
 
     [JsonProperty(PropertyName = "path")]
-    public string Path { get; private set; } = "";
+    public string Path { get; private set; } = string.Empty;
 
     [JsonProperty(PropertyName = "queryStringParameters")]
     public List<Parameter> Parameters { get; private set; } = new List<Parameter>();
@@ -19,7 +19,7 @@
     public List<Header> Headers { get; private set; } = new List<Header>();
 
     [JsonProperty(PropertyName = "body")]
-    public string Body { get; private set; } = "";
+    public string Body { get; private set; } = string.Empty;
 
     [JsonProperty(PropertyName = "secure", NullValueHandling = NullValueHandling.Ignore)]
     public bool? IsSecure { get; private set; }

@@ -4,17 +4,17 @@
 		<OutputType>Library</OutputType>
 		<TargetFramework>netcoreapp2.0</TargetFramework>
 		<PackageId>MockServerClientCSharp</PackageId>
-		<PackageVersion>0.0.1</PackageVersion>
+		<PackageVersion>0.0.2</PackageVersion>
 		<Authors>Hugo Picado</Authors>
 		<Owners>Hugo Picado</Owners>
 		<Title>Mock-Server C# Client</Title>
 		<Description>C# Fluent API for interacting with Mock-Server</Description>
 		<ProjectUrl>https://github.com/picadoh/mockserver-client-csharp</ProjectUrl>
-		<LicenseUrl>https://github.com/picadoh/mockserver-client-csharp/blob/master/LICENSE.md/LICENSE.md</LicenseUrl>      
+		<LicenseUrl>https://github.com/picadoh/mockserver-client-csharp/blob/master/LICENSE.md/LICENSE.md</LicenseUrl>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageReleaseNotes>Adding Mock-Server C# Client MVP</PackageReleaseNotes>
 		<Copyright>Copyright 2017 (c) Hugo Picado. All rights reserved.</Copyright>
-		<PackageTags>mock mockserver test</PackageTags>
+		<PackageTags>mock mockserver test dotnet dotnetcore netcore</PackageTags>
 	</PropertyGroup>
 
 	<ItemGroup>

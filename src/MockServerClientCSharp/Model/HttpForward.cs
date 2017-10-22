@@ -5,7 +5,7 @@
   public class HttpForward
   {
     [JsonProperty(PropertyName = "host")]
-    public string Host { get; private set; } = null;
+    public string Host { get; private set; }
 
     [JsonProperty(PropertyName = "port")]
     public int Port { get; private set; } = 80;

@@ -4,24 +4,25 @@
 
   public class ForwardChainExpectation
   {
-    readonly MockServerClient MockServerClient;
-    readonly Expectation Expectation;
+    private readonly MockServerClient mockServerClient;
+    private readonly Expectation expectation;
 
     public ForwardChainExpectation(MockServerClient mockServerClient, Expectation expectation)
     {
-      this.MockServerClient = mockServerClient;
-      this.Expectation = expectation;
+      this.mockServerClient = mockServerClient;
+      this.expectation = expectation;
     }
 
     public void Respond(HttpResponse httpResponse)
     {
-      Expectation.ThenRespond(httpResponse);
-      MockServerClient.SendExpectation(this.Expectation);
+      this.expectation.ThenRespond(httpResponse);
+      this.mockServerClient.SendExpectation(this.expectation);
     }
 
-    public void Forward(HttpForward httpForward) {
-      Expectation.ThenForward(httpForward);
-      MockServerClient.SendExpectation(this.Expectation);
+    public void Forward(HttpForward httpForward)
+    {
+      this.expectation.ThenForward(httpForward);
+      this.mockServerClient.SendExpectation(this.expectation);
     }
   }
 }

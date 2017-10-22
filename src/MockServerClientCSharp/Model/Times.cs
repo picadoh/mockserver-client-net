@@ -4,6 +4,12 @@
 
   public class Times
   {
+    public Times(int count, bool unlimited)
+    {
+      this.Count = count;
+      this.IsUnlimited = unlimited;
+    }
+
     [JsonProperty(PropertyName = "remainingTimes")]
     public int Count { get; private set; }
 
@@ -18,12 +24,6 @@
     public static Times Exactly(int count)
     {
       return new Times(count, false);
-    }
-
-    private Times(int count, bool unlimited)
-    {
-      this.Count = count;
-      this.IsUnlimited = unlimited;
     }
   }
 }
