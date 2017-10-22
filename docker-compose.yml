@@ -8,6 +8,9 @@ services:
     command: dockerize -wait tcp://mockserver:1080 -timeout 30s dotnet test tests/MockServerClientCSharp.Tests
     links:
       - mockserver
+    environment:
+      - MOCKSERVER_TEST_HOST=mockserver
+      - MOCKSERVER_TEST_PORT=1080
 
   mockserver:
     image: jamesdbloom/mockserver

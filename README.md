@@ -9,6 +9,17 @@ C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/)
 
     dotnet build
 
+### Testing
+
+The below command will run the integration tests against a local running instance of Mock-Server.
+
+    dotnet test
+
+Use the following enviornment variables to change the target instance:
+
+- MOCKSERVER\_TEST\_HOST
+- MOCKSERVER\_TEST\_PORT
+
 ### Building and Testing with Docker
 
     docker-compose run tests

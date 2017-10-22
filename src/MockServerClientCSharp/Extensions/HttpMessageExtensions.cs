@@ -26,7 +26,17 @@
 
     public static HttpRequestMessage WithBody(this HttpRequestMessage request, string body)
     {
-      request.Content = new StringContent(body, Encoding.UTF8, "application/json");
+      return WithBody(request, body, Encoding.UTF8, "application/json");
+    }
+
+    public static HttpRequestMessage WithBody(this HttpRequestMessage request, string body, Encoding encoding)
+    {
+      return WithBody(request, body, encoding, "application/json");
+    }
+
+    public static HttpRequestMessage WithBody(this HttpRequestMessage request, string body, Encoding encoding, string mediaType)
+    {
+      request.Content = new StringContent(body, encoding, mediaType);
       return request;
     }
 

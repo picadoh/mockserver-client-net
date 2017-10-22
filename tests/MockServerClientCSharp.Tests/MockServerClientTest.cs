@@ -8,16 +8,28 @@ namespace MockServerClientCSharp.Tests
   using static MockServerClientCSharp.Model.HttpRequest;
   using static MockServerClientCSharp.Model.HttpResponse;
 
-  public class MockServerClientTest
+  public class MockServerClientTest: IDisposable
   {
-    private const string MockServerHost = "mockserver";
-    private const int MockServerPort = 1080;
+    private string MockServerHost = Environment.GetEnvironmentVariable("MOCKSERVER_TEST_HOST") ?? "localhost";
+    private int MockServerPort = int.Parse(Environment.GetEnvironmentVariable("MOCKSERVER_TEST_PORT") ?? "1080");
+
+    private MockServerClient mockServerClient;
+
+    public MockServerClientTest()
+    {
+      mockServerClient = new MockServerClient(MockServerHost, MockServerPort);
+    }
+
+    public void Dispose()
+    {
+      mockServerClient.Reset();
+    }
 
     [Fact]
     public void ShouldRespondAccordingToExpectation()
     {
       // arrange
-      SetupResponseExpectation(unlimited: true);
+      SetupLoginResponse(unlimited: true);
 
       // act
       string responseBody = null;
@@ -34,7 +46,7 @@ namespace MockServerClientCSharp.Tests
     public void ShouldRespondAccordingToExpectationOnly2Times()
     {
       // arrange
-      SetupResponseExpectation(unlimited: false, times: 2);
+      SetupLoginResponse(unlimited: false, times: 2);
 
       // act 1
       string responseBody = null;
@@ -63,6 +75,35 @@ namespace MockServerClientCSharp.Tests
       Assert.Equal(HttpStatusCode.NotFound, statusCode.Value);
     }
 
+    [Fact]
+    public void ShouldClearExpectation()
+    {
+      // arrange
+      HttpRequest request = Request().WithMethod("GET").WithPath("/hello");
+
+      mockServerClient
+        .When(request, Times.Unlimited())
+        .Respond(Response().WithStatusCode(200).WithBody("hello").WithDelay(TimeSpan.FromSeconds(0)));
+
+      // act 1
+      string responseBody = null;
+      HttpStatusCode? statusCode = null;
+
+      SendRequest(BuildHelloRequest(), out responseBody, out statusCode);
+
+      // assert
+      Assert.Equal(HttpStatusCode.OK, statusCode.Value);
+      Assert.Equal("hello", responseBody);
+
+      // act 2
+      mockServerClient.Clear(request);
+
+      SendRequest(BuildHelloRequest(), out responseBody, out statusCode);
+
+      // assert
+      Assert.Equal(HttpStatusCode.NotFound, statusCode.Value);
+    }
+
     void SendRequest(HttpRequestMessage request, out string responseBody, out HttpStatusCode? statusCode)
     {
       using (HttpClient client = new HttpClient())
@@ -74,10 +115,9 @@ namespace MockServerClientCSharp.Tests
       }
     }
 
-    void SetupResponseExpectation(bool ssl = false, bool unlimited = true, int times = 0)
+    void SetupLoginResponse(bool ssl = false, bool unlimited = true, int times = 0)
     {
-      new MockServerClient(MockServerHost, MockServerPort)
-        .Reset()
+      mockServerClient
         .When(Request()
               .WithMethod("POST")
               .WithPath("/login")
@@ -103,6 +143,14 @@ namespace MockServerClientCSharp.Tests
       string scheme = ssl ? "https" : "http";
       request.RequestUri = new Uri(scheme + "://" + MockServerHost + ":" + MockServerPort + "/login?returnUrl=/account");
       request.Content = new StringContent("{\"username\": \"foo\", \"password\": \"bar\"}");
+      return request;
+    }
+
+    HttpRequestMessage BuildHelloRequest()
+    {
+      HttpRequestMessage request = new HttpRequestMessage();
+      request.Method = HttpMethod.Get;
+      request.RequestUri = new Uri("http://" + MockServerHost + ":" + MockServerPort + "/hello");
       return request;
     }
   }
