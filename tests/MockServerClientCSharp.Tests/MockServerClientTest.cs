@@ -4,14 +4,15 @@ namespace MockServerClientCSharp.Tests
   using System.Net;
   using System.Net.Http;
   using MockServerClientCSharp.Model;
+  using MockServerClientCSharp.Verify;
   using Xunit;
   using static MockServerClientCSharp.Model.HttpRequest;
   using static MockServerClientCSharp.Model.HttpResponse;
 
   public class MockServerClientTest: IDisposable
   {
-    private string MockServerHost = Environment.GetEnvironmentVariable("MOCKSERVER_TEST_HOST") ?? "localhost";
-    private int MockServerPort = int.Parse(Environment.GetEnvironmentVariable("MOCKSERVER_TEST_PORT") ?? "1080");
+    private readonly string MockServerHost = Environment.GetEnvironmentVariable("MOCKSERVER_TEST_HOST") ?? "localhost";
+    private readonly int MockServerPort = int.Parse(Environment.GetEnvironmentVariable("MOCKSERVER_TEST_PORT") ?? "1080");
 
     private MockServerClient mockServerClient;
 
@@ -89,7 +90,7 @@ namespace MockServerClientCSharp.Tests
       string responseBody = null;
       HttpStatusCode? statusCode = null;
 
-      SendRequest(BuildHelloRequest(), out responseBody, out statusCode);
+      SendRequest(BuildGetRequest("/hello"), out responseBody, out statusCode);
 
       // assert
       Assert.Equal(HttpStatusCode.OK, statusCode.Value);
@@ -98,10 +99,90 @@ namespace MockServerClientCSharp.Tests
       // act 2
       mockServerClient.Clear(request);
 
-      SendRequest(BuildHelloRequest(), out responseBody, out statusCode);
+      SendRequest(BuildGetRequest("/hello"), out responseBody, out statusCode);
 
       // assert
       Assert.Equal(HttpStatusCode.NotFound, statusCode.Value);
+    }
+
+    [Fact]
+    public void ShouldVerify()
+    {
+      // arrange
+      HttpRequest request = Request().WithMethod("GET").WithPath("/hello");
+
+      mockServerClient
+        .When(request, Times.Unlimited())
+        .Respond(Response().WithStatusCode(200).WithBody("hello").WithDelay(TimeSpan.FromSeconds(0)));
+
+      SendRequest(BuildGetRequest("/hello"), out _, out _);
+      SendRequest(BuildGetRequest("/hello"), out _, out _);
+
+      // act
+      var result = mockServerClient.Verify(Request()
+                                           .WithMethod("GET")
+                                           .WithPath("/hello"), VerificationTimes.Exactly(2));
+
+      // assert
+      Assert.NotNull(result);
+    }
+
+    [Fact]
+    public void ShouldVerifyMultiple()
+    {
+      // arrange
+      HttpRequest request1 = Request().WithMethod("GET").WithPath("/hello");
+      HttpRequest request2 = Request().WithMethod("GET").WithPath("/world");
+
+      mockServerClient
+        .When(request1, Times.Unlimited())
+        .Respond(Response().WithStatusCode(200).WithBody("hello").WithDelay(TimeSpan.FromSeconds(0)));
+
+      mockServerClient
+        .When(request2, Times.Unlimited())
+        .Respond(Response().WithStatusCode(200).WithBody("world").WithDelay(TimeSpan.FromSeconds(0)));
+
+      SendRequest(BuildGetRequest("/hello"), out _, out _);
+      SendRequest(BuildGetRequest("/world"), out _, out _);
+
+      // act
+      var result = mockServerClient.Verify(request1, request2);
+
+      // assert
+      Assert.NotNull(result);
+    }
+
+    [Fact]
+    public void ShouldVerifyZeroInteractions()
+    {
+      // act
+      var result = mockServerClient.VerifyZeroInteractions();
+
+      // assert
+      Assert.NotNull(result);
+    }
+
+    [Fact]
+    public void ShouldRetrieveRecordedRequests()
+    {
+      // arrange
+      HttpRequest request = Request().WithMethod("GET").WithPath("/hello");
+
+      mockServerClient
+        .When(request, Times.Unlimited())
+        .Respond(Response().WithStatusCode(200).WithBody("hello").WithDelay(TimeSpan.FromSeconds(0)));
+
+      string responseBody1 = null;
+      string responseBody2 = null;
+
+      SendRequest(BuildGetRequest("/hello"), out responseBody1, out _);
+      SendRequest(BuildGetRequest("/hello"), out responseBody2, out _);
+
+      // act
+      var result = mockServerClient.RetrieveRecordedRequests(request);
+
+      // assert
+      Assert.Equal(2, result.Length);
     }
 
     void SendRequest(HttpRequestMessage request, out string responseBody, out HttpStatusCode? statusCode)
@@ -146,11 +227,11 @@ namespace MockServerClientCSharp.Tests
       return request;
     }
 
-    HttpRequestMessage BuildHelloRequest()
+    HttpRequestMessage BuildGetRequest(string path)
     {
       HttpRequestMessage request = new HttpRequestMessage();
       request.Method = HttpMethod.Get;
-      request.RequestUri = new Uri("http://" + MockServerHost + ":" + MockServerPort + "/hello");
+      request.RequestUri = new Uri("http://" + MockServerHost + ":" + MockServerPort + path);
       return request;
     }
   }
