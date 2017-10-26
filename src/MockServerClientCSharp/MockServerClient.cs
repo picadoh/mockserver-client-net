@@ -1,28 +1,15 @@
 ﻿namespace MockServerClientCSharp
 {
-  using System;
   using System.Net;
   using System.Net.Http;
-  using System.Threading;
-  using System.Threading.Tasks;
+  using System.Text;
   using MockServerClientCSharp.Extensions;
   using MockServerClientCSharp.Model;
-  using MockServerClientCSharp.Serializer;
 
-  public class MockServerClient : IDisposable
+  public class MockServerClient : AbstractClient<MockServerClient>
   {
-    readonly JsonSerializer<Expectation> ExpectationSerializer = new JsonSerializer<Expectation>();
-    readonly JsonSerializer<HttpRequest> HttpRequestSerializer = new JsonSerializer<HttpRequest>();
-
-    readonly string Host;
-    readonly int Port;
-    readonly string ContextPath;
-
-    public MockServerClient(string host, int port, string contextPath = "")
+    public MockServerClient(string host, int port, string contextPath = ""): base(host, port, contextPath)
     {
-      this.Host = host;
-      this.Port = port;
-      this.ContextPath = contextPath;
     }
 
     public ForwardChainExpectation When(HttpRequest httpRequest, Times times)
@@ -33,21 +20,6 @@
     public ForwardChainExpectation When(HttpRequest httpRequest, Times times, TimeToLive timeToLive)
     {
       return new ForwardChainExpectation(this, new Expectation(httpRequest, times, timeToLive));
-    }
-
-    public MockServerClient Reset()
-    {
-      SendRequest(new HttpRequestMessage().WithMethod("PUT").WithPath(CalculatePath("reset")));
-      return this;
-    }
-
-    public MockServerClient Clear(HttpRequest httpRequest)
-    {
-      SendRequest(new HttpRequestMessage()
-                  .WithMethod("PUT")
-                  .WithPath(CalculatePath("clear"))
-                  .WithBody(httpRequest != null ? HttpRequestSerializer.Serialize(httpRequest) : ""));
-      return this;
     }
 
     public void SendExpectation(Expectation expectation)
@@ -67,102 +39,21 @@
       }
     }
 
-    public HttpResponseMessage SendRequest(HttpRequestMessage mockServerRequest)
+    public HttpRequest[] RetrieveRecordedRequests(HttpRequest httpRequest)
     {
-      return SendRequestAsync(mockServerRequest).Result;
-    }
+      var res = SendRequest(new HttpRequestMessage()
+                            .WithMethod("PUT")
+                            .WithPath(CalculatePath("retrieve"))
+                            .WithBody(httpRequest != null ? HttpRequestSerializer.Serialize(httpRequest) : string.Empty, Encoding.UTF8));
 
-    public async Task<HttpResponseMessage> SendRequestAsync(HttpRequestMessage httpRequest)
-    {
-      using (HttpClient client = new HttpClient())
+      var body = res?.Content.ReadAsStringAsync().Result;
+
+      if (!string.IsNullOrEmpty(body))
       {
-        using (HttpResponseMessage res = await client.SendAsync(
-          httpRequest.WithHeader(HttpRequestHeader.Host.ToString(), $"{this.Host}:{this.Port}")))
-        {
-          if (res != null && res.StatusCode == HttpStatusCode.BadRequest)
-          {
-            using (HttpContent content = res.Content)
-            {
-              throw new ArgumentException(await content.ReadAsStringAsync());
-            }
-          }
-
-          return res;
-        }
-      }
-    }
-
-    public void Dispose()
-    {
-      Stop();
-    }
-
-    public MockServerClient Stop()
-    {
-      return Stop(false);
-    }
-
-    public MockServerClient Stop(bool ignoreFailure)
-    {
-      try
-      {
-        SendRequest(new HttpRequestMessage().WithMethod("PUT").WithPath(CalculatePath("stop")));
-
-        int attemps = 0;
-        while (IsRunning() && attemps++ < 50)
-        {
-          Thread.Sleep(5000);
-        }
-      }
-      catch (Exception e)
-      {
-        if (!ignoreFailure)
-        {
-          throw new ClientException("Failed to send stop request to MockServer", e);
-        }
+        return HttpRequestSerializer.DeserializeArray(body);
       }
 
-      return this;
-    }
-
-    public bool IsRunning()
-    {
-      return IsRunning(10, 500);
-    }
-
-    public bool IsRunning(int attempts, int timeoutMillis)
-    {
-      try
-      {
-        while (attempts-- > 0) {
-          HttpResponseMessage httpResponse = SendRequest(new HttpRequestMessage().WithMethod("PUT").WithPath(CalculatePath("status")));
-
-          if (httpResponse.StatusCode == HttpStatusCode.OK)
-          {
-            return true;
-          }
-
-          Thread.Sleep(timeoutMillis);
-        }
-
-        return false;
-      }
-      catch
-      {
-        return false;
-      }
-    }
-
-    string CalculatePath(string path)
-    {
-      var cleanedPath = path;
-
-      if (String.IsNullOrEmpty(this.ContextPath))
-      {
-        cleanedPath = this.ContextPath.PrefixWith("/").SuffixWith("/") + cleanedPath.RemovePrefix("/");
-      }
-
-      return $"{this.Host}:{this.Port}{cleanedPath.PrefixWith("/")}";
+      return new HttpRequest[0];
     }
   }
 }
