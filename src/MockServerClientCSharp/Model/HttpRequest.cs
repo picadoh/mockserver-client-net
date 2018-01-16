@@ -6,17 +6,45 @@
 
   public class HttpRequest
   {
+    [JsonProperty(PropertyName = "headers")]
+    private Dictionary<string, string[]> _headers = new Dictionary<string, string[]>();
+
+    [JsonProperty(PropertyName = "queryStringParameters")]
+    private Dictionary<string, string[]> _parameters = new Dictionary<string, string[]>();
+
+    [JsonIgnore]
+    public List<Header> Headers
+    {
+      get
+      {
+        List<Header> result = new List<Header>();
+        foreach (KeyValuePair<string, string[]> entry in _headers)
+        {
+          result.Add(new Header(entry.Key, entry.Value));
+        }
+        return result;
+      }
+    }
+
+    [JsonIgnore]
+    public List<Parameter> Parameters
+    {
+      get
+      {
+        List<Parameter> result = new List<Parameter>();
+        foreach (KeyValuePair<string, string[]> entry in _parameters)
+        {
+          result.Add(new Parameter(entry.Key, entry.Value));
+        }
+        return result;
+      }
+    }
+
     [JsonProperty(PropertyName = "method")]
     public string Method { get; private set; } = "GET";
 
     [JsonProperty(PropertyName = "path")]
     public string Path { get; private set; } = string.Empty;
-
-    [JsonProperty(PropertyName = "queryStringParameters")]
-    public List<Parameter> Parameters { get; private set; } = new List<Parameter>();
-
-    [JsonProperty(PropertyName = "headers")]
-    public List<Header> Headers { get; private set; } = new List<Header>();
 
     [JsonProperty(PropertyName = "body")]
     public string Body { get; private set; } = string.Empty;
@@ -58,13 +86,13 @@
 
     public HttpRequest WithQueryStringParameters(params Parameter[] parameters)
     {
-      this.Parameters = parameters.ToList();
+      this._parameters = parameters.ToDictionary(p => p.Name, p => p.Values.ToArray());
       return this;
     }
 
-    public HttpRequest WithHeader(string name, string value)
+    public HttpRequest WithHeader(string name, params string[] value)
     {
-      this.Headers.Add(new Header(name, value));
+      this._headers.Add(name, value);
       return this;
     }
 
