@@ -1,0 +1,29 @@
+﻿[
+  {
+    "HttpRequest": {
+      "Method": "GET",
+      "Path": "/hello",
+      "QueryStringParameters": { "Id": [ "1" ] }
+    },
+    "HttpResponse": {
+      "StatusCode": 200,
+      "Body": "{ some body }"
+    },
+    "Times": {
+      "Unlimited": true
+    }
+  },
+  {
+    "HttpRequest": {
+      "Method": "GET",
+      "Path": "/hello2"
+    },
+    "HttpResponse": {
+      "StatusCode": 200,
+      "Body": "{ some body2 }"
+    },
+    "Times": {
+      "Unlimited": true
+    }
+  }
+]
