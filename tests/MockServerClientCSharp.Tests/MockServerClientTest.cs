@@ -200,7 +200,7 @@ namespace MockServerClientCSharp.Tests
         string responseBody2 = null;
 
         SendRequest(BuildGetRequest("/hello?id=1"), out responseBody1, out _);
-        SendRequest(BuildGetRequest("/hello"), out responseBody2, out _);
+        SendRequest(BuildGetRequest("/hello2"), out responseBody2, out _);
 
         // assert
         Assert.NotNull(responseBody1);
