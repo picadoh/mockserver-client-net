@@ -2,6 +2,7 @@ namespace MockServerClientCSharp.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Net;
     using System.Net.Http;
     using MockServerClientCSharp.Extensions;
@@ -193,7 +194,8 @@ namespace MockServerClientCSharp.Tests
     public void WhenExpectationsAreLoadedFromFile_ShoulRespondFromTheConfiguredRoutes()
     {
         // arrange
-        mockServerClient.LoadExpectationsFromFile(@"ConfigurationFiles\Expectations.json");
+        var filePath = Path.Combine("ConfigurationFiles", "Expectations.json");
+        mockServerClient.LoadExpectationsFromFile(filePath);
 
         // act
         string responseBody1 = null;

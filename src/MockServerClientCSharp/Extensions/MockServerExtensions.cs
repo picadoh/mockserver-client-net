@@ -47,7 +47,7 @@
                 .Respond(httpResponse
                          .WithStatusCode(expectation.HttpResponse.StatusCode)
                          .WithHeaders(expectation.HttpResponse.Headers.ToArray())
-                         .WithBody(expectation.HttpResponse.Body)
+                         .WithBody(expectation.HttpResponse.Body ?? string.Empty)
                          .WithDelay(GetTimeSpanDelay(expectation.HttpResponse.Delay)));
         }
 
