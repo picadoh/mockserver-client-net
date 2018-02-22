@@ -194,7 +194,7 @@ namespace MockServerClientCSharp.Tests
     public void WhenExpectationsAreLoadedFromFile_ShoulRespondFromTheConfiguredRoutes()
     {
         // arrange
-        var filePath = Path.Combine("ConfigurationFiles", "Expectations.json");
+        var filePath = Path.Combine("ExpectationFiles", "TestExpectations.json");
         mockServerClient.LoadExpectationsFromFile(filePath);
 
         // act
