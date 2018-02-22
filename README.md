@@ -20,10 +20,6 @@ Use the following enviornment variables to change the target instance:
 - MOCKSERVER\_TEST\_HOST
 - MOCKSERVER\_TEST\_PORT
 
-### Building and Testing with Docker
-
-    docker-compose run tests
-
 ### Using the NuGet Package
 
 Get the latest version from https://www.nuget.org/packages/MockServerClientCSharp/ and refer to [this page](docs/Samples.md) for usage examples.
