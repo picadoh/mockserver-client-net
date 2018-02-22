@@ -15,4 +15,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\MockServerClientCSharp\MockServerClientCSharp.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ExpectationFiles\TestExpectations.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
