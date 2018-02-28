@@ -3,7 +3,6 @@ C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/)
 ### Requirements
 
 - [.NET Core 2.0](https://www.microsoft.com/net/download/core)
-- [Docker](https://www.docker.com/)
 
 ### Build
 
