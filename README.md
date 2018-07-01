@@ -1,3 +1,5 @@
+![Build Status](https://travis-ci.org/picadoh/mockserver-client-csharp.svg?branch=master)
+
 C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/)
 
 ### Requirements
