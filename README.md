@@ -1,4 +1,4 @@
-![Build Status](https://travis-ci.org/picadoh/mockserver-client-csharp.svg?branch=master)
+[![Build Status](https://travis-ci.org/picadoh/mockserver-client-csharp.svg?branch=master)](https://travis-ci.org/picadoh/mockserver-client-csharp) [![NuGet version](https://badge.fury.io/nu/MockServerClientCSharp.svg)](https://badge.fury.io/nu/MockServerClientCSharp)
 
 C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/)
 
