@@ -1,10 +1,10 @@
 ### Adding an expectation
 
     using System;
-    using MockServerClientCSharp;
-    using MockServerClientCSharp.Model;
-    using static MockServerClientCSharp.Model.HttpRequest;
-    using static MockServerClientCSharp.Model.HttpResponse;
+    using MockServerClientNet;
+    using MockServerClientNet.Model;
+    using static MockServerClientNet.Model.HttpRequest;
+    using static MockServerClientNet.Model.HttpResponse;
 
     public class Program 
     {

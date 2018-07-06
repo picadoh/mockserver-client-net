@@ -1,10 +1,10 @@
-﻿namespace MockServerClientCSharp
+﻿namespace MockServerClientNet
 {
   using System.Net;
   using System.Net.Http;
   using System.Text;
-  using MockServerClientCSharp.Extensions;
-  using MockServerClientCSharp.Model;
+  using MockServerClientNet.Extensions;
+  using MockServerClientNet.Model;
 
   public class MockServerClient : AbstractClient<MockServerClient>
   {

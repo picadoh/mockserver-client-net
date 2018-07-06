@@ -1,4 +1,4 @@
-﻿namespace MockServerClientCSharp
+﻿namespace MockServerClientNet
 {
   using System;
 

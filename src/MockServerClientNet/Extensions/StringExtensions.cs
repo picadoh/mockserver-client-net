@@ -1,4 +1,4 @@
-﻿namespace MockServerClientCSharp.Extensions
+﻿namespace MockServerClientNet.Extensions
 {
   using System;
 

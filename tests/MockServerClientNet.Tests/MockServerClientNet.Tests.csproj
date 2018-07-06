@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MockServerClientCSharp\MockServerClientCSharp.csproj" />
+    <ProjectReference Include="..\..\src\MockServerClientNet\MockServerClientNet.csproj" />
   </ItemGroup>
 
   <ItemGroup>

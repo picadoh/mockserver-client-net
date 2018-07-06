@@ -3,16 +3,16 @@
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<PackageId>MockServerClientCSharp</PackageId>
-		<PackageVersion>0.0.5</PackageVersion>
+		<PackageId>MockServerClientNet</PackageId>
+		<PackageVersion>1.0.0</PackageVersion>
 		<Authors>Hugo Picado</Authors>
 		<Owners>Hugo Picado</Owners>
 		<Title>Mock-Server C# Client</Title>
 		<Description>C# Fluent API for interacting with Mock-Server</Description>
-		<ProjectUrl>https://github.com/picadoh/mockserver-client-csharp</ProjectUrl>
-		<LicenseUrl>https://github.com/picadoh/mockserver-client-csharp/blob/master/LICENSE.md/LICENSE.md</LicenseUrl>
+		<ProjectUrl>https://github.com/picadoh/mockserver-client-net</ProjectUrl>
+		<LicenseUrl>https://github.com/picadoh/mockserver-client-net/blob/master/LICENSE.md/LICENSE.md</LicenseUrl>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-		<PackageReleaseNotes>Added ability to load expectations from file</PackageReleaseNotes>
+		<PackageReleaseNotes>Renamed to MockServerClientNet (formerly MockServerClientCSharp)</PackageReleaseNotes>
 		<Copyright>Copyright 2017 (c) Hugo Picado. All rights reserved.</Copyright>
 		<PackageTags>mock mockserver test dotnet dotnetcore netcore</PackageTags>
 	</PropertyGroup>

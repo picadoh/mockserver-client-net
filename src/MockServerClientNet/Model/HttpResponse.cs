@@ -1,4 +1,4 @@
-﻿namespace MockServerClientCSharp.Model
+﻿namespace MockServerClientNet.Model
 {
   using System;
   using System.Collections.Generic;

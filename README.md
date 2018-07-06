@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/picadoh/mockserver-client-csharp.svg?branch=master)](https://travis-ci.org/picadoh/mockserver-client-csharp) [![NuGet version](https://badge.fury.io/nu/MockServerClientCSharp.svg)](https://badge.fury.io/nu/MockServerClientCSharp)
+[![Build Status](https://travis-ci.org/picadoh/mockserver-client-csharp.svg?branch=master)](https://travis-ci.org/picadoh/mockserver-client-csharp) [![NuGet version](https://badge.fury.io/nu/MockServerClientNet.svg)](https://badge.fury.io/nu/MockServerClientNet)
 
 C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/)
 
@@ -23,4 +23,4 @@ Use the following enviornment variables to change the target instance:
 
 ### Using the NuGet Package
 
-Get the latest version from https://www.nuget.org/packages/MockServerClientCSharp/ and refer to [this page](docs/Samples.md) for usage examples.
+Get the latest version from https://www.nuget.org/packages/MockServerClientNet/ and refer to [this page](docs/Samples.md) for usage examples.

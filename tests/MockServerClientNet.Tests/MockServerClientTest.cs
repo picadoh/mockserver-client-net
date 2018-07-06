@@ -1,17 +1,17 @@
-namespace MockServerClientCSharp.Tests
+namespace MockServerClientNet.Tests
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Net;
     using System.Net.Http;
-    using MockServerClientCSharp.Extensions;
-    using MockServerClientCSharp.Model;
-    using MockServerClientCSharp.Verify;
+    using MockServerClientNet.Extensions;
+    using MockServerClientNet.Model;
+    using MockServerClientNet.Verify;
     using Newtonsoft.Json;
     using Xunit;
-    using static MockServerClientCSharp.Model.HttpRequest;
-    using static MockServerClientCSharp.Model.HttpResponse;
+    using static MockServerClientNet.Model.HttpRequest;
+    using static MockServerClientNet.Model.HttpResponse;
 
     public class MockServerClientTest: IDisposable
     {

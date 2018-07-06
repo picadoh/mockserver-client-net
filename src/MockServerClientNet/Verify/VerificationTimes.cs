@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MockServerClientCSharp.Verify
+namespace MockServerClientNet.Verify
 {
   using Newtonsoft.Json;
 

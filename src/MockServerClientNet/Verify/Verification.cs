@@ -1,6 +1,6 @@
-﻿namespace MockServerClientCSharp.Verify
+﻿namespace MockServerClientNet.Verify
 {
-  using MockServerClientCSharp.Model;
+  using MockServerClientNet.Model;
   using Newtonsoft.Json;
 
   public class Verification

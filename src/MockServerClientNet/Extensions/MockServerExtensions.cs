@@ -1,10 +1,10 @@
-﻿namespace MockServerClientCSharp.Extensions
+﻿namespace MockServerClientNet.Extensions
 {
   using System;
   using System.Collections.Generic;
   using System.IO;
   using System.Linq;
-  using MockServerClientCSharp.Model;
+  using MockServerClientNet.Model;
   using Newtonsoft.Json;
 
   public static class MockServerExtensions

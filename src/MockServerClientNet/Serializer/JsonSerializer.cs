@@ -1,4 +1,4 @@
-﻿namespace MockServerClientCSharp.Serializer
+﻿namespace MockServerClientNet.Serializer
 {
   using Newtonsoft.Json;
 

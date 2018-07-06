@@ -1,12 +1,12 @@
-﻿namespace MockServerClientCSharp.Model
+﻿namespace MockServerClientNet.Model
 {
   using System.Collections.Generic;
   using System.Linq;
   using Newtonsoft.Json;
 
-  public class Parameter
+  public class Header
   {
-    public Parameter(string name, params string[] values)
+    public Header(string name, params string[] values)
     {
       this.Name = name;
       this.Values = values.ToList();

@@ -1,6 +1,6 @@
-﻿namespace MockServerClientCSharp
+﻿namespace MockServerClientNet
 {
-  using MockServerClientCSharp.Model;
+  using MockServerClientNet.Model;
 
   public class ForwardChainExpectation
   {

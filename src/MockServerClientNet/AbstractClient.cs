@@ -1,4 +1,4 @@
-﻿namespace MockServerClientCSharp
+﻿namespace MockServerClientNet
 {
   using System;
   using System.Net;
@@ -6,10 +6,10 @@
   using System.Text;
   using System.Threading;
   using System.Threading.Tasks;
-  using MockServerClientCSharp.Extensions;
-  using MockServerClientCSharp.Model;
-  using MockServerClientCSharp.Serializer;
-  using MockServerClientCSharp.Verify;
+  using MockServerClientNet.Extensions;
+  using MockServerClientNet.Model;
+  using MockServerClientNet.Serializer;
+  using MockServerClientNet.Verify;
 
   public abstract class AbstractClient<T>: IDisposable where T : AbstractClient<T>
   {

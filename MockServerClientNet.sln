@@ -2,9 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 
 # Projects
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockServerClientCSharp", "src\MockServerClientCSharp\MockServerClientCSharp.csproj", "{F8EC956E-4DD4-4F42-8EA0-F90AF7E017B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockServerClientNet", "src\MockServerClientNet\MockServerClientNet.csproj", "{F8EC956E-4DD4-4F42-8EA0-F90AF7E017B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockServerClientCSharp.Tests", "tests\MockServerClientCSharp.Tests\MockServerClientCSharp.Tests.csproj", "{B6C7B8E5-FFA2-4191-9FE9-D90F052E6B4E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockServerClientNet.Tests", "tests\MockServerClientNet.Tests\MockServerClientNet.Tests.csproj", "{B6C7B8E5-FFA2-4191-9FE9-D90F052E6B4E}"
 EndProject
 
 # Configurations
