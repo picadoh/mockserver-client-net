@@ -10,8 +10,8 @@
     [JsonProperty(PropertyName = "statusCode")]
     public int StatusCode { get; private set; }
 
-    [JsonProperty(PropertyName = "body")]
-    public string Body { get; private set; }
+    [JsonProperty(PropertyName = "body", NullValueHandling = NullValueHandling.Ignore)]
+    public Body Body { get; private set; }
 
     [JsonProperty(PropertyName = "delay")]
     public Delay Delay { get; private set; }
@@ -38,7 +38,7 @@
 
     public HttpResponse WithBody(string body)
     {
-      this.Body = body;
+      this.Body = new Body(body);
       return this;
     }
 

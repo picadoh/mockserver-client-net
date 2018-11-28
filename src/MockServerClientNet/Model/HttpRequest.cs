@@ -46,8 +46,8 @@
     [JsonProperty(PropertyName = "path")]
     public string Path { get; private set; } = string.Empty;
 
-    [JsonProperty(PropertyName = "body")]
-    public string Body { get; private set; } = string.Empty;
+    [JsonProperty(PropertyName = "body", NullValueHandling = NullValueHandling.Ignore)]
+        public Body Body { get; private set; } 
 
     [JsonProperty(PropertyName = "secure", NullValueHandling = NullValueHandling.Ignore)]
     public bool? IsSecure { get; private set; }
@@ -98,7 +98,7 @@
 
     public HttpRequest WithBody(string body)
     {
-      this.Body = body;
+      this.Body = new Body(body);
       return this;
     }
   }

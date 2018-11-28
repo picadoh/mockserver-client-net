@@ -41,13 +41,13 @@
                   .WithMethod(expectation.HttpRequest.Method)
                   .WithPath(expectation.HttpRequest.Path)
                   .WithQueryStringParameters(expectation.HttpRequest.Parameters.ToArray())
-                  .WithBody(expectation.HttpRequest.Body)
+                  .WithBody(expectation.HttpRequest?.Body?.StringBody ?? string.Empty)
                   .WithSecure(isSecure),
                   unlimitedTimes ? Times.Unlimited() : Times.Exactly(expectation.Times.Count))
           .Respond(httpResponse
                    .WithStatusCode(expectation.HttpResponse.StatusCode)
                    .WithHeaders(expectation.HttpResponse.Headers.ToArray())
-                   .WithBody(expectation.HttpResponse.Body ?? string.Empty)
+                   .WithBody(expectation.HttpResponse?.Body?.StringBody ?? string.Empty)
                    .WithDelay(GetTimeSpanDelay(expectation.HttpResponse.Delay)));
     }
 

@@ -6,8 +6,12 @@
       "QueryStringParameters": { "Id": [ "1" ] }
     },
     "HttpResponse": {
-      "StatusCode": 200,
-      "Body": "{ some body }"
+        "StatusCode": 200,
+        "Body": {
+            "not": false,
+            "type": "STRING",
+            "string": "{ some body }"
+        }
     },
     "Times": {
       "Unlimited": true
@@ -20,7 +24,11 @@
     },
     "HttpResponse": {
       "StatusCode": 200,
-      "Body": "{ some body2 }"
+        "Body": {
+            "not": false,
+            "type": "STRING",
+            "string": "{ some body2 }"
+        }
     },
     "Times": {
       "Unlimited": true
