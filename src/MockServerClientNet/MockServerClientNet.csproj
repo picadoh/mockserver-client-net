@@ -16,11 +16,10 @@
 		<Copyright>Copyright 2017 (c) Hugo Picado. All rights reserved.</Copyright>
 		<PackageTags>mock mockserver test dotnet dotnetcore netcore mockserverclient client mockserverclientcsharp mockserverclientnet netstandard .net</PackageTags>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Verify\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
 	</ItemGroup>
 </Project>

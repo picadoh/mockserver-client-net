@@ -2,35 +2,35 @@
 
 namespace MockServerClientNet.Verify
 {
-  using Newtonsoft.Json;
+    using Newtonsoft.Json;
 
-  public class VerificationTimes
-  {
-    [JsonProperty(PropertyName = "count")]
-    public int Count { get; private set; }
-
-    [JsonProperty(PropertyName = "exact")]
-    public bool Exact { get; private set; }
-
-    public VerificationTimes(int count, bool exact)
+    public class VerificationTimes
     {
-      this.Count = count;
-      this.Exact = exact;
-    }
+        [JsonProperty(PropertyName = "atLeast")]
+        public int atLeast { get; private set; }
 
-    public static VerificationTimes Once()
-    {
-      return Exactly(1);
-    }
+        [JsonProperty(PropertyName = "atMost")]
+        public int atMost { get; private set; }
 
-    public static VerificationTimes Exactly(int count)
-    {
-      return new VerificationTimes(count, true);
-    }
+        public VerificationTimes(int atLeast, int atMost)
+        {
+            this.atLeast = atLeast;
+            this.atMost = atMost;
+        }
 
-    public static VerificationTimes AtLeast(int count)
-    {
-      return new VerificationTimes(count, false);
+        public static VerificationTimes Once()
+        {
+            return Exactly(1);
+        }
+
+        public static VerificationTimes Exactly(int count)
+        {
+            return new VerificationTimes(count, count);
+        }
+
+        public static VerificationTimes AtLeast(int count)
+        {
+            return new VerificationTimes(count, 0);
+        }
     }
-  }
 }

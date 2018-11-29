@@ -1,13 +1,12 @@
-﻿# Header
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-
-# Projects
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockServerClientNet", "src\MockServerClientNet\MockServerClientNet.csproj", "{F8EC956E-4DD4-4F42-8EA0-F90AF7E017B5}"
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MockServerClientNet", "src\MockServerClientNet\MockServerClientNet.csproj", "{F8EC956E-4DD4-4F42-8EA0-F90AF7E017B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockServerClientNet.Tests", "tests\MockServerClientNet.Tests\MockServerClientNet.Tests.csproj", "{B6C7B8E5-FFA2-4191-9FE9-D90F052E6B4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MockServerClientNet.Tests", "tests\MockServerClientNet.Tests\MockServerClientNet.Tests.csproj", "{B6C7B8E5-FFA2-4191-9FE9-D90F052E6B4E}"
 EndProject
-
-# Configurations
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
