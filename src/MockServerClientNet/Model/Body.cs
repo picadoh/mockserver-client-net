@@ -1,10 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using MockServerClientNet.Serializer;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace MockServerClientNet.Model
 {
+    [JsonConverter(typeof(BodyConverter))]
     public class Body
     {
         public Body(string stringBody)
@@ -22,6 +25,5 @@ namespace MockServerClientNet.Model
         public string StringBody { get; private set; }
         [JsonProperty(PropertyName = "contentType", NullValueHandling = NullValueHandling.Ignore)]
         public string ContentType { get; private set; }
-
-    }
+        }
 }
