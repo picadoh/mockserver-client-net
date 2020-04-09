@@ -19,8 +19,8 @@ namespace MockServerClientNet.Tests
 
     public class MockServerClientTest : IDisposable
     {
-        private readonly string MockServerHost = Environment.GetEnvironmentVariable("MOCKSERVER_TEST_HOST") ?? "mockserver.westeurope.cloudapp.azure.com";
-        private readonly int MockServerPort = int.Parse(Environment.GetEnvironmentVariable("MOCKSERVER_TEST_PORT") ?? "1080");
+        private readonly string MockServerHost = Environment.GetEnvironmentVariable("MOCKSERVER_TEST_HOST") ?? "ssg-mockserver.azurewebsites.net";
+        private readonly int MockServerPort = int.Parse(Environment.GetEnvironmentVariable("MOCKSERVER_TEST_PORT") ?? "80");
 
         private MockServerClient mockServerClient;
 
@@ -231,6 +231,33 @@ namespace MockServerClientNet.Tests
 
         }
 
+        [Fact]
+        public void WhenExpectationsAreReturningBodyBinary_ShoulRespondFromTheConfiguredRoutes()
+        {
+            byte[] binary = new byte[1000];
+            for (int i = 0; i < 1000; i++) binary[i] = (byte)(i % 0xFF);
+            mockServerClient.When(
+               Request()
+               .WithMethod("GET")
+               .WithPath("/helloBinaryTest")
+               ,
+               Times.Unlimited())
+               .Respond(Response()
+                   .WithStatusCode(200)
+                   .WithHeaders(new Header("Content-Type", "text/plain"))
+                   .WithBody(Body.BinaryBody(binary, "image/jpg"))
+                   .WithDelay(TimeSpan.FromMilliseconds(100))
+           );
+            // act
+            byte[] responseBody1 = null;
+
+            SendRequestBinary(BuildGetRequest("/helloBinaryTest"), out responseBody1, out _);
+
+            // assert
+            Assert.Equal(responseBody1, binary);
+        }
+
+
         void SendRequest(HttpRequestMessage request, out string responseBody, out HttpStatusCode? statusCode)
         {
             using (HttpClient client = new HttpClient())
@@ -241,7 +268,16 @@ namespace MockServerClientNet.Tests
                 responseBody = content.ReadAsStringAsync().Result;
             }
         }
-
+        void SendRequestBinary(HttpRequestMessage request, out byte[] responseBody, out HttpStatusCode? statusCode)
+        {
+            using (HttpClient client = new HttpClient())
+            using (HttpResponseMessage res = client.SendAsync(request).Result)
+            using (HttpContent content = res.Content)
+            {
+                statusCode = res.StatusCode;
+                responseBody = content.ReadAsByteArrayAsync().Result;
+            }
+        }
         void SetupLoginResponse(bool ssl = false, bool unlimited = true, int times = 0)
         {
             mockServerClient
@@ -286,16 +322,12 @@ namespace MockServerClientNet.Tests
         {
             HttpRequestMessage request = new HttpRequestMessage();
             request.Method = HttpMethod.Post;
-            request.RequestUri = new Uri("http://" + MockServerHost + ":" + MockServerPort + path);
-            //"path" : "/JACEK10/When_the_user_created_a_new_helpdesk_request/helpdesk-requests/create",
-            request.Headers.Add("Accept", "application/vnd.agility.api.v2+json");
-            request.Headers.Add("X-Device-Id", "cNhGJk1gZr8:APA91bFSeht1XgcmSl6UNKHHfotSBqcwPNXaSmC-rx2XBqijyyI6bvnbx35GkkrfDByZ2dd9qTOUzO9mDLG5cjK0_3lBEvy4GpVQChsYuHU-B-mTg6K800brW3GWuGPc1eAbZOQml2m7");
-            request.Headers.Add("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU3ODU0RDdBOTZBMzU3RjIyRjNCQzk0QkY3Q0M0RUU4MDU3NDFFMUIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1NFZOZXBhalZfSXZPOGxMOTh4TzZBVjBIaHMifQ.eyJuYmYiOjE1NTM4NzEwNjcsImV4cCI6MTU1Mzg3NDY2NywiaXNzIjoiaHR0cHM6Ly9hY2NvdW50LnNzZ2luc2lnaHQuY29tIiwiYXVkIjpbImh0dHBzOi8vYWNjb3VudC5zc2dpbnNpZ2h0LmNvbS9yZXNvdXJjZXMiLCJzc2ctYWdpbGl0eS1hcGkiXSwiY2xpZW50X2lkIjoic3NnLWFnaWxpdHktZW5naW5lZXIiLCJzdWIiOiIyNzczMDA1OC1iYmIyLTQ2MTEtYmU3My0wOGQ1ZTY1Y2UxOWYiLCJhdXRoX3RpbWUiOjE1NTM4NzEwNjcsImlkcCI6ImxvY2FsIiwic2NvcGUiOlsic3NnLWFnaWxpdHktYXBpIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbInB3ZCJdfQ.K6QZIl5pJdM585QiyzVh_V3GQuTBTnKvrQxWU5tY6JEDPQuO809iv_NvDIJMRPh1iTDImmza0P7exQBzLBPr2gkDJ9hUlYrDnp0KS0B2-GKsJAZkqTPaaufyZ-eIeQyBwKCMo06KcY2Lp3i9bu8LCpWasrHWJ-ZD613FODNrqJHVT6IFcR06Aj7TyjUHiZVIIuT8UTucyH2Eetjumkmcf9si_nu6TVuGFDwPqYIQhcVCHkOtEkEECntPgz8R6YmTopFywLXtLWxRWcI1KTGMk0nZ10ZrxjzSO4a579PP9w3bzOBopIjaaz22w1uT5QnfZECoomB5UOgcAu9Wq-9Ibw");
-            request.Headers.Add("Host", "mockserver.westeurope.cloudapp.azure.com:1080");
+            request.RequestUri = new Uri("https://" + MockServerHost + path);
+
             request.Content = new StringContent(
-@"{
-    ""referenceId"":""20137705-bb8a-4215-bd39-f18dbb78ef7a"",""assetCode"":""Dishwasher"",""description"":""dummy description\\n"",""priorityId"":""5012"",""costCodeId"":null,""createDate"":""2019-03-29 14:51:47Z""
-}");
+            @"{
+                ""referenceId"":""20137705-bb8a-4215-bd39-f18dbb78ef7a"",""assetCode"":""Dishwasher"",""description"":""dummy description\\n"",""priorityId"":""5012"",""costCodeId"":null,""createDate"":""2019-03-29 14:51:47Z""
+            }");
             //request.Content.Headers.Add("Content-Type", "application/json; charset=utf-8");
             //request.Content.Headers.Add("Content-Length", "189");
             return request;
@@ -306,15 +338,9 @@ namespace MockServerClientNet.Tests
             HttpRequestMessage request = new HttpRequestMessage();
             request.Method = HttpMethod.Post;
             request.RequestUri = new Uri("http://" + MockServerHost + ":" + MockServerPort + path);
-            //"path" : "/JACEK10/When_the_user_created_a_new_helpdesk_request/helpdesk-requests/create",
-            request.Headers.Add("Accept", "application/vnd.agility.api.v2+json");
-            request.Headers.Add("X-Device-Id", "cNhGJk1gZr8:APA91bFSeht1XgcmSl6UNKHHfotSBqcwPNXaSmC-rx2XBqijyyI6bvnbx35GkkrfDByZ2dd9qTOUzO9mDLG5cjK0_3lBEvy4GpVQChsYuHU-B-mTg6K800brW3GWuGPc1eAbZOQml2m7");
-            request.Headers.Add("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU3ODU0RDdBOTZBMzU3RjIyRjNCQzk0QkY3Q0M0RUU4MDU3NDFFMUIiLCJ0eXAiOiJKV1QiLCJ4NXQiOiI1NFZOZXBhalZfSXZPOGxMOTh4TzZBVjBIaHMifQ.eyJuYmYiOjE1NTM4NzEwNjcsImV4cCI6MTU1Mzg3NDY2NywiaXNzIjoiaHR0cHM6Ly9hY2NvdW50LnNzZ2luc2lnaHQuY29tIiwiYXVkIjpbImh0dHBzOi8vYWNjb3VudC5zc2dpbnNpZ2h0LmNvbS9yZXNvdXJjZXMiLCJzc2ctYWdpbGl0eS1hcGkiXSwiY2xpZW50X2lkIjoic3NnLWFnaWxpdHktZW5naW5lZXIiLCJzdWIiOiIyNzczMDA1OC1iYmIyLTQ2MTEtYmU3My0wOGQ1ZTY1Y2UxOWYiLCJhdXRoX3RpbWUiOjE1NTM4NzEwNjcsImlkcCI6ImxvY2FsIiwic2NvcGUiOlsic3NnLWFnaWxpdHktYXBpIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbInB3ZCJdfQ.K6QZIl5pJdM585QiyzVh_V3GQuTBTnKvrQxWU5tY6JEDPQuO809iv_NvDIJMRPh1iTDImmza0P7exQBzLBPr2gkDJ9hUlYrDnp0KS0B2-GKsJAZkqTPaaufyZ-eIeQyBwKCMo06KcY2Lp3i9bu8LCpWasrHWJ-ZD613FODNrqJHVT6IFcR06Aj7TyjUHiZVIIuT8UTucyH2Eetjumkmcf9si_nu6TVuGFDwPqYIQhcVCHkOtEkEECntPgz8R6YmTopFywLXtLWxRWcI1KTGMk0nZ10ZrxjzSO4a579PP9w3bzOBopIjaaz22w1uT5QnfZECoomB5UOgcAu9Wq-9Ibw");
-            request.Headers.Add("Host", "mockserver.westeurope.cloudapp.azure.com:1080");
-
             var msg = @"{
-    ""referenceId"":""20137705-bb8a-4215-bd39-f18dbb78ef7a"",""assetCode"":""Dishwasher"",""description"":""dummy description\\n"",""priorityId"":""5012"",""costCodeId"":null,""createDate"":""2019-03-29 14:51:47Z""
-}";
+                ""referenceId"":""20137705-bb8a-4215-bd39-f18dbb78ef7a"",""assetCode"":""Dishwasher"",""description"":""dummy description\\n"",""priorityId"":""5012"",""costCodeId"":null,""createDate"":""2019-03-29 14:51:47Z""
+            }";
             var mc = new MultipartFormDataContent("BOUNDARY1234");
             mc.Add(new StringContent(msg), "somename", "somefilename");
             request.Content = mc;

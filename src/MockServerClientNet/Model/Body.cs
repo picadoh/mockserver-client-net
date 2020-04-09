@@ -16,6 +16,21 @@ namespace MockServerClientNet.Model
             StringBody = stringBody ?? throw new ArgumentNullException(nameof(stringBody));
             Not = false;
         }
+
+        protected Body()
+        { }
+
+        public static Body BinaryBody(byte[] binary, string contentType)
+        {
+            return new Body()
+            {
+                Type = "BINARY",
+                Not = false,
+                ContentType = contentType,
+                Base64Bytes = Convert.ToBase64String(binary)
+            };
+        }
+
         [JsonProperty(PropertyName = "not")]
         public bool Not { get; private set; }
 
@@ -25,5 +40,9 @@ namespace MockServerClientNet.Model
         public string StringBody { get; private set; }
         [JsonProperty(PropertyName = "contentType", NullValueHandling = NullValueHandling.Ignore)]
         public string ContentType { get; private set; }
-        }
+
+        [JsonProperty(PropertyName = "base64Bytes", NullValueHandling = NullValueHandling.Ignore)]
+        public string Base64Bytes { get; private set; }
+
+    }
 }

@@ -4,7 +4,7 @@
 		<OutputType>Library</OutputType>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<PackageId>MockServerClientNet.MockServer55</PackageId>
-		<PackageVersion>1.0.2</PackageVersion>
+		<PackageVersion>1.0.3</PackageVersion>
 		<Authors>Hugo Picado</Authors>
 		<Owners>Hugo Picado</Owners>
 		<Title>Mock-Server Client for .NET</Title>
@@ -16,7 +16,7 @@
 		<Copyright>Copyright 2017 (c) Hugo Picado. All rights reserved.</Copyright>
 		<PackageTags>mock mockserver test dotnet dotnetcore netcore mockserverclient client mockserverclientcsharp mockserverclientnet netstandard .net</PackageTags>
 		<RepositoryUrl>https://github.com/szpejarka/mockserver-client-net</RepositoryUrl>
-		<Version>1.0.2</Version>
+		<Version>1.0.3</Version>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Folder Include="Verify\" />

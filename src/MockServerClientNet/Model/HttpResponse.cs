@@ -41,8 +41,13 @@
       this.Body = new Body(body);
       return this;
     }
+        public HttpResponse WithBody(Body body)
+        {
+            this.Body = body;
+            return this;
+        }
 
-    public HttpResponse WithDelay(TimeSpan delay)
+        public HttpResponse WithDelay(TimeSpan delay)
     {
       this.Delay = new Delay((int)delay.TotalMilliseconds);
       return this;
