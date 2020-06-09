@@ -2,6 +2,8 @@
 
 C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/) targetting .netstandard2.0.
 
+This client is written in C# and based on the original Java client Fluent API, available at [Mock-Server](http://www.mock-server.com/). Thanks to its authors for their contributions to open-source. I am not an author of the mentioned Java client.
+
 # Build
 
     dotnet build
