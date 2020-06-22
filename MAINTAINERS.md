@@ -1,1 +1,4 @@
-* Hugo Picado <hugo.pcd@gmail.com>
+### Maintainers
+
+* picadoh
+
