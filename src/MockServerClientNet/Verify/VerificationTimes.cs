@@ -1,36 +1,46 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 
 namespace MockServerClientNet.Verify
 {
-  using Newtonsoft.Json;
-
-  public class VerificationTimes
-  {
-    [JsonProperty(PropertyName = "count")]
-    public int Count { get; private set; }
-
-    [JsonProperty(PropertyName = "exact")]
-    public bool Exact { get; private set; }
-
-    public VerificationTimes(int count, bool exact)
+    public class VerificationTimes
     {
-      this.Count = count;
-      this.Exact = exact;
-    }
+        private const int Unbounded = -1;
 
-    public static VerificationTimes Once()
-    {
-      return Exactly(1);
-    }
+        [JsonProperty(PropertyName = "atLeast")]
+        public int LowerBound { get; private set; }
 
-    public static VerificationTimes Exactly(int count)
-    {
-      return new VerificationTimes(count, true);
-    }
+        [JsonProperty(PropertyName = "atMost")]
+        public int UpperBound { get; private set; }
 
-    public static VerificationTimes AtLeast(int count)
-    {
-      return new VerificationTimes(count, false);
+        public VerificationTimes(int lowerBound, int upperBound)
+        {
+            LowerBound = lowerBound;
+            UpperBound = upperBound;
+        }
+
+        public static VerificationTimes Once()
+        {
+            return Exactly(1);
+        }
+
+        public static VerificationTimes Exactly(int count)
+        {
+            return Between(count, count);
+        }
+
+        public static VerificationTimes AtLeast(int lowerBound)
+        {
+            return Between(lowerBound, Unbounded);
+        }
+
+        public static VerificationTimes AtMost(int upperBound)
+        {
+            return Between(Unbounded, upperBound);
+        }
+
+        public static VerificationTimes Between(int lowerBound, int upperBound)
+        {
+            return new VerificationTimes(lowerBound, upperBound);
+        }
     }
-  }
 }

@@ -110,7 +110,7 @@ namespace MockServerClientNet.Tests
     }
 
     [Fact]
-    public void ShouldVerify()
+    public void ShouldVerifyExactly()
     {
         // arrange
         HttpRequest request = Request().WithMethod("GET").WithPath("/hello");
@@ -126,6 +126,72 @@ namespace MockServerClientNet.Tests
         var result = mockServerClient.Verify(Request()
                                             .WithMethod("GET")
                                             .WithPath("/hello"), VerificationTimes.Exactly(2));
+
+        // assert
+        Assert.NotNull(result);
+    }
+
+    [Fact]
+    public void ShouldVerifyAtLeast()
+    {
+        // arrange
+        HttpRequest request = Request().WithMethod("GET").WithPath("/hello");
+
+        mockServerClient
+            .When(request, Times.Unlimited())
+            .Respond(Response().WithStatusCode(200).WithBody("hello").WithDelay(TimeSpan.FromSeconds(0)));
+
+        SendRequest(BuildGetRequest("/hello"), out _, out _);
+        SendRequest(BuildGetRequest("/hello"), out _, out _);
+
+        // act
+        var result = mockServerClient.Verify(Request()
+            .WithMethod("GET")
+            .WithPath("/hello"), VerificationTimes.AtLeast(2));
+
+        // assert
+        Assert.NotNull(result);
+    }
+
+    [Fact]
+    public void ShouldVerifyAtMost()
+    {
+        // arrange
+        HttpRequest request = Request().WithMethod("GET").WithPath("/hello");
+
+        mockServerClient
+            .When(request, Times.Unlimited())
+            .Respond(Response().WithStatusCode(200).WithBody("hello").WithDelay(TimeSpan.FromSeconds(0)));
+
+        SendRequest(BuildGetRequest("/hello"), out _, out _);
+        SendRequest(BuildGetRequest("/hello"), out _, out _);
+
+        // act
+        var result = mockServerClient.Verify(Request()
+            .WithMethod("GET")
+            .WithPath("/hello"), VerificationTimes.AtMost(3));
+
+        // assert
+        Assert.NotNull(result);
+    }
+
+    [Fact]
+    public void ShouldVerifyBetween()
+    {
+        // arrange
+        HttpRequest request = Request().WithMethod("GET").WithPath("/hello");
+
+        mockServerClient
+            .When(request, Times.Unlimited())
+            .Respond(Response().WithStatusCode(200).WithBody("hello").WithDelay(TimeSpan.FromSeconds(0)));
+
+        SendRequest(BuildGetRequest("/hello"), out _, out _);
+        SendRequest(BuildGetRequest("/hello"), out _, out _);
+
+        // act
+        var result = mockServerClient.Verify(Request()
+            .WithMethod("GET")
+            .WithPath("/hello"), VerificationTimes.Between(1, 3));
 
         // assert
         Assert.NotNull(result);
