@@ -1,26 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<OutputType>Library</OutputType>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<PackageId>MockServerClientNet</PackageId>
-		<PackageVersion>1.0.1</PackageVersion>
-		<Authors>Hugo Picado</Authors>
-		<Owners>Hugo Picado</Owners>
-		<Title>Mock-Server Client for .NET</Title>
-		<Description>C# Fluent API for interacting with Mock-Server</Description>
-		<ProjectUrl>https://github.com/picadoh/mockserver-client-net</ProjectUrl>
-		<LicenseUrl>https://github.com/picadoh/mockserver-client-net/blob/master/LICENSE.md/LICENSE.md</LicenseUrl>
-		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-		<PackageReleaseNotes>Renamed to MockServerClientNet (formerly MockServerClientCSharp)</PackageReleaseNotes>
-		<Copyright>Copyright 2017 (c) Hugo Picado. All rights reserved.</Copyright>
-		<PackageTags>mock mockserver test dotnet dotnetcore netcore mockserverclient client mockserverclientcsharp mockserverclientnet netstandard .net</PackageTags>
-	</PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <PackageId>MockServerClientNet</PackageId>
+        <PackageVersion>1.0.2-beta</PackageVersion>
+        <Authors>picadoh</Authors>
+        <Title>Mock-Server Client for .NET</Title>
+        <RepositoryUrl>https://github.com/picadoh/mockserver-client-net</RepositoryUrl>
+        <PackageDescription>C# Fluent API for interacting with Mock-Server</PackageDescription>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Copyright>Copyright 2017 Hugo Picado</Copyright>
+        <PackageReleaseNotes>NA</PackageReleaseNotes>
+        <PackageTags>mock mockserver test dotnet dotnetcore netcore mockserverclient client mockserverclientcsharp mockserverclientnet netstandard .net</PackageTags>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Verify\" />
-	</ItemGroup>
+    <ItemGroup>
+        <Content Include="..\..\LICENSE*.md">
+            <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+            <PackagePath>licenses</PackagePath>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="10.0.3"/>
+    </ItemGroup>
 </Project>
