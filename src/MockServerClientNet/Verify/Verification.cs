@@ -13,13 +13,13 @@ namespace MockServerClientNet.Verify
 
         public Verification WithRequest(HttpRequest httpRequest)
         {
-            this.HttpRequest = httpRequest;
+            HttpRequest = httpRequest;
             return this;
         }
 
         public Verification WithTimes(VerificationTimes times)
         {
-            this.Times = times;
+            Times = times;
             return this;
         }
     }

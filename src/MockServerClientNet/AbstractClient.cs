@@ -29,9 +29,9 @@ namespace MockServerClientNet
 
         protected AbstractClient(string host, int port, string contextPath = "")
         {
-            this.Host = host;
-            this.Port = port;
-            this.ContextPath = contextPath;
+            Host = host;
+            Port = port;
+            ContextPath = contextPath;
         }
 
         public T Reset()
@@ -137,8 +137,8 @@ namespace MockServerClientNet
             {
                 SendRequest(new HttpRequestMessage().WithMethod("PUT").WithPath(CalculatePath("stop")));
 
-                int attemps = 0;
-                while (IsRunning() && attemps++ < 50)
+                var attempts = 0;
+                while (IsRunning() && attempts++ < 50)
                 {
                     Thread.Sleep(5000);
                 }
@@ -154,16 +154,12 @@ namespace MockServerClientNet
             return (T) this;
         }
 
-        public bool IsRunning()
+        public bool IsRunning(int attempts = 10, int timeoutMillis = 500)
         {
-            return IsRunning(10, 500);
-        }
-
-        public bool IsRunning(int attempts, int timeoutMillis)
-        {
+            var currentAttempts = attempts;
             try
             {
-                while (attempts-- > 0)
+                while (currentAttempts-- > 0)
                 {
                     var httpResponse =
                         SendRequest(new HttpRequestMessage().WithMethod("PUT").WithPath(CalculatePath("status")));

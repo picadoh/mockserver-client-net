@@ -14,12 +14,16 @@ namespace MockServerClientNet
 
         public ForwardChainExpectation When(HttpRequest httpRequest, Times times)
         {
-            return new ForwardChainExpectation(this, new Expectation(httpRequest, times, TimeToLive.Unlimited()));
+            return new ForwardChainExpectation(
+                this,
+                new Expectation(httpRequest, times, TimeToLive.Unlimited()));
         }
 
         public ForwardChainExpectation When(HttpRequest httpRequest, Times times, TimeToLive timeToLive)
         {
-            return new ForwardChainExpectation(this, new Expectation(httpRequest, times, timeToLive));
+            return new ForwardChainExpectation(
+                this,
+                new Expectation(httpRequest, times, timeToLive));
         }
 
         public void SendExpectation(Expectation expectation)

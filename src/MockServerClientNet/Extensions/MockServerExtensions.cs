@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using MockServerClientNet.Model;
 using Newtonsoft.Json;
 
@@ -19,15 +18,12 @@ namespace MockServerClientNet.Extensions
             var fileContent = File.ReadAllText(expectationsFilePath);
             var expectations = JsonConvert.DeserializeObject<IEnumerable<Expectation>>(fileContent);
 
-            if (expectations.Any())
+            foreach (var expectation in expectations)
             {
-                foreach (var expectation in expectations)
-                {
-                    var httpRequest = HttpRequest.Request();
-                    var httpResponse = HttpResponse.Response();
+                var httpRequest = HttpRequest.Request();
+                var httpResponse = HttpResponse.Response();
 
-                    SetupMockServerRequest(mockServerClient, expectation, httpRequest, httpResponse);
-                }
+                SetupMockServerRequest(mockServerClient, expectation, httpRequest, httpResponse);
             }
         }
 

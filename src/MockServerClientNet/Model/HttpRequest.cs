@@ -17,13 +17,7 @@ namespace MockServerClientNet.Model
         {
             get
             {
-                List<Header> result = new List<Header>();
-                foreach (KeyValuePair<string, string[]> entry in _headers)
-                {
-                    result.Add(new Header(entry.Key, entry.Value));
-                }
-
-                return result;
+                return _headers.Select(entry => new Header(entry.Key, entry.Value)).ToList();
             }
         }
 
@@ -32,13 +26,7 @@ namespace MockServerClientNet.Model
         {
             get
             {
-                List<Parameter> result = new List<Parameter>();
-                foreach (KeyValuePair<string, string[]> entry in _parameters)
-                {
-                    result.Add(new Parameter(entry.Key, entry.Value));
-                }
-
-                return result;
+                return _parameters.Select(entry => new Parameter(entry.Key, entry.Value)).ToList();
             }
         }
 

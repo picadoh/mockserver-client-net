@@ -6,9 +6,9 @@
     {
         public Expectation(HttpRequest httpRequest, Times times, TimeToLive timeToLive)
         {
-            HttpRequest = httpRequest;
-            Times = times;
-            TimeToLive = timeToLive;
+            this.HttpRequest = httpRequest;
+            this.Times = times;
+            this.TimeToLive = timeToLive;
         }
 
         [JsonProperty(PropertyName = "httpRequest")]
