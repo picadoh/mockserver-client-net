@@ -27,7 +27,7 @@ namespace MockServerClientNet
         protected readonly int Port;
         protected readonly string ContextPath;
 
-        protected AbstractClient(string host, int port, string contextPath = "")
+        protected AbstractClient(string host, int port, string contextPath)
         {
             Host = host;
             Port = port;
