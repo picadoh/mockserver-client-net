@@ -12,13 +12,13 @@ namespace MockServerClientNet.Verify
 
         public VerificationSequence WithRequests(params HttpRequest[] httpRequests)
         {
-            this.HttpRequests.Concat(httpRequests);
+            HttpRequests = HttpRequests.Concat(httpRequests);
             return this;
         }
 
         public VerificationSequence WithRequests(IEnumerable<HttpRequest> httpRequests)
         {
-            this.HttpRequests.Concat(httpRequests);
+            HttpRequests = HttpRequests.Concat(httpRequests);
             return this;
         }
     }

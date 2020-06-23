@@ -140,26 +140,32 @@ namespace MockServerClientNet.Tests
         [Fact]
         public void ShouldVerifyMultipleRequests()
         {
-            // arrange
-            var request1 = Request().WithMethod("GET").WithPath("/hello");
-            var request2 = Request().WithMethod("GET").WithPath("/world");
-
             MockServerClient
-                .When(request1, Times.Unlimited())
+                .When(Request().WithPath("/hello"), Times.Exactly(1))
                 .Respond(Response().WithStatusCode(200).WithBody("hello").WithDelay(TimeSpan.FromSeconds(0)));
 
             MockServerClient
-                .When(request2, Times.Unlimited())
+                .When(Request().WithPath("/world"), Times.Exactly(1))
                 .Respond(Response().WithStatusCode(200).WithBody("world").WithDelay(TimeSpan.FromSeconds(0)));
 
-            // act
-            SendRequest(BuildGetRequest("/hello"), out _, out _);
-            SendRequest(BuildGetRequest("/world"), out _, out _);
+            SendRequest(BuildGetRequest("/hello"), out var helloResponse, out _);
+            SendRequest(BuildGetRequest("/world"), out var worldResponse, out _);
+            
+            Assert.Equal("hello", helloResponse);
+            Assert.Equal("world", worldResponse);
 
-            var result = MockServerClient.Verify(request1, request2);
+            MockServerClient.Verify(Request().WithPath("/hello"), Request().WithPath("/world"));
+        }    
 
-            // assert
-            Assert.NotNull(result);
+        [Fact]
+        public void ShouldVerifyMultipleRequestsFailed()
+        {
+            var ex = Assert.Throws<AssertionException>(() =>
+            {
+                MockServerClient.Verify(Request().WithPath("/hello"), Request().WithPath("/world"));
+            });
+
+            Assert.StartsWith("Request sequence not found", ex.Message);
         }
 
         [Fact]
