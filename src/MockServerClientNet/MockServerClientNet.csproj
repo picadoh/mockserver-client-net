@@ -4,14 +4,14 @@
         <OutputType>Library</OutputType>
         <TargetFramework>netstandard2.0</TargetFramework>
         <PackageId>MockServerClientNet</PackageId>
-        <PackageVersion>1.0.2-beta</PackageVersion>
+        <PackageVersion>1.1.0</PackageVersion>
         <Authors>picadoh</Authors>
         <Title>Mock-Server Client for .NET</Title>
         <RepositoryUrl>https://github.com/picadoh/mockserver-client-net</RepositoryUrl>
         <PackageDescription>C# Fluent API for interacting with Mock-Server</PackageDescription>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Copyright>Copyright 2017 Hugo Picado</Copyright>
-        <PackageReleaseNotes>NA</PackageReleaseNotes>
+        <PackageReleaseNotes>Async support</PackageReleaseNotes>
         <PackageTags>mock mockserver test dotnet dotnetcore netcore mockserverclient client mockserverclientcsharp mockserverclientnet netstandard .net</PackageTags>
     </PropertyGroup>
 
