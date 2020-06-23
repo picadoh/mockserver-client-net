@@ -56,7 +56,7 @@ namespace MockServerClientNet.Tests
         private string GetMockServerBaseUri(bool ssl)
         {
             var scheme = ssl ? "https" : "http";
-            return scheme + "://" + _mockServerHost + ":" + _mockServerPort;
+            return $"{scheme}://{_mockServerHost}:{_mockServerPort}";
         }
     }
 }
