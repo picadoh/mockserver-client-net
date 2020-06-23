@@ -200,7 +200,7 @@ namespace MockServerClientNet
 
         protected string CalculatePath(string path)
         {
-            var cleanedPath = path;
+            var cleanedPath = $"/mockserver/{path}";
 
             if (string.IsNullOrEmpty(ContextPath))
             {
