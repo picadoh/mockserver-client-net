@@ -39,7 +39,7 @@ namespace MockServerClientNet
             using (var httpResponse = await SendRequestAsync(
                 new HttpRequestMessage()
                     .WithMethod(HttpMethod.Put)
-                    .WithPath(CalculatePath("expectation"))
+                    .WithUri(ServerAddressWithPath(CalculatePath("expectation")))
                     .WithBody(expectationBody)))
             {
                 if (httpResponse != null && httpResponse.StatusCode != HttpStatusCode.Created)
@@ -58,7 +58,7 @@ namespace MockServerClientNet
         {
             var res = await SendRequestAsync(new HttpRequestMessage()
                 .WithMethod("PUT")
-                .WithPath(CalculatePath("retrieve"))
+                .WithUri(ServerAddressWithPath(CalculatePath("retrieve")))
                 .WithBody(httpRequest != null ? HttpRequestSerializer.Serialize(httpRequest) : string.Empty,
                     Encoding.UTF8));
 

@@ -46,25 +46,17 @@ namespace MockServerClientNet.Tests
             }
         }
 
-        protected HttpRequestMessage BuildRequest(HttpMethod method, string path, string body = "", bool ssl = false)
+        protected HttpRequestMessage BuildRequest(HttpMethod method, string path, string body)
         {
-            return new HttpRequestMessage
-            {
-                Method = method,
-                RequestUri = new Uri($"{GetMockServerBaseUri(ssl)}/{path}"),
-                Content = new StringContent(body)
-            };
+            return new HttpRequestMessage()
+                .WithMethod(method)
+                .WithUri(MockServerClient.ServerAddressWithPath(path))
+                .WithBody(body);
         }
 
         protected HttpRequestMessage BuildGetRequest(string path)
         {
-            return BuildRequest(HttpMethod.Get, path);
-        }
-
-        private string GetMockServerBaseUri(bool ssl)
-        {
-            var scheme = ssl ? "https" : "http";
-            return $"{scheme}://{_mockServerHost}:{_mockServerPort}";
+            return BuildRequest(HttpMethod.Get, path, string.Empty);
         }
     }
 }

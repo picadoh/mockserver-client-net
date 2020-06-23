@@ -18,9 +18,9 @@ namespace MockServerClientNet.Extensions
             return request;
         }
 
-        public static HttpRequestMessage WithPath(this HttpRequestMessage request, string path)
+        public static HttpRequestMessage WithUri(this HttpRequestMessage request, Uri uri)
         {
-            request.RequestUri = new Uri($"http://{path}");
+            request.RequestUri = uri;
             return request;
         }
 

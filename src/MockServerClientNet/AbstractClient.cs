@@ -41,7 +41,9 @@ namespace MockServerClientNet
 
         public async Task<T> ResetAsync()
         {
-            await SendRequestAsync(new HttpRequestMessage().WithMethod("PUT").WithPath(CalculatePath("reset")));
+            await SendRequestAsync(new HttpRequestMessage()
+                .WithMethod("PUT")
+                .WithUri(ServerAddressWithPath(CalculatePath("reset"))));
             return (T) this;
         }
 
@@ -54,7 +56,7 @@ namespace MockServerClientNet
         {
             await SendRequestAsync(new HttpRequestMessage()
                 .WithMethod("PUT")
-                .WithPath(CalculatePath("clear"))
+                .WithUri(ServerAddressWithPath(CalculatePath("clear")))
                 .WithBody(httpRequest != null ? HttpRequestSerializer.Serialize(httpRequest) : string.Empty));
             return (T) this;
         }
@@ -74,7 +76,7 @@ namespace MockServerClientNet
             var sequence = new VerificationSequence().WithRequests(httpRequests);
             var res = await SendRequestAsync(new HttpRequestMessage()
                 .WithMethod("PUT")
-                .WithPath(CalculatePath("verifySequence"))
+                .WithUri(ServerAddressWithPath(CalculatePath("verifySequence")))
                 .WithBody(VerificationSequenceSerializer.Serialize(sequence), Encoding.UTF8));
 
             var body = await res.Content.ReadAsStringAsync();
@@ -108,7 +110,7 @@ namespace MockServerClientNet
 
             var res = await SendRequestAsync(new HttpRequestMessage()
                 .WithMethod("PUT")
-                .WithPath(CalculatePath("verify"))
+                .WithUri(ServerAddressWithPath(CalculatePath("verify")))
                 .WithBody(VerificationSerializer.Serialize(verification), Encoding.UTF8));
 
             var body = await res.Content.ReadAsStringAsync();
@@ -133,7 +135,7 @@ namespace MockServerClientNet
 
             var res = await SendRequestAsync(new HttpRequestMessage()
                 .WithMethod("PUT")
-                .WithPath(CalculatePath("verify"))
+                .WithUri(ServerAddressWithPath(CalculatePath("verify")))
                 .WithBody(VerificationSerializer.Serialize(verification), Encoding.UTF8));
 
             var body = await res.Content.ReadAsStringAsync();
@@ -160,7 +162,9 @@ namespace MockServerClientNet
         {
             try
             {
-                await SendRequestAsync(new HttpRequestMessage().WithMethod("PUT").WithPath(CalculatePath("stop")));
+                await SendRequestAsync(new HttpRequestMessage()
+                    .WithMethod("PUT")
+                    .WithUri(ServerAddressWithPath(CalculatePath("stop"))));
 
                 var attempts = 0;
                 while (await IsRunningAsync() && attempts++ < 50)
@@ -192,8 +196,9 @@ namespace MockServerClientNet
                 while (currentAttempts-- > 0)
                 {
                     var httpResponse =
-                        await SendRequestAsync(new HttpRequestMessage().WithMethod("PUT")
-                            .WithPath(CalculatePath("status")));
+                        await SendRequestAsync(new HttpRequestMessage()
+                            .WithMethod("PUT")
+                            .WithUri(ServerAddressWithPath(CalculatePath("status"))));
 
                     if (httpResponse.StatusCode == HttpStatusCode.OK)
                     {
@@ -238,7 +243,18 @@ namespace MockServerClientNet
                 cleanedPath = ContextPath.PrefixWith("/").SuffixWith("/") + cleanedPath.RemovePrefix("/");
             }
 
-            return $"{Host}:{Port}{cleanedPath.PrefixWith("/")}";
+            return $"{cleanedPath.PrefixWith("/")}";
+        }
+
+        public Uri ServerAddress(bool ssl = false)
+        {
+            var scheme = ssl ? "https" : "http";
+            return new Uri($"{scheme}://{Host}:{Port}");
+        }
+
+        public Uri ServerAddressWithPath(string path, bool ssl = false)
+        {
+            return new Uri(ServerAddress(ssl), path);
         }
     }
 }
