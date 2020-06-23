@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using MockServerClientNet.Model;
 using Newtonsoft.Json;
 
@@ -9,6 +10,12 @@ namespace MockServerClientNet.Extensions
     public static class MockServerExtensions
     {
         public static void LoadExpectationsFromFile(this MockServerClient mockServerClient, string expectationsFilePath)
+        {
+            LoadExpectationsFromFileAsync(mockServerClient, expectationsFilePath).AwaitResult();
+        }
+
+        public static async Task LoadExpectationsFromFileAsync(this MockServerClient mockServerClient,
+            string expectationsFilePath)
         {
             if (!File.Exists(expectationsFilePath))
             {
@@ -23,17 +30,20 @@ namespace MockServerClientNet.Extensions
                 var httpRequest = HttpRequest.Request();
                 var httpResponse = HttpResponse.Response();
 
-                SetupMockServerRequest(mockServerClient, expectation, httpRequest, httpResponse);
+                await SetupMockServerRequestAsync(mockServerClient, expectation, httpRequest, httpResponse);
             }
-        }
+        }    
 
-        private static void SetupMockServerRequest(MockServerClient mockServerClient, Expectation expectation,
-            HttpRequest httpRequest, HttpResponse httpResponse)
+        private static async Task SetupMockServerRequestAsync(
+            MockServerClient mockServerClient,
+            Expectation expectation,
+            HttpRequest httpRequest,
+            HttpResponse httpResponse)
         {
             var isSecure = expectation.HttpRequest.IsSecure.HasValue && expectation.HttpRequest.IsSecure.Value;
             var unlimitedTimes = expectation.Times == null || expectation.Times.IsUnlimited;
 
-            mockServerClient
+            await mockServerClient
                 .When(httpRequest
                         .WithMethod(expectation.HttpRequest.Method)
                         .WithPath(expectation.HttpRequest.Path)
@@ -41,7 +51,7 @@ namespace MockServerClientNet.Extensions
                         .WithBody(expectation.HttpRequest.Body)
                         .WithSecure(isSecure),
                     unlimitedTimes ? Times.Unlimited() : Times.Exactly(expectation.Times.Count))
-                .Respond(httpResponse
+                .RespondAsync(httpResponse
                     .WithStatusCode(expectation.HttpResponse.StatusCode)
                     .WithHeaders(expectation.HttpResponse.Headers.ToArray())
                     .WithBody(expectation.HttpResponse.Body ?? string.Empty)

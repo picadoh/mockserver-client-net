@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using MockServerClientNet.Extensions;
 using MockServerClientNet.Model;
 
@@ -28,9 +29,14 @@ namespace MockServerClientNet
 
         public void SendExpectation(Expectation expectation)
         {
-            var expectationBody = expectation != null ? ExpectationSerializer.Serialize(expectation) : "";
+            SendExpectationAsync(expectation).GetAwaiter().GetResult();
+        }
 
-            using (var httpResponse = SendRequest(
+        public async Task SendExpectationAsync(Expectation expectation)
+        {
+            var expectationBody = expectation != null ? ExpectationSerializer.Serialize(expectation) : string.Empty;
+
+            using (var httpResponse = await SendRequestAsync(
                 new HttpRequestMessage()
                     .WithMethod(HttpMethod.Put)
                     .WithPath(CalculatePath("expectation"))
@@ -45,13 +51,18 @@ namespace MockServerClientNet
 
         public HttpRequest[] RetrieveRecordedRequests(HttpRequest httpRequest)
         {
-            var res = SendRequest(new HttpRequestMessage()
+            return RetrieveRecordedRequestsAsync(httpRequest).AwaitResult();
+        }
+
+        public async Task<HttpRequest[]> RetrieveRecordedRequestsAsync(HttpRequest httpRequest)
+        {
+            var res = await SendRequestAsync(new HttpRequestMessage()
                 .WithMethod("PUT")
                 .WithPath(CalculatePath("retrieve"))
                 .WithBody(httpRequest != null ? HttpRequestSerializer.Serialize(httpRequest) : string.Empty,
                     Encoding.UTF8));
 
-            var body = res?.Content.ReadAsStringAsync().Result;
+            var body = await res.Content.ReadAsStringAsync();
 
             return !string.IsNullOrEmpty(body) ? HttpRequestSerializer.DeserializeArray(body) : new HttpRequest[0];
         }

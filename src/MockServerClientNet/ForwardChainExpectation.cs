@@ -1,4 +1,5 @@
-﻿using MockServerClientNet.Model;
+﻿using System.Threading.Tasks;
+using MockServerClientNet.Model;
 
 namespace MockServerClientNet
 {
@@ -15,14 +16,24 @@ namespace MockServerClientNet
 
         public void Respond(HttpResponse httpResponse)
         {
+            RespondAsync(httpResponse).GetAwaiter().GetResult();
+        }
+
+        public async Task RespondAsync(HttpResponse httpResponse)
+        {
             _expectation.ThenRespond(httpResponse);
-            _mockServerClient.SendExpectation(_expectation);
+            await _mockServerClient.SendExpectationAsync(_expectation);
         }
 
         public void Forward(HttpForward httpForward)
         {
+            ForwardAsync(httpForward).GetAwaiter().GetResult();
+        }
+
+        public async Task ForwardAsync(HttpForward httpForward)
+        {
             _expectation.ThenForward(httpForward);
-            _mockServerClient.SendExpectation(_expectation);
+            await _mockServerClient.SendExpectationAsync(_expectation);
         }
     }
 }

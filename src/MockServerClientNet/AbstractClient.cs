@@ -36,20 +36,35 @@ namespace MockServerClientNet
 
         public T Reset()
         {
-            SendRequest(new HttpRequestMessage().WithMethod("PUT").WithPath(CalculatePath("reset")));
+            return ResetAsync().AwaitResult();
+        }
+
+        public async Task<T> ResetAsync()
+        {
+            await SendRequestAsync(new HttpRequestMessage().WithMethod("PUT").WithPath(CalculatePath("reset")));
             return (T) this;
         }
 
         public T Clear(HttpRequest httpRequest)
         {
-            SendRequest(new HttpRequestMessage()
+            return ClearAsync(httpRequest).AwaitResult();
+        }
+
+        public async Task<T> ClearAsync(HttpRequest httpRequest)
+        {
+            await SendRequestAsync(new HttpRequestMessage()
                 .WithMethod("PUT")
                 .WithPath(CalculatePath("clear"))
-                .WithBody(httpRequest != null ? HttpRequestSerializer.Serialize(httpRequest) : ""));
+                .WithBody(httpRequest != null ? HttpRequestSerializer.Serialize(httpRequest) : string.Empty));
             return (T) this;
         }
 
         public T Verify(params HttpRequest[] httpRequests)
+        {
+            return VerifyAsync(httpRequests).AwaitResult();
+        }
+
+        public async Task<T> VerifyAsync(params HttpRequest[] httpRequests)
         {
             if (httpRequests == null || httpRequests.Length == 0 || httpRequests[0] == null)
             {
@@ -57,12 +72,12 @@ namespace MockServerClientNet
             }
 
             var sequence = new VerificationSequence().WithRequests(httpRequests);
-            var res = SendRequest(new HttpRequestMessage()
+            var res = await SendRequestAsync(new HttpRequestMessage()
                 .WithMethod("PUT")
                 .WithPath(CalculatePath("verifySequence"))
                 .WithBody(VerificationSequenceSerializer.Serialize(sequence), Encoding.UTF8));
 
-            var body = res?.Content.ReadAsStringAsync().Result;
+            var body = await res.Content.ReadAsStringAsync();
 
             if (!string.IsNullOrEmpty(body))
             {
@@ -73,6 +88,11 @@ namespace MockServerClientNet
         }
 
         public T Verify(HttpRequest httpRequest, VerificationTimes times)
+        {
+            return VerifyAsync(httpRequest, times).AwaitResult();
+        }
+
+        public async Task<T> VerifyAsync(HttpRequest httpRequest, VerificationTimes times)
         {
             if (httpRequest == null)
             {
@@ -86,12 +106,12 @@ namespace MockServerClientNet
 
             var verification = new Verification().WithRequest(httpRequest).WithTimes(times);
 
-            var res = SendRequest(new HttpRequestMessage()
+            var res = await SendRequestAsync(new HttpRequestMessage()
                 .WithMethod("PUT")
                 .WithPath(CalculatePath("verify"))
                 .WithBody(VerificationSerializer.Serialize(verification), Encoding.UTF8));
 
-            var body = res?.Content.ReadAsStringAsync().Result;
+            var body = await res.Content.ReadAsStringAsync();
 
             if (!string.IsNullOrEmpty(body))
             {
@@ -103,15 +123,20 @@ namespace MockServerClientNet
 
         public T VerifyZeroInteractions()
         {
+            return VerifyZeroInteractionsAsync().AwaitResult();
+        }
+
+        public async Task<T> VerifyZeroInteractionsAsync()
+        {
             var verification = new Verification().WithRequest(new HttpRequest())
                 .WithTimes(VerificationTimes.Exactly(0));
 
-            var res = SendRequest(new HttpRequestMessage()
+            var res = await SendRequestAsync(new HttpRequestMessage()
                 .WithMethod("PUT")
                 .WithPath(CalculatePath("verify"))
                 .WithBody(VerificationSerializer.Serialize(verification), Encoding.UTF8));
 
-            var body = res?.Content.ReadAsStringAsync().Result;
+            var body = await res.Content.ReadAsStringAsync();
 
             if (!string.IsNullOrEmpty(body))
             {
@@ -126,19 +151,19 @@ namespace MockServerClientNet
             Stop();
         }
 
-        public T Stop()
+        public T Stop(bool ignoreFailure = false)
         {
-            return Stop(false);
+            return StopAsync(ignoreFailure).AwaitResult();
         }
 
-        public T Stop(bool ignoreFailure)
+        public async Task<T> StopAsync(bool ignoreFailure = false)
         {
             try
             {
-                SendRequest(new HttpRequestMessage().WithMethod("PUT").WithPath(CalculatePath("stop")));
+                await SendRequestAsync(new HttpRequestMessage().WithMethod("PUT").WithPath(CalculatePath("stop")));
 
                 var attempts = 0;
-                while (IsRunning() && attempts++ < 50)
+                while (await IsRunningAsync() && attempts++ < 50)
                 {
                     Thread.Sleep(5000);
                 }
@@ -156,13 +181,19 @@ namespace MockServerClientNet
 
         public bool IsRunning(int attempts = 10, int timeoutMillis = 500)
         {
+            return IsRunningAsync(attempts, timeoutMillis).AwaitResult();
+        }
+
+        public async Task<bool> IsRunningAsync(int attempts = 10, int timeoutMillis = 500)
+        {
             var currentAttempts = attempts;
             try
             {
                 while (currentAttempts-- > 0)
                 {
                     var httpResponse =
-                        SendRequest(new HttpRequestMessage().WithMethod("PUT").WithPath(CalculatePath("status")));
+                        await SendRequestAsync(new HttpRequestMessage().WithMethod("PUT")
+                            .WithPath(CalculatePath("status")));
 
                     if (httpResponse.StatusCode == HttpStatusCode.OK)
                     {
@@ -182,7 +213,7 @@ namespace MockServerClientNet
 
         public HttpResponseMessage SendRequest(HttpRequestMessage mockServerRequest)
         {
-            return SendRequestAsync(mockServerRequest).Result;
+            return SendRequestAsync(mockServerRequest).AwaitResult();
         }
 
         public async Task<HttpResponseMessage> SendRequestAsync(HttpRequestMessage httpRequest)

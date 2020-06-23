@@ -1,6 +1,8 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
+using MockServerClientNet.Extensions;
 using Xunit;
 
 namespace MockServerClientNet.Tests
@@ -29,12 +31,18 @@ namespace MockServerClientNet.Tests
         protected static void SendRequest(HttpRequestMessage request, out string responseBody,
             out HttpStatusCode? statusCode)
         {
+            (responseBody, statusCode) = SendRequestAsync(request).AwaitResult();
+        }
+
+        protected static async Task<Tuple<string, HttpStatusCode>> SendRequestAsync(HttpRequestMessage request)
+        {
             using (var client = new HttpClient())
-            using (var res = client.SendAsync(request).Result)
+            using (var res = await client.SendAsync(request))
             using (var content = res.Content)
             {
-                statusCode = res.StatusCode;
-                responseBody = content.ReadAsStringAsync().Result;
+                var statusCode = res.StatusCode;
+                var responseBody = await content.ReadAsStringAsync();
+                return new Tuple<string, HttpStatusCode>(responseBody, statusCode);
             }
         }
 
