@@ -1,37 +1,39 @@
-﻿namespace MockServerClientNet.Model
+﻿using Newtonsoft.Json;
+
+namespace MockServerClientNet.Model
 {
-  using Newtonsoft.Json;
-
-  public class HttpForward
-  {
-    [JsonProperty(PropertyName = "host")]
-    public string Host { get; private set; }
-
-    [JsonProperty(PropertyName = "port")]
-    public int Port { get; private set; } = 80;
-
-    [JsonProperty(PropertyName = "scheme")]
-    public string Scheme { get; private set; } = "HTTP";
-
-    public static HttpForward Forward() {
-      return new HttpForward();
-    }
-
-    public HttpForward WithHost(string host)
+    public class HttpForward
     {
-      this.Host = host;
-      return this;
-    }
+        [JsonProperty(PropertyName = "host")]
+        public string Host { get; private set; }
 
-    public HttpForward WithPort(int port) {
-      this.Port = port;
-      return this;
-    }
+        [JsonProperty(PropertyName = "port")]
+        public int Port { get; private set; } = 80;
 
-    public HttpForward WithScheme(string scheme)
-    {
-      this.Scheme = scheme;
-      return this;
+        [JsonProperty(PropertyName = "scheme")]
+        public string Scheme { get; private set; } = "HTTP";
+
+        public static HttpForward Forward()
+        {
+            return new HttpForward();
+        }
+
+        public HttpForward WithHost(string host)
+        {
+            Host = host;
+            return this;
+        }
+
+        public HttpForward WithPort(int port)
+        {
+            Port = port;
+            return this;
+        }
+
+        public HttpForward WithScheme(string scheme)
+        {
+            Scheme = scheme;
+            return this;
+        }
     }
-  }
 }

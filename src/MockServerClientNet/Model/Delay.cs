@@ -1,19 +1,19 @@
-﻿namespace MockServerClientNet.Model
+﻿using Newtonsoft.Json;
+
+namespace MockServerClientNet.Model
 {
-  using Newtonsoft.Json;
-
-  public class Delay
-  {
-    public Delay(int value)
+    public class Delay
     {
-      this.TimeUnit = "MILLISECONDS";
-      this.Value = value;
+        public Delay(int value)
+        {
+            TimeUnit = "MILLISECONDS";
+            Value = value;
+        }
+
+        [JsonProperty(PropertyName = "timeUnit")]
+        public string TimeUnit { get; private set; }
+
+        [JsonProperty(PropertyName = "value")]
+        public int Value { get; private set; }
     }
-
-    [JsonProperty(PropertyName = "timeUnit")]
-    public string TimeUnit { get; private set; }
-
-    [JsonProperty(PropertyName = "value")]
-    public int Value { get; private set; }
-  }
 }

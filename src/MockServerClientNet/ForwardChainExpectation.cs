@@ -1,28 +1,28 @@
-﻿namespace MockServerClientNet
+﻿using MockServerClientNet.Model;
+
+namespace MockServerClientNet
 {
-  using MockServerClientNet.Model;
-
-  public class ForwardChainExpectation
-  {
-    private readonly MockServerClient mockServerClient;
-    private readonly Expectation expectation;
-
-    public ForwardChainExpectation(MockServerClient mockServerClient, Expectation expectation)
+    public class ForwardChainExpectation
     {
-      this.mockServerClient = mockServerClient;
-      this.expectation = expectation;
-    }
+        private readonly MockServerClient _mockServerClient;
+        private readonly Expectation _expectation;
 
-    public void Respond(HttpResponse httpResponse)
-    {
-      this.expectation.ThenRespond(httpResponse);
-      this.mockServerClient.SendExpectation(this.expectation);
-    }
+        public ForwardChainExpectation(MockServerClient mockServerClient, Expectation expectation)
+        {
+            _mockServerClient = mockServerClient;
+            _expectation = expectation;
+        }
 
-    public void Forward(HttpForward httpForward)
-    {
-      this.expectation.ThenForward(httpForward);
-      this.mockServerClient.SendExpectation(this.expectation);
+        public void Respond(HttpResponse httpResponse)
+        {
+            _expectation.ThenRespond(httpResponse);
+            _mockServerClient.SendExpectation(_expectation);
+        }
+
+        public void Forward(HttpForward httpForward)
+        {
+            _expectation.ThenForward(httpForward);
+            _mockServerClient.SendExpectation(_expectation);
+        }
     }
-  }
 }

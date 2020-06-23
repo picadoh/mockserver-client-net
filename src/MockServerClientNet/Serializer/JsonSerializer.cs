@@ -1,17 +1,17 @@
-﻿namespace MockServerClientNet.Serializer
+﻿using Newtonsoft.Json;
+
+namespace MockServerClientNet.Serializer
 {
-  using Newtonsoft.Json;
-
-  public class JsonSerializer<T>
-  {
-    public string Serialize(T obj)
+    public class JsonSerializer<T>
     {
-      return JsonConvert.SerializeObject(obj);
-    }
+        public string Serialize(T obj)
+        {
+            return JsonConvert.SerializeObject(obj);
+        }
 
-    public T[] DeserializeArray(string payload)
-    {
-      return JsonConvert.DeserializeObject<T[]>(payload);
+        public T[] DeserializeArray(string payload)
+        {
+            return JsonConvert.DeserializeObject<T[]>(payload);
+        }
     }
-  }
 }

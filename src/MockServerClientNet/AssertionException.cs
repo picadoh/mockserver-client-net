@@ -1,15 +1,11 @@
-﻿namespace MockServerClientNet
+﻿using System;
+
+namespace MockServerClientNet
 {
-  using System;
-
-  public class AssertionException : Exception
-  {
-    public AssertionException(string message) : base(message)
+    public class AssertionException : Exception
     {
+        public AssertionException(string message) : base(message)
+        {
+        }
     }
-
-    public AssertionException(string message, Exception innerException) : base(message, innerException)
-    {
-    }
-  }
 }
