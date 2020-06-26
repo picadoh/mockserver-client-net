@@ -14,9 +14,9 @@ namespace MockServerClientNet.Tests
         {
             SendHello(1);
 
-            MockServerClient.Verify(Request()
+            Assert.NotNull(MockServerClient.Verify(Request()
                 .WithMethod("GET")
-                .WithPath("/hello"), VerificationTimes.Once());
+                .WithPath("/hello"), VerificationTimes.Once()));
         }
 
         [Fact]
@@ -37,9 +37,9 @@ namespace MockServerClientNet.Tests
         {
             SendHello(2);
 
-            MockServerClient.Verify(Request()
+            Assert.NotNull(MockServerClient.Verify(Request()
                 .WithMethod("GET")
-                .WithPath("/hello"), VerificationTimes.Exactly(2));
+                .WithPath("/hello"), VerificationTimes.Exactly(2)));
         }
 
         [Fact]
@@ -71,9 +71,9 @@ namespace MockServerClientNet.Tests
         {
             SendHello(3);
 
-            MockServerClient.Verify(Request()
+            Assert.NotNull(MockServerClient.Verify(Request()
                 .WithMethod("GET")
-                .WithPath("/hello"), VerificationTimes.AtLeast(2));
+                .WithPath("/hello"), VerificationTimes.AtLeast(2)));
         }
 
         [Fact]
@@ -94,9 +94,9 @@ namespace MockServerClientNet.Tests
         {
             SendHello(1);
 
-            MockServerClient.Verify(Request()
+            Assert.NotNull(MockServerClient.Verify(Request()
                 .WithMethod("GET")
-                .WithPath("/hello"), VerificationTimes.AtMost(2));
+                .WithPath("/hello"), VerificationTimes.AtMost(2)));
         }
 
         [Fact]
@@ -119,9 +119,9 @@ namespace MockServerClientNet.Tests
         {
             SendHello(2);
 
-            MockServerClient.Verify(Request()
+            Assert.NotNull(MockServerClient.Verify(Request()
                 .WithMethod("GET")
-                .WithPath("/hello"), VerificationTimes.Between(1, 3));
+                .WithPath("/hello"), VerificationTimes.Between(1, 3)));
         }
 
         [Fact]
@@ -150,12 +150,12 @@ namespace MockServerClientNet.Tests
 
             SendRequest(BuildGetRequest("/hello"), out var helloResponse, out _);
             SendRequest(BuildGetRequest("/world"), out var worldResponse, out _);
-            
+
             Assert.Equal("hello", helloResponse);
             Assert.Equal("world", worldResponse);
 
-            MockServerClient.Verify(Request().WithPath("/hello"), Request().WithPath("/world"));
-        }    
+            Assert.NotNull(MockServerClient.Verify(Request().WithPath("/hello"), Request().WithPath("/world")));
+        }
 
         [Fact]
         public void ShouldVerifyMultipleRequestsFailed()
@@ -169,11 +169,19 @@ namespace MockServerClientNet.Tests
         }
 
         [Fact]
-        public void ShouldVerifyZeroInteractions()
+        public void ShouldVerifyZeroInteractionsSuccess()
         {
-            // assert
-            var result = MockServerClient.VerifyZeroInteractions();
-            Assert.NotNull(result);
+            Assert.NotNull(MockServerClient.VerifyZeroInteractions());
+        }
+
+        [Fact]
+        public void ShouldVerifyZeroInteractionsFailed()
+        {
+            SendHello(1);
+
+            var ex = Assert.Throws<AssertionException>(() => { MockServerClient.VerifyZeroInteractions(); });
+
+            Assert.StartsWith("Request not found exactly 0 times", ex.Message);
         }
 
         private void SendHello(int times)

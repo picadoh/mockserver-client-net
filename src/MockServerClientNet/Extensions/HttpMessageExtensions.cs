@@ -6,6 +6,7 @@ namespace MockServerClientNet.Extensions
 {
     public static class HttpMessageExtensions
     {
+        [Obsolete("Use WithMethod(HttpMethod) overload")]
         public static HttpRequestMessage WithMethod(this HttpRequestMessage request, string method)
         {
             request.Method = new HttpMethod(method);
@@ -18,6 +19,13 @@ namespace MockServerClientNet.Extensions
             return request;
         }
 
+        [Obsolete("Use WithUri")]
+        public static HttpRequestMessage WithPath(this HttpRequestMessage request, string path)
+        {
+            request.RequestUri = new Uri($"http://{path}");
+            return request;
+        }
+
         public static HttpRequestMessage WithUri(this HttpRequestMessage request, Uri uri)
         {
             request.RequestUri = uri;
@@ -26,16 +34,11 @@ namespace MockServerClientNet.Extensions
 
         public static HttpRequestMessage WithBody(this HttpRequestMessage request, string body)
         {
-            return WithBody(request, body, Encoding.UTF8, "application/json");
-        }
-
-        public static HttpRequestMessage WithBody(this HttpRequestMessage request, string body, Encoding encoding)
-        {
-            return WithBody(request, body, encoding, "application/json");
+            return WithBody(request, body, Encoding.UTF8);
         }
 
         public static HttpRequestMessage WithBody(this HttpRequestMessage request, string body, Encoding encoding,
-            string mediaType)
+            string mediaType = "application/json")
         {
             request.Content = new StringContent(body, encoding, mediaType);
             return request;

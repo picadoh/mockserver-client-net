@@ -74,7 +74,7 @@ namespace MockServerClientNet.Tests
             Assert.Equal("hello", responseBody);
 
             // act 2
-            MockServerClient.Clear(request);
+            Assert.NotNull(MockServerClient.Clear(request));
 
             SendRequest(BuildGetRequest("/hello"), out responseBody, out statusCode);
 
@@ -101,18 +101,25 @@ namespace MockServerClientNet.Tests
 
             // assert
             Assert.Equal(2, result.Length);
+            Assert.True(result[0].Headers.Exists(h => h.Name == "Host"));
         }
 
         private void SetupPostExpectation(bool unlimited = true, int times = 0)
         {
+            const string body = "{\"name\": \"foo\"}";
+
             MockServerClient
                 .When(Request()
                         .WithMethod("POST")
                         .WithPath("/customers")
+                        .WithHeader("Content-Type", "application/json; charset=utf-8")
+                        .WithHeader("Content-Length", body.Length.ToString())
+                        .WithHeader("Host", HostHeader)
+                        .WithKeepAlive(true)
                         .WithQueryStringParameters(
                             new Parameter("param", "value"))
-                        .WithBody("{\"name\": \"foo\"}"),
-            unlimited ? Times.Unlimited() : Times.Exactly(times))
+                        .WithBody(body),
+                    unlimited ? Times.Unlimited() : Times.Exactly(times))
                 .Respond(Response()
                     .WithStatusCode(201)
                     .WithHeaders(new Header("Content-Type", "application/json"))
@@ -122,9 +129,7 @@ namespace MockServerClientNet.Tests
 
         private HttpRequestMessage BuildPostRequest()
         {
-            return BuildRequest(HttpMethod.Post,
-                "/customers?param=value",
-                "{\"name\": \"foo\"}");
+            return BuildRequest(HttpMethod.Post, "/customers?param=value", "{\"name\": \"foo\"}");
         }
     }
 }

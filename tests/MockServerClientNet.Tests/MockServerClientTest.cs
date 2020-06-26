@@ -18,14 +18,17 @@ namespace MockServerClientNet.Tests
 
         protected readonly MockServerClient MockServerClient;
 
+        protected string HostHeader => $"{_mockServerHost}:{_mockServerPort}";
+
         protected MockServerClientTest()
         {
             MockServerClient = new MockServerClient(_mockServerHost, _mockServerPort);
+            Assert.True(MockServerClient.IsRunning(), "Server is not running");
         }
 
         public void Dispose()
         {
-            MockServerClient.Reset();
+            Assert.NotNull(MockServerClient.Reset());
         }
 
         protected static void SendRequest(HttpRequestMessage request, out string responseBody,
@@ -34,7 +37,7 @@ namespace MockServerClientNet.Tests
             (responseBody, statusCode) = SendRequestAsync(request).AwaitResult();
         }
 
-        protected static async Task<Tuple<string, HttpStatusCode>> SendRequestAsync(HttpRequestMessage request)
+        private static async Task<Tuple<string, HttpStatusCode>> SendRequestAsync(HttpRequestMessage request)
         {
             using (var client = new HttpClient())
             using (var res = await client.SendAsync(request))
@@ -50,7 +53,7 @@ namespace MockServerClientNet.Tests
         {
             return new HttpRequestMessage()
                 .WithMethod(method)
-                .WithUri(MockServerClient.ServerAddressWithPath(path))
+                .WithUri(MockServerClient.ServerAddress(path))
                 .WithBody(body);
         }
 

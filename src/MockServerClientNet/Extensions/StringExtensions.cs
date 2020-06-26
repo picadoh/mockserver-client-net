@@ -18,5 +18,10 @@ namespace MockServerClientNet.Extensions
         {
             return input.StartsWith(prefix, StringComparison.CurrentCulture) ? input.Substring(prefix.Length) : input;
         }
+
+        public static bool IsNullOrEmpty(this string input)
+        {
+            return string.IsNullOrEmpty(input);
+        }
     }
 }
