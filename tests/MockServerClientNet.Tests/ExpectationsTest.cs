@@ -59,7 +59,7 @@ namespace MockServerClientNet.Tests
         public void ShouldClearExpectation()
         {
             // arrange
-            var request = Request().WithMethod("GET").WithPath("/hello");
+            var request = Request().WithMethod(HttpMethod.Get).WithPath("/hello");
 
             MockServerClient
                 .When(request, Times.Unlimited())
@@ -87,7 +87,7 @@ namespace MockServerClientNet.Tests
         public void ShouldRetrieveRecordedRequests()
         {
             // arrange
-            var request = Request().WithMethod("GET").WithPath("/hello");
+            var request = Request().WithMethod(HttpMethod.Get).WithPath("/hello");
 
             MockServerClient
                 .When(request, Times.Unlimited())

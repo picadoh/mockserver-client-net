@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using Newtonsoft.Json;
 
 namespace MockServerClientNet.Model
@@ -15,19 +16,13 @@ namespace MockServerClientNet.Model
         [JsonIgnore]
         public List<Header> Headers
         {
-            get
-            {
-                return _headers.Select(entry => new Header(entry.Key, entry.Value)).ToList();
-            }
+            get { return _headers.Select(entry => new Header(entry.Key, entry.Value)).ToList(); }
         }
 
         [JsonIgnore]
         public List<Parameter> Parameters
         {
-            get
-            {
-                return _parameters.Select(entry => new Parameter(entry.Key, entry.Value)).ToList();
-            }
+            get { return _parameters.Select(entry => new Parameter(entry.Key, entry.Value)).ToList(); }
         }
 
         [JsonProperty(PropertyName = "method")]
@@ -54,6 +49,11 @@ namespace MockServerClientNet.Model
         {
             Method = method;
             return this;
+        }
+
+        public HttpRequest WithMethod(HttpMethod method)
+        {
+            return WithMethod(method.Method);
         }
 
         public HttpRequest WithPath(string path)

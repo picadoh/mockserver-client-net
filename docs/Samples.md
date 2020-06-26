@@ -16,7 +16,7 @@
 
             // set expectation
             await mockServerClient.When(Request()
-                        .WithMethod("POST")
+                        .WithMethod(HttpMethod.Post)
                         .WithPath("/customers")
                         .WithQueryStringParameters(
                             new Parameter("param", "value")

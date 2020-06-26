@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 using MockServerClientNet.Model;
 using MockServerClientNet.Verify;
 using Xunit;
@@ -15,7 +16,7 @@ namespace MockServerClientNet.Tests
             SendHello(1);
 
             Assert.NotNull(MockServerClient.Verify(Request()
-                .WithMethod("GET")
+                .WithMethod(HttpMethod.Get)
                 .WithPath("/hello"), VerificationTimes.Once()));
         }
 
@@ -25,7 +26,7 @@ namespace MockServerClientNet.Tests
             var ex = Assert.Throws<AssertionException>(() =>
             {
                 MockServerClient.Verify(Request()
-                    .WithMethod("GET")
+                    .WithMethod(HttpMethod.Get)
                     .WithPath("/hello"), VerificationTimes.Once());
             });
 
@@ -38,7 +39,7 @@ namespace MockServerClientNet.Tests
             SendHello(2);
 
             Assert.NotNull(MockServerClient.Verify(Request()
-                .WithMethod("GET")
+                .WithMethod(HttpMethod.Get)
                 .WithPath("/hello"), VerificationTimes.Exactly(2)));
         }
 
@@ -46,7 +47,7 @@ namespace MockServerClientNet.Tests
         public void ShouldVerifyExactlyFailed()
         {
             // arrange
-            var request = Request().WithMethod("GET").WithPath("/hello");
+            var request = Request().WithMethod(HttpMethod.Get).WithPath("/hello");
 
             MockServerClient
                 .When(request, Times.Unlimited())
@@ -59,7 +60,7 @@ namespace MockServerClientNet.Tests
             var ex = Assert.Throws<AssertionException>(() =>
             {
                 MockServerClient.Verify(Request()
-                    .WithMethod("GET")
+                    .WithMethod(HttpMethod.Get)
                     .WithPath("/hello"), VerificationTimes.Exactly(2));
             });
 
@@ -72,7 +73,7 @@ namespace MockServerClientNet.Tests
             SendHello(3);
 
             Assert.NotNull(MockServerClient.Verify(Request()
-                .WithMethod("GET")
+                .WithMethod(HttpMethod.Get)
                 .WithPath("/hello"), VerificationTimes.AtLeast(2)));
         }
 
@@ -82,7 +83,7 @@ namespace MockServerClientNet.Tests
             var ex = Assert.Throws<AssertionException>(() =>
             {
                 MockServerClient.Verify(Request()
-                    .WithMethod("GET")
+                    .WithMethod(HttpMethod.Get)
                     .WithPath("/hello"), VerificationTimes.AtLeast(2));
             });
 
@@ -95,7 +96,7 @@ namespace MockServerClientNet.Tests
             SendHello(1);
 
             Assert.NotNull(MockServerClient.Verify(Request()
-                .WithMethod("GET")
+                .WithMethod(HttpMethod.Get)
                 .WithPath("/hello"), VerificationTimes.AtMost(2)));
         }
 
@@ -107,7 +108,7 @@ namespace MockServerClientNet.Tests
             var ex = Assert.Throws<AssertionException>(() =>
             {
                 MockServerClient.Verify(Request()
-                    .WithMethod("GET")
+                    .WithMethod(HttpMethod.Get)
                     .WithPath("/hello"), VerificationTimes.AtMost(2));
             });
 
@@ -120,7 +121,7 @@ namespace MockServerClientNet.Tests
             SendHello(2);
 
             Assert.NotNull(MockServerClient.Verify(Request()
-                .WithMethod("GET")
+                .WithMethod(HttpMethod.Get)
                 .WithPath("/hello"), VerificationTimes.Between(1, 3)));
         }
 
@@ -130,7 +131,7 @@ namespace MockServerClientNet.Tests
             var ex = Assert.Throws<AssertionException>(() =>
             {
                 MockServerClient.Verify(Request()
-                    .WithMethod("GET")
+                    .WithMethod(HttpMethod.Get)
                     .WithPath("/hello"), VerificationTimes.Between(1, 2));
             });
 
@@ -186,7 +187,7 @@ namespace MockServerClientNet.Tests
 
         private void SendHello(int times)
         {
-            var request = Request().WithMethod("GET").WithPath("/hello");
+            var request = Request().WithMethod(HttpMethod.Get).WithPath("/hello");
 
             MockServerClient
                 .When(request, Times.Unlimited())
