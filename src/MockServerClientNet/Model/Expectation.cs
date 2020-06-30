@@ -4,11 +4,12 @@
 
     public class Expectation
     {
-        public Expectation(HttpRequest httpRequest, Times times, TimeToLive timeToLive)
+        public Expectation(HttpRequest httpRequest, Times times, TimeToLive timeToLive, int priority)
         {
-            this.HttpRequest = httpRequest;
-            this.Times = times;
-            this.TimeToLive = timeToLive;
+            HttpRequest = httpRequest;
+            Times = times;
+            TimeToLive = timeToLive;
+            Priority = priority;
         }
 
         [JsonProperty(PropertyName = "httpRequest")]
@@ -26,11 +27,14 @@
         [JsonProperty(PropertyName = "timeToLive")]
         public TimeToLive TimeToLive { get; private set; }
 
+        [JsonProperty(PropertyName = "priority")]
+        public int Priority { get; private set; }
+
         public Expectation ThenRespond(HttpResponse httpResponse)
         {
             if (httpResponse != null)
             {
-                this.HttpResponse = httpResponse;
+                HttpResponse = httpResponse;
             }
 
             return this;
@@ -40,7 +44,7 @@
         {
             if (httpForward != null)
             {
-                this.HttpForward = httpForward;
+                HttpForward = httpForward;
             }
 
             return this;

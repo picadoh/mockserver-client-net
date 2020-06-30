@@ -37,7 +37,7 @@ namespace MockServerClientNet.Tests
             (responseBody, statusCode) = SendRequestAsync(request).AwaitResult();
         }
 
-        private static async Task<Tuple<string, HttpStatusCode>> SendRequestAsync(HttpRequestMessage request)
+        protected static async Task<Tuple<string, HttpStatusCode>> SendRequestAsync(HttpRequestMessage request)
         {
             using (var client = new HttpClient())
             using (var res = await client.SendAsync(request))

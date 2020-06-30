@@ -25,6 +25,8 @@ namespace MockServerClientNet
         private const string ExpectationEndpoint = "/expectation";
         private const string RetrieveEndpoint = "/retrieve";
 
+        private const int DefaultPriority = 0;
+
         private readonly JsonSerializer<Expectation> _expectationSerializer = new JsonSerializer<Expectation>();
         private readonly JsonSerializer<HttpRequest> _httpRequestSerializer = new JsonSerializer<HttpRequest>();
 
@@ -57,16 +59,18 @@ namespace MockServerClientNet
             return new Uri($"{scheme}://{_host}:{_port}{path}");
         }
 
-        public ForwardChainExpectation When(HttpRequest httpRequest, Times times)
+        public ForwardChainExpectation When(
+            HttpRequest httpRequest, Times times, int priority = DefaultPriority)
         {
-            return When(httpRequest, times, TimeToLive.Unlimited());
+            return When(httpRequest, times, TimeToLive.Unlimited(), priority);
         }
 
-        public ForwardChainExpectation When(HttpRequest httpRequest, Times times, TimeToLive timeToLive)
+        public ForwardChainExpectation When(
+            HttpRequest httpRequest, Times times, TimeToLive timeToLive, int priority = DefaultPriority)
         {
             return new ForwardChainExpectation(
                 this,
-                new Expectation(httpRequest, times, timeToLive));
+                new Expectation(httpRequest, times, timeToLive, priority));
         }
 
         public MockServerClient Clear(HttpRequest httpRequest)

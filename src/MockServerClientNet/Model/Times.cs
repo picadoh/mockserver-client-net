@@ -21,6 +21,11 @@ namespace MockServerClientNet.Model
             return new Times(0, true);
         }
 
+        public static Times Once()
+        {
+            return Exactly(1);
+        }
+
         public static Times Exactly(int count)
         {
             return new Times(count, false);
