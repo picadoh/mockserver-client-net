@@ -35,28 +35,30 @@ namespace MockServerClientNet
 
         private readonly JsonSerializer<Verification> _verificationSerializer = new JsonSerializer<Verification>();
 
-        private readonly HttpClient _httpClient = new HttpClient();
-
         private readonly string _host;
         private readonly int _port;
         private readonly string _contextPath;
+        private readonly HttpScheme _httpScheme;
+        private readonly HttpClient _httpClient;
 
-        public MockServerClient(string host, int port, string contextPath = "")
+        public MockServerClient(string host, int port, string contextPath = "",
+            HttpScheme httpScheme = HttpScheme.Http, HttpClientHandler httpHandler = null)
         {
             _host = host;
             _port = port;
             _contextPath = contextPath;
+            _httpScheme = httpScheme;
+            _httpClient = new HttpClient(httpHandler ?? new HttpClientHandler());
         }
 
         public void Dispose()
         {
-            Stop();
+            _httpClient.Dispose();
         }
 
-        public Uri ServerAddress(string path = "", bool ssl = false)
+        public Uri ServerAddress(string path = "")
         {
-            var scheme = ssl ? "https" : "http";
-            return new Uri($"{scheme}://{_host}:{_port}{path}");
+            return new Uri($"{_httpScheme.Value()}://{_host}:{_port}{path.PrefixWith("/")}");
         }
 
         public ForwardChainExpectation When(

@@ -68,9 +68,9 @@ namespace MockServerClientNet.Model
             return this;
         }
 
-        public HttpRequest WithSecure(bool isSsl)
+        public HttpRequest WithSecure(bool secure)
         {
-            IsSecure = isSsl;
+            IsSecure = secure;
             return this;
         }
 

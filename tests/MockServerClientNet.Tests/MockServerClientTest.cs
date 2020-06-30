@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using MockServerClientNet.Extensions;
+using MockServerClientNet.Model;
 using Xunit;
 
 namespace MockServerClientNet.Tests
@@ -20,9 +21,10 @@ namespace MockServerClientNet.Tests
 
         protected string HostHeader => $"{_mockServerHost}:{_mockServerPort}";
 
-        protected MockServerClientTest()
+        protected MockServerClientTest(HttpScheme scheme = HttpScheme.Http, HttpClientHandler handler = null)
         {
-            MockServerClient = new MockServerClient(_mockServerHost, _mockServerPort);
+            MockServerClient = new MockServerClient(_mockServerHost, _mockServerPort,
+                httpScheme: scheme, httpHandler: handler);
             Assert.True(MockServerClient.IsRunning(), "Server is not running");
         }
 
