@@ -37,6 +37,12 @@ namespace MockServerClientNet.Model
             return this;
         }
 
+        public HttpResponse WithHeader(string name, params string[] value)
+        {
+            Headers.Add(new Header(name, value));
+            return this;
+        }
+
         public HttpResponse WithBody(string body)
         {
             return WithBody(Contents.Text(body));

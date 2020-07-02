@@ -102,6 +102,7 @@ namespace MockServerClientNet.Tests
             Assert.Equal(2, result.Length);
             Assert.Equal(HttpStatusCode.OK, statusCode1);
             Assert.Equal(HttpStatusCode.OK, statusCode2);
+            Assert.Equal(3, result[0].Headers.Count);
             Assert.True(result[0].Headers.Exists(h => h.Name == "Host"));
         }
 
@@ -113,17 +114,17 @@ namespace MockServerClientNet.Tests
                 .When(Request()
                         .WithMethod("POST")
                         .WithPath("/customers")
-                        .WithHeader("Content-Type", "application/json; charset=utf-8")
-                        .WithHeader("Content-Length", body.Length.ToString())
+                        .WithHeaders(
+                            new Header("Content-Type", "application/json; charset=utf-8"),
+                            new Header("Content-Length", body.Length.ToString()))
                         .WithHeader("Host", HostHeader)
                         .WithKeepAlive(true)
-                        .WithQueryStringParameters(
-                            new Parameter("param", "value"))
+                        .WithQueryStringParameter("param", "value")
                         .WithBody(body),
                     unlimited ? Times.Unlimited() : Times.Exactly(times))
                 .Respond(Response()
                     .WithStatusCode(201)
-                    .WithHeaders(new Header("Content-Type", "application/json"))
+                    .WithHeader("Content-Type", "application/json")
                     .WithBody("{ \"id\": \"123\" }"));
         }
 

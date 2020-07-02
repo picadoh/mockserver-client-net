@@ -81,6 +81,18 @@ namespace MockServerClientNet.Model
             return this;
         }
 
+        public HttpRequest WithQueryStringParameter(string name, params string[] value)
+        {
+            _parameters.Add(name, value);
+            return this;
+        }
+
+        public HttpRequest WithHeaders(params Header[] headers)
+        {
+            _headers = headers.ToDictionary(p => p.Name, p => p.Values.ToArray());
+            return this;
+        }
+
         public HttpRequest WithHeader(string name, params string[] value)
         {
             _headers.Add(name, value);
