@@ -12,7 +12,7 @@
         <Description>C# Fluent API for interacting with Mock-Server</Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Copyright>Copyright 2017 Hugo Picado</Copyright>
-        <PackageReleaseNotes>Async support</PackageReleaseNotes>
+        <PackageReleaseNotes>TLS support / Request Matchers / Response Content</PackageReleaseNotes>
         <PackageTags>mock mockserver test dotnet dotnetcore netcore mockserverclient client mockserverclientcsharp mockserverclientnet netstandard .net</PackageTags>
     </PropertyGroup>
 
