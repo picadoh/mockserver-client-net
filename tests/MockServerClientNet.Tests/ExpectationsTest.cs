@@ -1,4 +1,3 @@
-using System;
 using System.Net;
 using System.Net.Http;
 using MockServerClientNet.Model;
@@ -63,7 +62,7 @@ namespace MockServerClientNet.Tests
 
             MockServerClient
                 .When(request, Times.Unlimited())
-                .Respond(Response().WithStatusCode(200).WithBody("hello").WithDelay(TimeSpan.FromSeconds(0)));
+                .Respond(Response().WithStatusCode(200).WithBody("hello"));
 
             // act 1
             SendRequest(BuildGetRequest("/hello"), out var responseBody, out var statusCode);
@@ -91,16 +90,18 @@ namespace MockServerClientNet.Tests
 
             MockServerClient
                 .When(request)
-                .Respond(Response().WithStatusCode(200).WithBody("hello").WithDelay(TimeSpan.FromSeconds(0)));
+                .Respond(Response().WithBody("hello"));
 
             // act
-            SendRequest(BuildGetRequest("/hello"), out _, out _);
-            SendRequest(BuildGetRequest("/hello"), out _, out _);
+            SendRequest(BuildGetRequest("/hello"), out _, out var statusCode1);
+            SendRequest(BuildGetRequest("/hello"), out _, out var statusCode2);
 
             var result = MockServerClient.RetrieveRecordedRequests(request);
 
             // assert
             Assert.Equal(2, result.Length);
+            Assert.Equal(HttpStatusCode.OK, statusCode1);
+            Assert.Equal(HttpStatusCode.OK, statusCode2);
             Assert.True(result[0].Headers.Exists(h => h.Name == "Host"));
         }
 
@@ -123,8 +124,7 @@ namespace MockServerClientNet.Tests
                 .Respond(Response()
                     .WithStatusCode(201)
                     .WithHeaders(new Header("Content-Type", "application/json"))
-                    .WithBody("{ \"id\": \"123\" }")
-                    .WithDelay(TimeSpan.FromSeconds(0)));
+                    .WithBody("{ \"id\": \"123\" }"));
         }
 
         private HttpRequestMessage BuildPostRequest()

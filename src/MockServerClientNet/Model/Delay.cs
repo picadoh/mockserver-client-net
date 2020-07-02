@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace MockServerClientNet.Model
 {
@@ -15,5 +16,15 @@ namespace MockServerClientNet.Model
 
         [JsonProperty(PropertyName = "value")]
         public int Value { get; private set; }
+
+        public static Delay NoDelay()
+        {
+            return FromTimeSpan(TimeSpan.Zero);
+        }
+
+        public static Delay FromTimeSpan(TimeSpan timeSpan)
+        {
+            return new Delay((int) timeSpan.TotalMilliseconds);
+        }
     }
 }

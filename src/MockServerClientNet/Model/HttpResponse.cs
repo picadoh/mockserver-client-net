@@ -9,13 +9,13 @@ namespace MockServerClientNet.Model
     public class HttpResponse
     {
         [JsonProperty(PropertyName = "statusCode")]
-        public int StatusCode { get; private set; }
+        public int StatusCode { get; private set; } = 200;
 
         [JsonProperty(PropertyName = "body")]
         public BodyContent Body { get; private set; }
 
         [JsonProperty(PropertyName = "delay")]
-        public Delay Delay { get; private set; }
+        public Delay Delay { get; private set; } = Delay.NoDelay();
 
         [JsonProperty(PropertyName = "headers")]
         public List<Header> Headers { get; private set; } = new List<Header>();
@@ -50,7 +50,7 @@ namespace MockServerClientNet.Model
 
         public HttpResponse WithDelay(TimeSpan delay)
         {
-            Delay = new Delay((int) delay.TotalMilliseconds);
+            Delay = Delay.FromTimeSpan(delay);
             return this;
         }
     }
