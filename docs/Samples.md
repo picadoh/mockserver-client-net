@@ -26,17 +26,14 @@ public class Program
         await mockServerClient.When(Request()
                     .WithMethod(HttpMethod.Post)
                     .WithPath("/customers")
-                    .WithQueryStringParameters(
-                        new Parameter("param", "value")
-                    )
+                    .WithQueryStringParameter("param", "value")
                     .WithBody("{\"name\": \"foo\"}"),
-                Times.Unlimited())
+                Times.Exactly(2))
             .RespondAsync(Response()
                 .WithStatusCode(201)
-                .WithHeaders(
-                    new Header("Content-Type", "application/json; charset=utf-8"))
+                .WithHeader("Content-Type", "application/json; charset=utf-8")
                 .WithBody("{ \"message\": \"example response message\" }")
-                .WithDelay(TimeSpan.FromSeconds(0))
+                .WithDelay(TimeSpan.FromSeconds(1))
             );
 
         // send request
@@ -302,12 +299,9 @@ Instead of expecting a response body containing a simple string, more advanced b
 <summary>Expand/Collapse Code Sample</summary>
 
 ```c#
-using System;
 using System.IO;
-using System.Net.Http;
 using System.Threading.Tasks;
 using MockServerClientNet;
-using MockServerClientNet.Model;
 using static MockServerClientNet.Model.HttpRequest;
 using static MockServerClientNet.Model.HttpResponse;
 using static MockServerClientNet.Model.Body.Contents;
@@ -319,14 +313,11 @@ public class Program
         using (var fileStream = File.OpenRead("/path/to/image.jpg"))
         {
             await new MockServerClient("127.0.0.1", 1080)
-                .When(Request().WithPath("/"), Times.Unlimited())
+                .When(Request())
                 .RespondAsync(Response()
-                    .WithStatusCode(200)
-                    .WithHeaders(
-                        new Header("Content-Disposition", "inline"),
-                        new Header("Content-Type", "image/jpg"))
-                    .WithBody(Binary(fileStream))
-                    .WithDelay(TimeSpan.FromSeconds(0)));
+                    .WithHeader("Content-Disposition", "inline")
+                    .WithHeader("Content-Type", "image/jpg")
+                    .WithBody(Binary(fileStream)));
         }
 
         using (var httpClient = new HttpClient())
