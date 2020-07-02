@@ -36,18 +36,16 @@ namespace MockServerClientNet.Tests
         protected static void SendRequest(HttpRequestMessage request, out string responseBody,
             out HttpStatusCode? statusCode)
         {
-            (responseBody, statusCode) = SendRequestAsync(request).AwaitResult();
+            var response = SendRequestAsync(request).AwaitResult();
+            statusCode = response.StatusCode;
+            responseBody = response.Content.ReadAsStringAsync().AwaitResult();
         }
 
-        protected static async Task<Tuple<string, HttpStatusCode>> SendRequestAsync(HttpRequestMessage request)
+        protected static async Task<HttpResponseMessage> SendRequestAsync(HttpRequestMessage request)
         {
             using (var client = new HttpClient())
-            using (var res = await client.SendAsync(request))
-            using (var content = res.Content)
             {
-                var statusCode = res.StatusCode;
-                var responseBody = await content.ReadAsStringAsync();
-                return new Tuple<string, HttpStatusCode>(responseBody, statusCode);
+                return await client.SendAsync(request);
             }
         }
 
@@ -57,6 +55,16 @@ namespace MockServerClientNet.Tests
                 .WithMethod(method)
                 .WithUri(MockServerClient.ServerAddress(path))
                 .WithBody(body);
+        }
+
+        protected HttpRequestMessage BuildRequest(HttpMethod method, string path, byte[] bytes)
+        {
+            var content = new ByteArrayContent(bytes);
+
+            return new HttpRequestMessage()
+                .WithMethod(method)
+                .WithUri(MockServerClient.ServerAddress(path))
+                .WithBody(content);
         }
 
         protected HttpRequestMessage BuildGetRequest(string path)

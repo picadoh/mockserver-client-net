@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MockServerClientNet.Model.Body;
 using Newtonsoft.Json;
 
 namespace MockServerClientNet.Model
@@ -11,7 +12,7 @@ namespace MockServerClientNet.Model
         public int StatusCode { get; private set; }
 
         [JsonProperty(PropertyName = "body")]
-        public string Body { get; private set; }
+        public BodyContent Body { get; private set; }
 
         [JsonProperty(PropertyName = "delay")]
         public Delay Delay { get; private set; }
@@ -37,6 +38,11 @@ namespace MockServerClientNet.Model
         }
 
         public HttpResponse WithBody(string body)
+        {
+            return WithBody(Contents.Text(body));
+        }
+
+        public HttpResponse WithBody(BodyContent body)
         {
             Body = body;
             return this;

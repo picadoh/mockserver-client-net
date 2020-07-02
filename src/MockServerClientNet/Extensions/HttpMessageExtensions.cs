@@ -40,7 +40,12 @@ namespace MockServerClientNet.Extensions
         public static HttpRequestMessage WithBody(this HttpRequestMessage request, string body, Encoding encoding,
             string mediaType = "application/json")
         {
-            request.Content = new StringContent(body, encoding, mediaType);
+            return WithBody(request, new StringContent(body, encoding, mediaType));
+        }
+
+        public static HttpRequestMessage WithBody(this HttpRequestMessage request, HttpContent content)
+        {
+            request.Content = content;
             return request;
         }
 

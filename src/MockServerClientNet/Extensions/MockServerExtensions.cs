@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using MockServerClientNet.Model;
+using MockServerClientNet.Model.Body;
 using Newtonsoft.Json;
 
 namespace MockServerClientNet.Extensions
@@ -32,7 +33,7 @@ namespace MockServerClientNet.Extensions
 
                 await SetupMockServerRequestAsync(mockServerClient, expectation, httpRequest, httpResponse);
             }
-        }    
+        }
 
         private static async Task SetupMockServerRequestAsync(
             MockServerClient mockServerClient,
@@ -54,7 +55,7 @@ namespace MockServerClientNet.Extensions
                 .RespondAsync(httpResponse
                     .WithStatusCode(expectation.HttpResponse.StatusCode)
                     .WithHeaders(expectation.HttpResponse.Headers.ToArray())
-                    .WithBody(expectation.HttpResponse.Body ?? string.Empty)
+                    .WithBody(expectation.HttpResponse.Body ?? Contents.EmptyText())
                     .WithDelay(GetTimeSpanDelay(expectation.HttpResponse.Delay)));
         }
 

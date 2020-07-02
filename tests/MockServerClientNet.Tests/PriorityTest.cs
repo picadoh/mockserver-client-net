@@ -26,9 +26,9 @@ namespace MockServerClientNet.Tests
                     .WithBody("{\"msg\": \"second\"}")
                     .WithDelay(TimeSpan.Zero));
 
-            var (responseBody, statusCode) = await SendRequestAsync(BuildGetRequest("/hello"));
+            var response = await SendRequestAsync(BuildGetRequest("/hello"));
 
-            Assert.Equal("{\"msg\": \"first\"}", responseBody);
+            Assert.Equal("{\"msg\": \"first\"}", await response.Content.ReadAsStringAsync());
         }
 
         [Fact]
@@ -48,9 +48,9 @@ namespace MockServerClientNet.Tests
                     .WithBody("{\"msg\": \"second\"}")
                     .WithDelay(TimeSpan.Zero));
 
-            var (responseBody, _) = await SendRequestAsync(BuildGetRequest("/hello"));
+            var response = await SendRequestAsync(BuildGetRequest("/hello"));
 
-            Assert.Equal("{\"msg\": \"second\"}", responseBody);
+            Assert.Equal("{\"msg\": \"second\"}", await response.Content.ReadAsStringAsync());
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using MockServerClientNet.Model.Body;
 using Newtonsoft.Json;
 
 namespace MockServerClientNet.Model
@@ -32,7 +33,7 @@ namespace MockServerClientNet.Model
         public string Path { get; private set; } = string.Empty;
 
         [JsonProperty(PropertyName = "body")]
-        public string Body { get; private set; } = string.Empty;
+        public BodyMatcher Body { get; private set; } = Matchers.MatchingEmptyString();
 
         [JsonProperty(PropertyName = "secure", NullValueHandling = NullValueHandling.Ignore)]
         public bool? IsSecure { get; private set; }
@@ -88,7 +89,12 @@ namespace MockServerClientNet.Model
 
         public HttpRequest WithBody(string body)
         {
-            Body = body;
+            return WithBody(Matchers.MatchingExactString(body));
+        }
+
+        public HttpRequest WithBody(BodyMatcher bodyMatcher)
+        {
+            Body = bodyMatcher;
             return this;
         }
     }

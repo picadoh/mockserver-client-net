@@ -1,4 +1,5 @@
 using System.IO;
+using System.Net.Http;
 using MockServerClientNet.Extensions;
 using Xunit;
 
@@ -14,12 +15,16 @@ namespace MockServerClientNet.Tests
             MockServerClient.LoadExpectationsFromFile(filePath);
 
             // act
-            SendRequest(BuildGetRequest("/hello?id=1"), out var responseBody1, out _);
-            SendRequest(BuildGetRequest("/hello2"), out var responseBody2, out _);
+            SendRequest(BuildGetRequest("/entity1?id=1"), out var responseBody1, out _);
+            SendRequest(BuildGetRequest("/entity2"), out var responseBody2, out _);
+            SendRequest(BuildRequest(HttpMethod.Post, "/entity3", "request3"), out var responseBody3, out _);
+            SendRequest(BuildRequest(HttpMethod.Post, "/entity4", "request4"), out var responseBody4, out _);
 
             // assert
-            Assert.NotNull(responseBody1);
-            Assert.NotNull(responseBody2);
+            Assert.Equal("response1", responseBody1);
+            Assert.Equal("response2", responseBody2);
+            Assert.Equal("response3", responseBody3);
+            Assert.Equal("response4", responseBody4);
         }
     }
 }
