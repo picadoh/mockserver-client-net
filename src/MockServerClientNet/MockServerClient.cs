@@ -62,6 +62,12 @@ namespace MockServerClientNet
         }
 
         public ForwardChainExpectation When(
+            HttpRequest httpRequest, int priority = DefaultPriority)
+        {
+            return When(httpRequest, Times.Unlimited(), TimeToLive.Unlimited(), priority);
+        }
+
+        public ForwardChainExpectation When(
             HttpRequest httpRequest, Times times, int priority = DefaultPriority)
         {
             return When(httpRequest, times, TimeToLive.Unlimited(), priority);

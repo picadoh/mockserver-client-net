@@ -90,7 +90,7 @@ namespace MockServerClientNet.Tests
             var request = Request().WithMethod(HttpMethod.Get).WithPath("/hello");
 
             MockServerClient
-                .When(request, Times.Unlimited())
+                .When(request)
                 .Respond(Response().WithStatusCode(200).WithBody("hello").WithDelay(TimeSpan.FromSeconds(0)));
 
             // act
