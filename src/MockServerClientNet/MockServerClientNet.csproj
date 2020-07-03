@@ -19,7 +19,11 @@
     <ItemGroup>
         <Content Include="..\..\LICENSE*.md">
             <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-            <PackagePath>licenses</PackagePath>
+            <PackagePath>/</PackagePath>
+        </Content>
+        <Content Include="..\..\NOTICE*.md">
+            <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+            <PackagePath>/</PackagePath>
         </Content>
     </ItemGroup>
 
