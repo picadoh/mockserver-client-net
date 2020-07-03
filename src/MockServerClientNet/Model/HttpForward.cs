@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿﻿using MockServerClientNet.Extensions;
+using Newtonsoft.Json;
 
 namespace MockServerClientNet.Model
 {
@@ -34,6 +35,11 @@ namespace MockServerClientNet.Model
         {
             Scheme = scheme;
             return this;
+        }
+
+        public HttpForward WithScheme(HttpScheme scheme)
+        {
+            return WithScheme(scheme.Value().ToUpper());
         }
     }
 }
