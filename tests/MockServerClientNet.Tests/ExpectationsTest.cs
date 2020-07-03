@@ -135,7 +135,7 @@ namespace MockServerClientNet.Tests
                         .WithBody(body),
                     unlimited ? Times.Unlimited() : Times.Exactly(times))
                 .RespondAsync(Response()
-                    .WithStatusCode(201)
+                    .WithStatusCode(HttpStatusCode.Created)
                     .WithReasonPhrase(reasonPhrase)
                     .WithHeader("Content-Type", "application/json")
                     .WithBody("{ \"id\": \"123\" }"));

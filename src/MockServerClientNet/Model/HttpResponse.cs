@@ -35,6 +35,11 @@ namespace MockServerClientNet.Model
             return this;
         }
 
+        public HttpResponse WithStatusCode(HttpStatusCode statusCode)
+        {
+            return WithStatusCode((int) statusCode);
+        }
+
         public HttpResponse WithReasonPhrase(string reasonPhrase)
         {
             ReasonPhrase = reasonPhrase;
