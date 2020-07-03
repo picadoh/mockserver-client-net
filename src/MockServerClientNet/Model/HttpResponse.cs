@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using MockServerClientNet.Model.Body;
 using Newtonsoft.Json;
 
@@ -20,6 +21,9 @@ namespace MockServerClientNet.Model
         [JsonProperty(PropertyName = "headers")]
         public List<Header> Headers { get; private set; } = new List<Header>();
 
+        [JsonProperty(PropertyName = "reasonPhrase", NullValueHandling = NullValueHandling.Ignore)]
+        public string ReasonPhrase { get; private set; }
+
         public static HttpResponse Response()
         {
             return new HttpResponse();
@@ -28,6 +32,12 @@ namespace MockServerClientNet.Model
         public HttpResponse WithStatusCode(int statusCode)
         {
             StatusCode = statusCode;
+            return this;
+        }
+
+        public HttpResponse WithReasonPhrase(string reasonPhrase)
+        {
+            ReasonPhrase = reasonPhrase;
             return this;
         }
 

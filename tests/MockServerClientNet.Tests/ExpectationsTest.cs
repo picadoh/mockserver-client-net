@@ -1,5 +1,7 @@
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
+using MockServerClientNet.Extensions;
 using MockServerClientNet.Model;
 using Xunit;
 using static MockServerClientNet.Model.HttpRequest;
@@ -10,48 +12,60 @@ namespace MockServerClientNet.Tests
     public class ExpectationsTest : MockServerClientTest
     {
         [Fact]
-        public void ShouldRespondAccordingToExpectation()
+        public async Task ShouldRespondAccordingToExpectation()
         {
             // arrange
-            SetupPostExpectation();
+            await SetupPostExpectation();
 
             // act
-            SendRequest(BuildPostRequest(), out var responseBody, out var statusCode);
+            var response = await SendRequestAsync(BuildPostRequest());
 
             // assert
-            Assert.NotNull(statusCode);
-            Assert.Equal(HttpStatusCode.Created, statusCode.Value);
-            Assert.Equal("{ \"id\": \"123\" }", responseBody);
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal("{ \"id\": \"123\" }", response.Content.ReadAsStringAsync().AwaitResult());
+            Assert.Equal(HttpStatusCode.Created.ToString(), response.ReasonPhrase);
         }
 
         [Fact]
-        public void ShouldRespondAccordingToExpectationOnly2Times()
+        public async Task ShouldRespondWithCustomReasonPhrase()
         {
             // arrange
-            SetupPostExpectation(false, 2);
+            await SetupPostExpectation(reasonPhrase: "custom reason");
+
+            // act
+            var response = await SendRequestAsync(BuildPostRequest());
+
+            // assert
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal("{ \"id\": \"123\" }", response.Content.ReadAsStringAsync().AwaitResult());
+            Assert.Equal("custom reason", response.ReasonPhrase);
+        }
+
+        [Fact]
+        public async Task ShouldRespondAccordingToExpectationOnly2Times()
+        {
+            // arrange
+            await SetupPostExpectation(false, 2);
 
             // act 1
-            SendRequest(BuildPostRequest(), out var responseBody, out var statusCode);
+            var response1 = await SendRequestAsync(BuildPostRequest());
 
             // assert
-            Assert.NotNull(statusCode);
-            Assert.Equal(HttpStatusCode.Created, statusCode.Value);
-            Assert.Equal("{ \"id\": \"123\" }", responseBody);
+            Assert.Equal(HttpStatusCode.Created, response1.StatusCode);
+            Assert.Equal("{ \"id\": \"123\" }", await response1.Content.ReadAsStringAsync());
 
             // act 2
-            SendRequest(BuildPostRequest(), out responseBody, out statusCode);
+            var response2 = await SendRequestAsync(BuildPostRequest());
 
             // assert
-            Assert.NotNull(statusCode);
-            Assert.Equal(HttpStatusCode.Created, statusCode.Value);
-            Assert.Equal("{ \"id\": \"123\" }", responseBody);
+            Assert.Equal(HttpStatusCode.Created, response2.StatusCode);
+            Assert.Equal("{ \"id\": \"123\" }", await response2.Content.ReadAsStringAsync());
 
             // act 3
-            SendRequest(BuildPostRequest(), out responseBody, out statusCode);
+            var response3 = await SendRequestAsync(BuildPostRequest());
 
             // assert
-            Assert.NotNull(statusCode);
-            Assert.Equal(HttpStatusCode.NotFound, statusCode.Value);
+            Assert.Equal(HttpStatusCode.NotFound, response3.StatusCode);
         }
 
         [Fact]
@@ -68,8 +82,7 @@ namespace MockServerClientNet.Tests
             SendRequest(BuildGetRequest("/hello"), out var responseBody, out var statusCode);
 
             // assert
-            Assert.NotNull(statusCode);
-            Assert.Equal(HttpStatusCode.OK, statusCode.Value);
+            Assert.Equal(HttpStatusCode.OK, statusCode);
             Assert.Equal("hello", responseBody);
 
             // act 2
@@ -78,8 +91,7 @@ namespace MockServerClientNet.Tests
             SendRequest(BuildGetRequest("/hello"), out responseBody, out statusCode);
 
             // assert
-            Assert.NotNull(statusCode);
-            Assert.Equal(HttpStatusCode.NotFound, statusCode.Value);
+            Assert.Equal(HttpStatusCode.NotFound, statusCode);
         }
 
         [Fact]
@@ -106,11 +118,11 @@ namespace MockServerClientNet.Tests
             Assert.True(result[0].Headers.Exists(h => h.Name == "Host"));
         }
 
-        private void SetupPostExpectation(bool unlimited = true, int times = 0)
+        private async Task SetupPostExpectation(bool unlimited = true, int times = 0, string reasonPhrase = null)
         {
             const string body = "{\"name\": \"foo\"}";
 
-            MockServerClient
+            await MockServerClient
                 .When(Request()
                         .WithMethod("POST")
                         .WithPath("/customers")
@@ -122,8 +134,9 @@ namespace MockServerClientNet.Tests
                         .WithQueryStringParameter("param", "value")
                         .WithBody(body),
                     unlimited ? Times.Unlimited() : Times.Exactly(times))
-                .Respond(Response()
+                .RespondAsync(Response()
                     .WithStatusCode(201)
+                    .WithReasonPhrase(reasonPhrase)
                     .WithHeader("Content-Type", "application/json")
                     .WithBody("{ \"id\": \"123\" }"));
         }
