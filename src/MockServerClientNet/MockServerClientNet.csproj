@@ -4,7 +4,7 @@
         <OutputType>Library</OutputType>
         <TargetFramework>netstandard2.0</TargetFramework>
         <PackageId>MockServerClientNet</PackageId>
-        <PackageVersion>1.2.0-beta</PackageVersion>
+        <PackageVersion>1.2.0</PackageVersion>
         <Authors>picadoh</Authors>
         <Title>Mock-Server Client for .NET</Title>
         <RepositoryUrl>https://github.com/picadoh/mockserver-client-net</RepositoryUrl>
