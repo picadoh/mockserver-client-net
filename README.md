@@ -1,16 +1,10 @@
-[![Build Status](https://travis-ci.org/picadoh/mockserver-client-net.svg?branch=master)](https://travis-ci.org/picadoh/mockserver-client-net) [![NuGet version](https://badge.fury.io/nu/MockServerClientNet.svg)](https://badge.fury.io/nu/MockServerClientNet) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/picadoh/mockserver-client-net/blob/master/LICENSE.md)
+[![Build Status](https://api.travis-ci.org/calrom-jtejero/dotnet-mockserver-client.svg?branch=master)](https://api.travis-ci.org/calrom-jtejero/dotnet-mockserver-client.svg?branch=master) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/calrom-jtejero/dotnet-mockserver-client/blob/master/LICENSE.md)
 
-C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/) targeting `.netstandard2.0`.
+C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/) targeting `dotnet 5`.
 
-This client, available at [MockServerClientNet Repository](https://github.com/picadoh/mockserver-client-net), is written in C# and based on the original Java client Fluent API, available at [Mock-Server Repository](https://github.com/mock-server/mockserver). Thanks to its authors for their contributions to open-source. I am **not** an author of the mentioned Java client and this client is **not** part of the [official Mock-Server clients](https://www.mock-server.com/mock_server/mockserver_clients.html).
+This client, available at [MockServerClientNet Repository](https://github.com/calrom-jtejero/dotnet-mockserver-client), is written in C# and based on the original Java client Fluent API, available at [Mock-Server Repository](https://github.com/mock-server/mockserver). Thanks to its authors for their contributions to open-source. I am **not** an author of the mentioned Java client and this client is **not** part of the [official Mock-Server clients](https://www.mock-server.com/mock_server/mockserver_clients.html).
 
 ## For users
-
-### NuGet Package
-
-Get the latest version from [NuGet Gallery](https://www.nuget.org/packages/MockServerClientNet/) or run the following command:
-
-    dotnet add package MockServerClientNet
 
 ### Usage
 
