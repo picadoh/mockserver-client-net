@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net5.0</TargetFramework>
+		<PackageId>DotNetMockServerClient</PackageId>
+		<PackageVersion>1.0.1</PackageVersion>
+		<Authors>Calrom Ltd.</Authors>
+		<Owners>Calrom Ltd.</Owners>
+		<Title>Mock-Server Client for .NET</Title>
+		<Description>C# Fluent API for interacting with Mock-Server</Description>
+		<ProjectUrl>https://github.com/calrom-jtejero/dotnet-mockserver-client</ProjectUrl>
+		<LicenseUrl>https://github.com/calrom-jtejero/dotnet-mockserver-client/blob/master/LICENSE.md</LicenseUrl>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageReleaseNotes>Renamed to MockServerClientNet (formerly MockServerClientCSharp)</PackageReleaseNotes>
+		<Copyright>Copyright 2020 (c) Calrom Ltd.. All rights reserved.</Copyright>
+		<PackageTags>mock mockserver test dotnet dotnetcore netcore mockserverclient client mockserverclientcsharp mockserverclientnet netstandard .net</PackageTags>
+		<AssemblyName>DotNetMockServerClient</AssemblyName>
+	  <ProjectGuid>{0552FDC6-7129-4EC2-BBA8-0021CA406A3D}</ProjectGuid>
+	  <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <CodeAnalysisRuleSet>..\..\DotNetMockServerClient.ruleset</CodeAnalysisRuleSet>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <CodeAnalysisRuleSet>..\..\DotNetMockServerClient.ruleset</CodeAnalysisRuleSet>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="log4net" Version="2.0.12" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\DotNetMockServerClient.DataContracts\DotNetMockServerClient.DataContracts.csproj" />
+	</ItemGroup>
+</Project>

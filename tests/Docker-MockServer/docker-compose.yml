@@ -1,0 +1,93 @@
+version: "3.8"
+services:
+  mockServer-proxy1080:
+    image: mockserver/mockserver:mockserver-5.10.0
+    ports:
+      - 1080:1080
+    environment:
+      LOG_LEVEL: "INFO"
+      SERVER_PORT: 1080
+    container_name: mockServer-proxy1080
+  mockServer-instance4080:
+    image: mockserver/mockserver:mockserver-5.10.0
+    ports:
+      - 4080:4080
+    environment:
+      LOG_LEVEL: "INFO"
+      SERVER_PORT: 4080
+    container_name: mockServer-instance4080
+  mockServer-instance4081:
+    image: mockserver/mockserver:mockserver-5.10.0
+    ports:
+      - 4081:4081
+    environment:
+      LOG_LEVEL: "INFO"
+      SERVER_PORT: 4081
+    container_name: mockServer-instance4081
+  mockServer-instance4082:
+    image: mockserver/mockserver:mockserver-5.10.0
+    ports:
+      - 4082:4082
+    environment:
+      LOG_LEVEL: "INFO"
+      SERVER_PORT: 4082
+    container_name: mockServer-instance4082
+  mockServer-instance4083:
+    image: mockserver/mockserver:mockserver-5.10.0
+    ports:
+      - 4083:4083
+    environment:
+      LOG_LEVEL: "INFO"
+      SERVER_PORT: 4083
+    container_name: mockServer-instance4083
+  mockServer-instance4084:
+    image: mockserver/mockserver:mockserver-5.10.0
+    ports:
+      - 4084:4084
+    environment:
+      LOG_LEVEL: "INFO"
+      SERVER_PORT: 4084
+    container_name: mockServer-instance4084
+  mockServer-instance4085:
+    image: mockserver/mockserver:mockserver-5.10.0
+    ports:
+      - 4085:4085
+    environment:
+      LOG_LEVEL: "INFO"
+      SERVER_PORT: 4085
+    container_name: mockServer-instance4085
+  mockServer-instance4086:
+    image: mockserver/mockserver:mockserver-5.10.0
+    ports:
+      - 4086:4086
+    environment:
+      LOG_LEVEL: "INFO"
+      SERVER_PORT: 4086
+    container_name: mockServer-instance4086
+  mockServer-instance4087:
+    image: mockserver/mockserver:mockserver-5.10.0
+    ports:
+      - 4087:4087
+    environment:
+      LOG_LEVEL: "INFO"
+      SERVER_PORT: 4087
+    container_name: mockServer-instance4087
+  mockServer-instance4088:
+    image: mockserver/mockserver:mockserver-5.10.0
+    ports:
+      - 4088:4088
+    environment:
+      LOG_LEVEL: "INFO"
+      SERVER_PORT: 4088
+    container_name: mockServer-instance4088
+  mockServer-instance4089:
+    image: mockserver/mockserver:mockserver-5.10.0
+    ports:
+      - 4089:4089
+    environment:
+      LOG_LEVEL: "INFO"
+      SERVER_PORT: 4089
+    container_name: mockServer-instance4089
+networks:
+  default:
+    name: mockserver_default

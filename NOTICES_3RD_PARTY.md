@@ -1,5 +1,5 @@
-This project, MockServerClientNet, is based on parts of the material from
- the project(s) identified below. The owner of MockServerClientNet is not
+This project, DotNetMockServerClient, is based on parts of the material from
+ the project(s) identified below. The owner of DotNetMockServerClient is not
  the original author of any of the listed third-party projects.
 
 In the eventual case a required license or notice is missing, please bring
