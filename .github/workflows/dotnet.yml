@@ -22,4 +22,4 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal --filter "category:MockTests"
+      run: dotnet test --no-build --verbosity normal --filter "category:MockTests" /p:CollectCoverage=true /p:CoverletOutput=reports/  /p:CoverletOutputFormat="opencover"  /p:Exclude="[*Test]*"

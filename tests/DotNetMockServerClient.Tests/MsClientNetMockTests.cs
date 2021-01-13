@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Calrom.MockServerClientNetTests
+namespace DotNetMockServerClient.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -15,7 +15,6 @@ namespace Calrom.MockServerClientNetTests
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using DotNetMockServerClient;
     using DotNetMockServerClient.DataContracts;
     using DotNetMockServerClient.DataContracts.Serializer;
     using Moq;
