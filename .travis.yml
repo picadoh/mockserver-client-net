@@ -2,7 +2,6 @@ language: csharp
 solution: DotNetMockServerClient.sln
 mono: none
 dist: xenial
-dotnet: 5.0.0
 script:
 - dotnet test --filter "Category=MockTests"
 - dotnet build -c Release
