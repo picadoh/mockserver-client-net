@@ -25,7 +25,8 @@ namespace DotNetMockServerClient.DataContracts
         /// </summary>
         /// <returns>response.</returns>
         [JsonPropertyName("cookies")]
-        public Dictionary<string, string> Cookies { get; } = new Dictionary<string, string>();
+        [JsonInclude]
+        public Dictionary<string, string> Cookies { get; private set; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets search data.
@@ -56,7 +57,8 @@ namespace DotNetMockServerClient.DataContracts
         /// </summary>
         /// <returns>response.</returns>
         [JsonPropertyName("headers")]
-        public Dictionary<string, string[]> Headers { get; } = new Dictionary<string, string[]>();
+        [JsonInclude]
+        public Dictionary<string, string[]> Headers { get; private set; } = new Dictionary<string, string[]>();
 
         /// <summary>
         /// Gets search data.
@@ -108,7 +110,8 @@ namespace DotNetMockServerClient.DataContracts
         /// </summary>
         /// <returns>response.</returns>
         [JsonPropertyName("queryStringParameters")]
-        public Dictionary<string, string[]> Parameters { get; } = new Dictionary<string, string[]>();
+        [JsonInclude]
+        public Dictionary<string, string[]> Parameters { get; private set; } = new Dictionary<string, string[]>();
 
         /// <summary>
         /// Gets search data.

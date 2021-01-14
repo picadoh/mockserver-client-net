@@ -453,6 +453,147 @@ namespace DotNetMockServerClient.Tests
         }
 
         /// <summary>
+        /// Some test.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+        [Fact]
+        [Trait("Category", "MockTests")]
+        public async Task ShouldSerialise_And_Deserialise_ExpectationsAsync()
+        {
+            // ARRANGE
+            var expectation = new Expectation(new HttpRequest(), new DataContracts.Times(1, false), null);
+            expectation.HttpRequest.WithBody(new BodyCheck()
+            {
+                BodyString = "<hello>world</hello>",
+                ContentType = "something",
+                Negate = false,
+                Regex = "funny",
+                SubString = true,
+                Type = "may",
+                XPath = "happen",
+            });
+            expectation.HttpRequest.WithCookie(new DotNetMockServerClient.DataContracts.Cookie("yummy", "cookies"));
+            expectation.HttpRequest.WithHeaders("header", "Locklear", "thought", "was", "hot");
+            expectation.HttpRequest.WithKeepAlive(true);
+            expectation.HttpRequest.WithMethod("POST-IT");
+            expectation.HttpRequest.WithPath("long and winding");
+            expectation.HttpRequest.WithQueryStringParameters(new Parameter("no", "parameters", "please"));
+            expectation.HttpRequest.WithSecure(false);
+
+            var serializer = new JsonSerializer<Expectation>();
+            using (MemoryStream memStream = new MemoryStream(100))
+            {
+                await serializer.SerializeAsync(expectation, memStream).ConfigureAwait(false);
+
+                // ACT
+                memStream.Position = 0;
+                var deseralizedPayload = await serializer.DeserializeObjectAsync(memStream).ConfigureAwait(false);
+
+                // ASSERT
+                Assert.NotNull(deseralizedPayload);
+                Assert.Equal(expectation.HttpRequest.HeadersList.Count, deseralizedPayload.HttpRequest.HeadersList.Count);
+            }
+
+            using (MemoryStream memStream = new MemoryStream(100))
+            {
+                // ARRANGE
+                var serialisedExpectation = "{\"httpRequest\":{\"headers\":{\"SOAPAction\":[\"(?i).* http://webservices.amadeus.com/SATRQT_13_2_1A.*\"]},\"method\":\"POST\",\"path\":\"/1ASIWNXGAML\",\"body\":{\"xPath\":null,\"regex\":null,\"type\":\"STRING\",\"bodyString\":\"\",\"subString\":true,\"negate\":false,\"contentType\":\"text/plain; charset=utf-16\"},\"isSecure\":null,\"isKeepAlive\":null},\"httpResponse\":{\"statusCode\":200,\"body\":\"\",\"delay\":null,\"headers\":{\"Content-Type\":[\"text/xml; charset=utf-8\"],\"Cache-Control\":[\"no-cache, no-store\"],\"connection\":[\"keep-alive\"]}},\"httpForward\":null,\"times\":{\"count\":1,\"isUnlimited\":false},\"timeToLive\":null}";
+
+                UTF8Encoding uniEncoding = new UTF8Encoding();
+                byte[] firstString = uniEncoding.GetBytes(serialisedExpectation);
+                memStream.Write(firstString, 0, firstString.Length);
+
+                // ACT
+                memStream.Position = 0;
+                Expectation newExpectation = await serializer.DeserializeObjectAsync(memStream).ConfigureAwait(false);
+
+                // ASSERT
+                Assert.NotNull(newExpectation);
+                Assert.Single(newExpectation.HttpRequest.HeadersList);
+            }
+
+            using (MemoryStream memStream = new MemoryStream(100))
+            {
+                // ARRANGE
+                var serialisedExpectation = "[{\"httpRequest\":{\"headers\":{\"SOAPAction\":[\"(?i).*http://webservices.amadeus.com/SATRQT_13_2_1A.*\"]},\"parameters\":{},\"cookies\":{},\"method\":\"POST\",\"path\":\"/1ASIWNXGAML\",\"body\":{\"xpath\":null,\"regex\":null,\"type\":\"STRING\",\"string\":\"\",\"subString\":true,\"not\":false,\"contentType\":\"text/plain; charset=utf-16\"},\"secure\":null,\"keepAlive\":null},\"httpResponse\":{\"statusCode\":200,\"body\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?><s:Envelope xmlns:s=\\\"http://schemas.xmlsoap.org/soap/envelope/\\\" xmlns:a=\\\"http://www.w3.org/2005/08/addressing\\\"><s:Header><a:Action s:mustUnderstand=\\\"1\\\">http://webservices.amadeus.com/SATRQT_13_2_1A</a:Action><h:Session xmlns:h=\\\"http://xml.amadeus.com/2010/06/Session_v3\\\" TransactionStatusCode=\\\"InSeries\\\"><h:SessionId>01J2JLAJ0O</h:SessionId><h:SequenceNumber>3</h:SequenceNumber><h:SecurityToken>OULV8XFKFZ2X30QWH4MI0NT8C</h:SecurityToken></h:Session><a:MessageID>urn:uuid:52a1120a-c90a-4124-9140-0bde7aee9705</a:MessageID><a:ReplyTo><a:Address>http://www.w3.org/2005/08/addressing/anonymous</a:Address></a:ReplyTo><a:To s:mustUnderstand=\\\"1\\\">https://nodea1.test.webservices.amadeus.com/1ASIWAGMBA</a:To></s:Header><s:Body><Air_MultiAvailability xmlns=\\\"http://xml.amadeus.com/SATRQT_13_2_1A\\\"><messageActionDetails><functionDetails><businessFunction>1</businessFunction><actionCode>55</actionCode></functionDetails></messageActionDetails></Air_MultiAvailability></s:Body></s:Envelope>\",\"delay\":null,\"headers\":{\"Content-Type\":[\"text/xml; charset=utf-8\"],\"Cache-Control\":[\"no-cache, no-store\"],\"connection\":[\"keep-alive\"]}},\"httpForward\":null,\"times\":{\"remainingTimes\":1,\"unlimited\":false},\"timeToLive\":null},{\"httpRequest\":{\"headers\":{\"SOAPAction\":[\"(?i).*http://webservices.amadeus.com/SATRQT_13_2_1A.*\"]},\"parameters\":{},\"cookies\":{},\"method\":\"POST\",\"path\":\"/1ASIWNXGAML\",\"body\":{\"xpath\":null,\"regex\":null,\"type\":\"STRING\",\"string\":\"\",\"subString\":true,\"not\":false,\"contentType\":\"text/plain; charset=utf-16\"},\"secure\":null,\"keepAlive\":null},\"httpResponse\":{\"statusCode\":200,\"body\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?><s:Envelope xmlns:s=\\\"http://schemas.xmlsoap.org/soap/envelope/\\\" xmlns:a=\\\"http://www.w3.org/2005/08/addressing\\\"><s:Header><a:Action s:mustUnderstand=\\\"1\\\">http://webservices.amadeus.com/SATRQT_13_2_1A</a:Action><h:Session xmlns:h=\\\"http://xml.amadeus.com/2010/06/Session_v3\\\" TransactionStatusCode=\\\"InSeries\\\"><h:SessionId>01J2JLAJ0O</h:SessionId><h:SequenceNumber>2</h:SequenceNumber><h:SecurityToken>OULV8XFKFZ2X30QWH4MI0NT8C</h:SecurityToken></h:Session><a:MessageID>urn:uuid:cc912ea6-8967-4fb6-b35c-6f22f22e0451</a:MessageID><a:ReplyTo><a:Address>http://www.w3.org/2005/08/addressing/anonymous</a:Address></a:ReplyTo><a:To s:mustUnderstand=\\\"1\\\">https://nodea1.test.webservices.amadeus.com/1ASIWAGMBA</a:To></s:Header><s:Body><Air_MultiAvailability xmlns=\\\"http://xml.amadeus.com/SATRQT_13_2_1A\\\"><messageActionDetails><functionDetails><businessFunction>1</businessFunction><actionCode>55</actionCode></functionDetails></messageActionDetails></Air_MultiAvailability></s:Body></s:Envelope>\",\"delay\":null,\"headers\":{\"Content-Type\":[\"text/xml; charset=utf-8\"],\"Cache-Control\":[\"no-cache, no-store\"],\"connection\":[\"keep-alive\"]}},\"httpForward\":null,\"times\":{\"remainingTimes\":1,\"unlimited\":false},\"timeToLive\":null},{\"httpRequest\":{\"headers\":{\"SOAPAction\":[\"(?i).*http://webservices.amadeus.com/SATRQT_13_2_1A.*\"]},\"parameters\":{},\"cookies\":{},\"method\":\"POST\",\"path\":\"/1ASIWNXGAML\",\"body\":{\"xpath\":null,\"regex\":null,\"type\":\"STRING\",\"string\":\"\",\"subString\":true,\"not\":false,\"contentType\":\"text/plain; charset=utf-16\"},\"secure\":null,\"keepAlive\":null},\"httpResponse\":{\"statusCode\":200,\"body\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?><s:Envelope xmlns:s=\\\"http://schemas.xmlsoap.org/soap/envelope/\\\" xmlns:a=\\\"http://www.w3.org/2005/08/addressing\\\"><s:Header><a:Action s:mustUnderstand=\\\"1\\\">http://webservices.amadeus.com/SATRQT_13_2_1A</a:Action><h:AMA_SecurityHostedUser xmlns:h=\\\"http://xml.amadeus.com/2010/06/Security_v1\\\"><h:UserID POS_Type=\\\"1\\\" PseudoCityCode=\\\"NYCBA08AB\\\" AgentDutyCode=\\\"SU\\\" RequestorType=\\\"U\\\"><RequestorID xmlns=\\\"http://xml.amadeus.com/2010/06/Types_v1\\\"><CompanyName xmlns=\\\"http://www.iata.org/IATA/2007/00/IATA2010.1\\\">BA</CompanyName></RequestorID></h:UserID></h:AMA_SecurityHostedUser><h:Session xmlns:h=\\\"http://xml.amadeus.com/2010/06/Session_v3\\\" TransactionStatusCode=\\\"Start\\\" /><a:MessageID>urn:uuid:1f3ddfa7-20ca-49e4-b4ef-e7e182345d7e</a:MessageID><a:ReplyTo><a:Address>http://www.w3.org/2005/08/addressing/anonymous</a:Address></a:ReplyTo><Security xmlns=\\\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\\\"><wsse:UsernameToken xmlns:wsu=\\\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\\\" wsu:Id=\\\"SecurityToken-01f263b7-c84f-4cea-90a0-cd9211a3ec39\\\" xmlns:wsse=\\\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\\\"><wsse:Username>WSBALIM</wsse:Username><wsse:Password Type=\\\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest\\\">szW/V7sCd+7p5acja9WJfEDkBME=</wsse:Password><wsse:Nonce EncodingType=\\\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary\\\">SXPz4FuaDCbiCplSqEWX/A==</wsse:Nonce><wsu:Created>2020-02-24T09:55:29Z</wsu:Created></wsse:UsernameToken></Security><a:To s:mustUnderstand=\\\"1\\\">https://nodea1.test.webservices.amadeus.com/1ASIWAGMBA</a:To></s:Header><s:Body><Air_MultiAvailability xmlns=\\\"http://xml.amadeus.com/SATRQT_13_2_1A\\\"><messageActionDetails><functionDetails><businessFunction>1</businessFunction><actionCode>44</actionCode></functionDetails></messageActionDetails><requestSection><availabilityProductInfo><availabilityDetails><departureDate>130420</departureDate></availabilityDetails><departureLocationInfo><cityAirport>LHR</cityAirport></departureLocationInfo><arrivalLocationInfo><cityAirport>JFK</cityAirport></arrivalLocationInfo></availabilityProductInfo><numberOfSeatsInfo><numberOfPassengers>1</numberOfPassengers></numberOfSeatsInfo><airlineOrFlightOption><flightIdentification><airlineCode>BA</airlineCode></flightIdentification></airlineOrFlightOption><availabilityOptions><productTypeDetails><typeOfRequest>TN</typeOfRequest></productTypeDetails><optionInfo><type>FLO</type><arguments>ON</arguments></optionInfo><optionInfo><type>FLO</type><arguments>OD</arguments></optionInfo></availabilityOptions></requestSection></Air_MultiAvailability></s:Body></s:Envelope>\",\"delay\":null,\"headers\":{\"Content-Type\":[\"text/xml; charset=utf-8\"],\"Cache-Control\":[\"no-cache, no-store\"],\"connection\":[\"keep-alive\"]}},\"httpForward\":null,\"times\":{\"remainingTimes\":1,\"unlimited\":false},\"timeToLive\":null}]";
+                UTF8Encoding uniEncoding = new UTF8Encoding();
+                byte[] firstString = uniEncoding.GetBytes(serialisedExpectation);
+                memStream.Write(firstString, 0, firstString.Length);
+
+                // ACT
+                memStream.Position = 0;
+                List<Expectation> expectations = await serializer.DeserializeListAsync(memStream).ConfigureAwait(false);
+
+                // ASSERT
+                Assert.NotNull(expectations);
+                Assert.Equal(3, expectations.Count);
+            }
+        }
+
+        /// <summary>
+        /// Some test.
+        /// </summary>
+        [Fact]
+        [Trait("Category", "MockTests")]
+        public void ShouldSerialise_And_Deserialise_Expectations()
+        {
+            // ARRANGE
+            var expectation = new Expectation(new HttpRequest(), new DataContracts.Times(1, false), null);
+            expectation.HttpRequest.WithBody(new BodyCheck()
+            {
+                BodyString = "<hello>world</hello>",
+                ContentType = "something",
+                Negate = false,
+                Regex = "funny",
+                SubString = true,
+                Type = "may",
+                XPath = "happen",
+            });
+            expectation.HttpRequest.WithCookie(new DotNetMockServerClient.DataContracts.Cookie("yummy", "cookies"));
+            expectation.HttpRequest.WithHeaders("header", "Locklear", "thought", "was", "hot");
+            expectation.HttpRequest.WithKeepAlive(true);
+            expectation.HttpRequest.WithMethod("POST-IT");
+            expectation.HttpRequest.WithPath("long and winding");
+            expectation.HttpRequest.WithQueryStringParameters(new Parameter("no", "parameters", "please"));
+            expectation.HttpRequest.WithSecure(false);
+            expectation.HttpResponse = new HttpResponse();
+            expectation.HttpResponse.WithHeaders("heath", "ledger", "died", "in", "2007");
+
+            var serializer = new JsonSerializer<Expectation>();
+            var serialisedExpectation = serializer.Serialize(expectation);
+
+            // ACT
+            Expectation newExpectation = serializer.DeserializeObject(serialisedExpectation);
+
+            // ASSERT
+            Assert.NotNull(newExpectation);
+            Assert.Equal(expectation.HttpRequest.HeadersList.Count, newExpectation.HttpRequest.HeadersList.Count);
+            Assert.Equal(expectation.HttpRequest.CookiesList.Count, newExpectation.HttpRequest.CookiesList.Count);
+            Assert.Equal(expectation.HttpRequest.ParametersList.Count, newExpectation.HttpRequest.ParametersList.Count);
+            Assert.Equal(expectation.HttpResponse.HeadersList.Count, newExpectation.HttpResponse.HeadersList.Count);
+
+            // ARRANGE
+            serialisedExpectation = "{\"httpRequest\":{\"headers\":{\"SOAPAction\":[\"(?i).* http://webservices.amadeus.com/SATRQT_13_2_1A.*\"]},\"method\":\"POST\",\"path\":\"/1ASIWNXGAML\",\"body\":{\"xPath\":null,\"regex\":null,\"type\":\"STRING\",\"bodyString\":\"\",\"subString\":true,\"negate\":false,\"contentType\":\"text/plain; charset=utf-16\"},\"isSecure\":null,\"isKeepAlive\":null},\"httpResponse\":{\"statusCode\":200,\"body\":\"\",\"delay\":null,\"headers\":{\"Content-Type\":[\"text/xml; charset=utf-8\"],\"Cache-Control\":[\"no-cache, no-store\"],\"connection\":[\"keep-alive\"]}},\"httpForward\":null,\"times\":{\"count\":1,\"isUnlimited\":false},\"timeToLive\":null}";
+
+            // ACT
+            newExpectation = serializer.DeserializeObject(serialisedExpectation);
+
+            // ASSERT
+            Assert.NotNull(newExpectation);
+            Assert.Single(newExpectation.HttpRequest.HeadersList);
+
+            // ARRANGE
+            serialisedExpectation = "[{\"httpRequest\":{\"headers\":{\"SOAPAction\":[\"(?i).*http://webservices.amadeus.com/SATRQT_13_2_1A.*\"]},\"parameters\":{},\"cookies\":{},\"method\":\"POST\",\"path\":\"/1ASIWNXGAML\",\"body\":{\"xpath\":null,\"regex\":null,\"type\":\"STRING\",\"string\":\"\",\"subString\":true,\"not\":false,\"contentType\":\"text/plain; charset=utf-16\"},\"secure\":null,\"keepAlive\":null},\"httpResponse\":{\"statusCode\":200,\"body\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?><s:Envelope xmlns:s=\\\"http://schemas.xmlsoap.org/soap/envelope/\\\" xmlns:a=\\\"http://www.w3.org/2005/08/addressing\\\"><s:Header><a:Action s:mustUnderstand=\\\"1\\\">http://webservices.amadeus.com/SATRQT_13_2_1A</a:Action><h:Session xmlns:h=\\\"http://xml.amadeus.com/2010/06/Session_v3\\\" TransactionStatusCode=\\\"InSeries\\\"><h:SessionId>01J2JLAJ0O</h:SessionId><h:SequenceNumber>3</h:SequenceNumber><h:SecurityToken>OULV8XFKFZ2X30QWH4MI0NT8C</h:SecurityToken></h:Session><a:MessageID>urn:uuid:52a1120a-c90a-4124-9140-0bde7aee9705</a:MessageID><a:ReplyTo><a:Address>http://www.w3.org/2005/08/addressing/anonymous</a:Address></a:ReplyTo><a:To s:mustUnderstand=\\\"1\\\">https://nodea1.test.webservices.amadeus.com/1ASIWAGMBA</a:To></s:Header><s:Body><Air_MultiAvailability xmlns=\\\"http://xml.amadeus.com/SATRQT_13_2_1A\\\"><messageActionDetails><functionDetails><businessFunction>1</businessFunction><actionCode>55</actionCode></functionDetails></messageActionDetails></Air_MultiAvailability></s:Body></s:Envelope>\",\"delay\":null,\"headers\":{\"Content-Type\":[\"text/xml; charset=utf-8\"],\"Cache-Control\":[\"no-cache, no-store\"],\"connection\":[\"keep-alive\"]}},\"httpForward\":null,\"times\":{\"remainingTimes\":1,\"unlimited\":false},\"timeToLive\":null},{\"httpRequest\":{\"headers\":{\"SOAPAction\":[\"(?i).*http://webservices.amadeus.com/SATRQT_13_2_1A.*\"]},\"parameters\":{},\"cookies\":{},\"method\":\"POST\",\"path\":\"/1ASIWNXGAML\",\"body\":{\"xpath\":null,\"regex\":null,\"type\":\"STRING\",\"string\":\"\",\"subString\":true,\"not\":false,\"contentType\":\"text/plain; charset=utf-16\"},\"secure\":null,\"keepAlive\":null},\"httpResponse\":{\"statusCode\":200,\"body\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?><s:Envelope xmlns:s=\\\"http://schemas.xmlsoap.org/soap/envelope/\\\" xmlns:a=\\\"http://www.w3.org/2005/08/addressing\\\"><s:Header><a:Action s:mustUnderstand=\\\"1\\\">http://webservices.amadeus.com/SATRQT_13_2_1A</a:Action><h:Session xmlns:h=\\\"http://xml.amadeus.com/2010/06/Session_v3\\\" TransactionStatusCode=\\\"InSeries\\\"><h:SessionId>01J2JLAJ0O</h:SessionId><h:SequenceNumber>2</h:SequenceNumber><h:SecurityToken>OULV8XFKFZ2X30QWH4MI0NT8C</h:SecurityToken></h:Session><a:MessageID>urn:uuid:cc912ea6-8967-4fb6-b35c-6f22f22e0451</a:MessageID><a:ReplyTo><a:Address>http://www.w3.org/2005/08/addressing/anonymous</a:Address></a:ReplyTo><a:To s:mustUnderstand=\\\"1\\\">https://nodea1.test.webservices.amadeus.com/1ASIWAGMBA</a:To></s:Header><s:Body><Air_MultiAvailability xmlns=\\\"http://xml.amadeus.com/SATRQT_13_2_1A\\\"><messageActionDetails><functionDetails><businessFunction>1</businessFunction><actionCode>55</actionCode></functionDetails></messageActionDetails></Air_MultiAvailability></s:Body></s:Envelope>\",\"delay\":null,\"headers\":{\"Content-Type\":[\"text/xml; charset=utf-8\"],\"Cache-Control\":[\"no-cache, no-store\"],\"connection\":[\"keep-alive\"]}},\"httpForward\":null,\"times\":{\"remainingTimes\":1,\"unlimited\":false},\"timeToLive\":null},{\"httpRequest\":{\"headers\":{\"SOAPAction\":[\"(?i).*http://webservices.amadeus.com/SATRQT_13_2_1A.*\"]},\"parameters\":{},\"cookies\":{},\"method\":\"POST\",\"path\":\"/1ASIWNXGAML\",\"body\":{\"xpath\":null,\"regex\":null,\"type\":\"STRING\",\"string\":\"\",\"subString\":true,\"not\":false,\"contentType\":\"text/plain; charset=utf-16\"},\"secure\":null,\"keepAlive\":null},\"httpResponse\":{\"statusCode\":200,\"body\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?><s:Envelope xmlns:s=\\\"http://schemas.xmlsoap.org/soap/envelope/\\\" xmlns:a=\\\"http://www.w3.org/2005/08/addressing\\\"><s:Header><a:Action s:mustUnderstand=\\\"1\\\">http://webservices.amadeus.com/SATRQT_13_2_1A</a:Action><h:AMA_SecurityHostedUser xmlns:h=\\\"http://xml.amadeus.com/2010/06/Security_v1\\\"><h:UserID POS_Type=\\\"1\\\" PseudoCityCode=\\\"NYCBA08AB\\\" AgentDutyCode=\\\"SU\\\" RequestorType=\\\"U\\\"><RequestorID xmlns=\\\"http://xml.amadeus.com/2010/06/Types_v1\\\"><CompanyName xmlns=\\\"http://www.iata.org/IATA/2007/00/IATA2010.1\\\">BA</CompanyName></RequestorID></h:UserID></h:AMA_SecurityHostedUser><h:Session xmlns:h=\\\"http://xml.amadeus.com/2010/06/Session_v3\\\" TransactionStatusCode=\\\"Start\\\" /><a:MessageID>urn:uuid:1f3ddfa7-20ca-49e4-b4ef-e7e182345d7e</a:MessageID><a:ReplyTo><a:Address>http://www.w3.org/2005/08/addressing/anonymous</a:Address></a:ReplyTo><Security xmlns=\\\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\\\"><wsse:UsernameToken xmlns:wsu=\\\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\\\" wsu:Id=\\\"SecurityToken-01f263b7-c84f-4cea-90a0-cd9211a3ec39\\\" xmlns:wsse=\\\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\\\"><wsse:Username>WSBALIM</wsse:Username><wsse:Password Type=\\\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest\\\">szW/V7sCd+7p5acja9WJfEDkBME=</wsse:Password><wsse:Nonce EncodingType=\\\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary\\\">SXPz4FuaDCbiCplSqEWX/A==</wsse:Nonce><wsu:Created>2020-02-24T09:55:29Z</wsu:Created></wsse:UsernameToken></Security><a:To s:mustUnderstand=\\\"1\\\">https://nodea1.test.webservices.amadeus.com/1ASIWAGMBA</a:To></s:Header><s:Body><Air_MultiAvailability xmlns=\\\"http://xml.amadeus.com/SATRQT_13_2_1A\\\"><messageActionDetails><functionDetails><businessFunction>1</businessFunction><actionCode>44</actionCode></functionDetails></messageActionDetails><requestSection><availabilityProductInfo><availabilityDetails><departureDate>130420</departureDate></availabilityDetails><departureLocationInfo><cityAirport>LHR</cityAirport></departureLocationInfo><arrivalLocationInfo><cityAirport>JFK</cityAirport></arrivalLocationInfo></availabilityProductInfo><numberOfSeatsInfo><numberOfPassengers>1</numberOfPassengers></numberOfSeatsInfo><airlineOrFlightOption><flightIdentification><airlineCode>BA</airlineCode></flightIdentification></airlineOrFlightOption><availabilityOptions><productTypeDetails><typeOfRequest>TN</typeOfRequest></productTypeDetails><optionInfo><type>FLO</type><arguments>ON</arguments></optionInfo><optionInfo><type>FLO</type><arguments>OD</arguments></optionInfo></availabilityOptions></requestSection></Air_MultiAvailability></s:Body></s:Envelope>\",\"delay\":null,\"headers\":{\"Content-Type\":[\"text/xml; charset=utf-8\"],\"Cache-Control\":[\"no-cache, no-store\"],\"connection\":[\"keep-alive\"]}},\"httpForward\":null,\"times\":{\"remainingTimes\":1,\"unlimited\":false},\"timeToLive\":null}]";
+
+            // ACT
+            var expectations = serializer.DeserializeList(serialisedExpectation);
+
+            // ASSERT
+            Assert.NotNull(expectations);
+            Assert.Equal(3, expectations.Count);
+        }
+
+        /// <summary>
         /// Dispose operation.
         /// </summary>
         public void Dispose()
@@ -469,14 +610,14 @@ namespace DotNetMockServerClient.Tests
         {
             if (this.canReset && this.canDispose)
             {
-                this.mockServerClient.Reset();
+                this.mockServerClient?.Reset();
             }
 
             if (this.canDispose)
             {
-                this.mockServerClient.Dispose();
-                this.httpResponseMessage.Dispose();
-                this.httpClient.Dispose();
+                this.mockServerClient?.Dispose();
+                this.httpResponseMessage?.Dispose();
+                this.httpClient?.Dispose();
             }
         }
 

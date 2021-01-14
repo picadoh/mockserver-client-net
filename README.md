@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/calrom-jtejero/dotnet-mockserver-client.svg?branch=master)](https://api.travis-ci.org/calrom-jtejero/dotnet-mockserver-client.svg?branch=master) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/calrom-jtejero/dotnet-mockserver-client/blob/master/LICENSE.md)
+[![Build Status](https://api.travis-ci.org/calrom-jtejero/dotnet-mockserver-client.svg?branch=master)](https://api.travis-ci.org/calrom-jtejero/dotnet-mockserver-client.svg?branch=master) [![NuGet version](https://img.shields.io/nuget/v/DotNetMockServerClient.svg)](https://www.nuget.org/packages/DotNetMockServerClient/) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/calrom-jtejero/dotnet-mockserver-client/blob/master/LICENSE.md)
 
 C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/) targeting `dotnet 5`.
 

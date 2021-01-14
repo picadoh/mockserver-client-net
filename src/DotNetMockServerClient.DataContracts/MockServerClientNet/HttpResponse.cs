@@ -32,7 +32,8 @@ namespace DotNetMockServerClient.DataContracts
         /// </summary>
         /// <returns>response.</returns>
         [JsonPropertyName("headers")]
-        public Dictionary<string, string[]> Headers { get; } = new Dictionary<string, string[]>();
+        [JsonInclude]
+        public Dictionary<string, string[]> Headers { get; private set; } = new Dictionary<string, string[]>();
 
         /// <summary>
         /// Gets search data.

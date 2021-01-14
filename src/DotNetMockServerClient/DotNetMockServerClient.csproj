@@ -4,17 +4,19 @@
 		<OutputType>Library</OutputType>
 		<TargetFramework>net5.0</TargetFramework>
 		<PackageId>DotNetMockServerClient</PackageId>
-		<PackageVersion>1.0.1</PackageVersion>
+		<PackageVersion>1.0.0</PackageVersion>
 		<Authors>Calrom Ltd.</Authors>
 		<Owners>Calrom Ltd.</Owners>
-		<Title>Mock-Server Client for .NET</Title>
-		<Description>C# Fluent API for interacting with Mock-Server</Description>
+		<Title>MockServer Client for .NET</Title>
+    <Company>Calrom Ltd.</Company>
+		<Description>MockServer Client API written in dotnet</Description>
 		<ProjectUrl>https://github.com/calrom-jtejero/dotnet-mockserver-client</ProjectUrl>
 		<LicenseUrl>https://github.com/calrom-jtejero/dotnet-mockserver-client/blob/master/LICENSE.md</LicenseUrl>
+		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-		<PackageReleaseNotes>Renamed to MockServerClientNet (formerly MockServerClientCSharp)</PackageReleaseNotes>
-		<Copyright>Copyright 2020 (c) Calrom Ltd.. All rights reserved.</Copyright>
-		<PackageTags>mock mockserver test dotnet dotnetcore netcore mockserverclient client mockserverclientcsharp mockserverclientnet netstandard .net</PackageTags>
+		<PackageReleaseNotes>First release</PackageReleaseNotes>
+		<Copyright>Copyright 2021 (c) Calrom Ltd. All rights reserved.</Copyright>
+		<PackageTags>mock mockserver test dotnet dotnetcore netcore mockserverclient client mockserverclientcsharp mockserverclientnet dotnet5 .net dotnetmockserverclient</PackageTags>
 		<AssemblyName>DotNetMockServerClient</AssemblyName>
 	  <ProjectGuid>{0552FDC6-7129-4EC2-BBA8-0021CA406A3D}</ProjectGuid>
 	  <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
@@ -30,10 +32,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="log4net" Version="2.0.12" />
-		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 	</ItemGroup>
-
+    
+  <ItemGroup>
+    <None Include="LICENSE.txt" Pack="true" PackagePath=""/>
+	</ItemGroup>
+	
 	<ItemGroup>
 	  <ProjectReference Include="..\DotNetMockServerClient.DataContracts\DotNetMockServerClient.DataContracts.csproj" />
 	</ItemGroup>
