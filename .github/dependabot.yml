@@ -12,24 +12,6 @@ updates:
     schedule:
       interval: "daily"
 
-  # Maintain dependencies for npm
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "daily"
-
-  # Maintain dependencies for Composer
-  - package-ecosystem: "composer"
-    directory: "/"
-    schedule:
-      interval: "daily"
-
-  # Maintain dependencies for docker
-  - package-ecosystem: "docker"
-    directory: "/"
-    schedule:
-      interval: "daily"
-
   # Maintain dependencies for nuget
   - package-ecosystem: "nuget"
     directory: "/"

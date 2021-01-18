@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/calrom-jtejero/dotnet-mockserver-client.svg?branch=master)](https://api.travis-ci.org/calrom-jtejero/dotnet-mockserver-client.svg?branch=master) [![NuGet version](https://img.shields.io/nuget/v/DotNetMockServerClient.svg)](https://www.nuget.org/packages/DotNetMockServerClient/) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/calrom-jtejero/dotnet-mockserver-client/blob/master/LICENSE.md)
+[![Build Status](https://api.travis-ci.org/calrom-jtejero/dotnet-mockserver-client.svg?branch=master)](https://api.travis-ci.org/calrom-jtejero/dotnet-mockserver-client.svg?branch=master) ![.NET](https://github.com/calrom-jtejero/dotnet-mockserver-client/workflows/.NET/badge.svg) ![.github/workflows/dependabot.yml](https://github.com/calrom-jtejero/dotnet-mockserver-client/workflows/.github/workflows/dependabot.yml/badge.svg) ![Greetings](https://github.com/calrom-jtejero/dotnet-mockserver-client/workflows/Greetings/badge.svg) ![CodeQL](https://github.com/calrom-jtejero/dotnet-mockserver-client/workflows/CodeQL/badge.svg) [![NuGet version](https://img.shields.io/nuget/v/DotNetMockServerClient.svg)](https://www.nuget.org/packages/DotNetMockServerClient/) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/calrom-jtejero/dotnet-mockserver-client/blob/master/LICENSE.md)
 
 C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/) targeting `dotnet 5`.
 
@@ -24,9 +24,15 @@ For more details on using the Docker image, check the [official Mock-Server docu
 
 ### Testing
 
+The code comes with unit and integration tests. The unit tests are executed with the following command:
+
+    dotnet test --filter "category:MockTests"
+
 The below command will run the integration tests against a local running instance of Mock-Server.
 
     dotnet test
+    
+Integration tests need instances of Mockserver running, that can be easily setup by running /tests/Docker-MockServer/dockerstart.ps1
 
 Use the following environment variables to change the target instance of the tests:
 
