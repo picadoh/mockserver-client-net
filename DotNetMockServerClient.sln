@@ -22,8 +22,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sonarlint", ".sonarlint", 
 		.sonarlint\DotNetMockServerClient.ruleset = .sonarlint\DotNetMockServerClient.ruleset
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetMockServerClient.DataContracts", "src\DotNetMockServerClient.DataContracts\DotNetMockServerClient.DataContracts.csproj", "{E11ABC9A-73CA-42AC-B9C9-831A60F1F1C1}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,10 +36,6 @@ Global
 		{3A00D600-155A-4C0F-955D-88BB2C200B81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A00D600-155A-4C0F-955D-88BB2C200B81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A00D600-155A-4C0F-955D-88BB2C200B81}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E11ABC9A-73CA-42AC-B9C9-831A60F1F1C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E11ABC9A-73CA-42AC-B9C9-831A60F1F1C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E11ABC9A-73CA-42AC-B9C9-831A60F1F1C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E11ABC9A-73CA-42AC-B9C9-831A60F1F1C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

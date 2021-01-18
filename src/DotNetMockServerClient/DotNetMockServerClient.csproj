@@ -4,7 +4,7 @@
 		<OutputType>Library</OutputType>
 		<TargetFramework>net5.0</TargetFramework>
 		<PackageId>DotNetMockServerClient</PackageId>
-		<PackageVersion>1.0.0</PackageVersion>
+		<PackageVersion>1.1.0</PackageVersion>
 		<Authors>Calrom Ltd.</Authors>
 		<Owners>Calrom Ltd.</Owners>
 		<Title>MockServer Client for .NET</Title>
@@ -31,15 +31,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="log4net" Version="2.0.12" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 	</ItemGroup>
     
   <ItemGroup>
-    <None Include="LICENSE.txt" Pack="true" PackagePath=""/>
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <ProjectReference Include="..\DotNetMockServerClient.DataContracts\DotNetMockServerClient.DataContracts.csproj" />
+    <None Include="LICENSE.txt" Pack="true" PackagePath="" />
 	</ItemGroup>
 </Project>

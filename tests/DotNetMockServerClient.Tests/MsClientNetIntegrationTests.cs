@@ -7,7 +7,6 @@
 namespace DotNetMockServerClient.Tests
 {
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
     using System.Net;
@@ -16,7 +15,6 @@ namespace DotNetMockServerClient.Tests
     using System.Threading.Tasks;
     using DotNetMockServerClient.DataContracts;
     using DotNetMockServerClient.Extensions;
-    using DotNetMockServerClient.Serializer;
     using Xunit;
     using HttpRequest = DotNetMockServerClient.DataContracts.HttpRequest;
     using HttpResponse = DotNetMockServerClient.DataContracts.HttpResponse;
