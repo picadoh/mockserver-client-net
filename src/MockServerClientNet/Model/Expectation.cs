@@ -18,6 +18,9 @@
         [JsonProperty(PropertyName = "httpResponse", NullValueHandling = NullValueHandling.Ignore)]
         public HttpResponse HttpResponse { get; private set; }
 
+        [JsonProperty(PropertyName = "httpResponseTemplate", NullValueHandling = NullValueHandling.Ignore)]
+        public HttpResponseTemplate HttpResponseTemplate { get; private set; }
+
         [JsonProperty(PropertyName = "httpForward", NullValueHandling = NullValueHandling.Ignore)]
         public HttpForward HttpForward { get; private set; }
 
@@ -35,6 +38,16 @@
             if (httpResponse != null)
             {
                 HttpResponse = httpResponse;
+            }
+
+            return this;
+        }
+
+        public Expectation ThenRespond(HttpResponseTemplate httpResponseTemplate)
+        {
+            if (httpResponseTemplate != null)
+            {
+                HttpResponseTemplate = httpResponseTemplate;
             }
 
             return this;
