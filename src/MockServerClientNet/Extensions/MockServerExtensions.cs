@@ -29,9 +29,16 @@ namespace MockServerClientNet.Extensions
             foreach (var expectation in expectations)
             {
                 var httpRequest = HttpRequest.Request();
-                var httpResponse = HttpResponse.Response();
-
-                await SetupMockServerRequestAsync(mockServerClient, expectation, httpRequest, httpResponse);
+                if (expectation.HttpResponseTemplate != null)
+                {
+                    var httpResponse = HttpResponseTemplate.ResponseTemplate();
+                    await SetupMockServerRequestAsync(mockServerClient, expectation, httpRequest, httpResponse);
+                }
+                else
+                {
+                    var httpResponse = HttpResponse.Response();
+                    await SetupMockServerRequestAsync(mockServerClient, expectation, httpRequest, httpResponse);
+                }
             }
         }
 
@@ -57,6 +64,28 @@ namespace MockServerClientNet.Extensions
                     .WithHeaders(expectation.HttpResponse.Headers.ToArray())
                     .WithBody(expectation.HttpResponse.Body ?? Contents.EmptyText())
                     .WithDelay(GetTimeSpanDelay(expectation.HttpResponse.Delay)));
+        }
+
+        private static async Task SetupMockServerRequestAsync(
+            MockServerClient mockServerClient,
+            Expectation expectation,
+            HttpRequest httpRequest,
+            HttpResponseTemplate httpResponseTemplate)
+        {
+            var isSecure = expectation.HttpRequest.IsSecure.HasValue && expectation.HttpRequest.IsSecure.Value;
+            var unlimitedTimes = expectation.Times == null || expectation.Times.IsUnlimited;
+
+            await mockServerClient
+                .When(httpRequest
+                        .WithMethod(expectation.HttpRequest.Method)
+                        .WithPath(expectation.HttpRequest.Path)
+                        .WithQueryStringParameters(expectation.HttpRequest.Parameters.ToArray())
+                        .WithBody(expectation.HttpRequest.Body)
+                        .WithSecure(isSecure),
+                    unlimitedTimes ? Times.Unlimited() : Times.Exactly(expectation.Times.Count))
+                .RespondAsync(httpResponseTemplate
+                    .WithTemplate(expectation.HttpResponseTemplate.Template, expectation.HttpResponseTemplate.TemplateType)
+                    .WithDelay(GetTimeSpanDelay(expectation.HttpResponseTemplate.Delay)));
         }
 
         private static TimeSpan GetTimeSpanDelay(Delay delay)

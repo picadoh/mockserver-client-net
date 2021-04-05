@@ -19,12 +19,14 @@ namespace MockServerClientNet.Tests
             SendRequest(BuildGetRequest("/entity2"), out var responseBody2, out _);
             SendRequest(BuildRequest(HttpMethod.Post, "/entity3", "request3"), out var responseBody3, out _);
             SendRequest(BuildRequest(HttpMethod.Post, "/entity4", "request4"), out var responseBody4, out _);
+            SendRequest(BuildGetRequest("/entity5?id=5"), out var responseBody5, out _);
 
             // assert
             Assert.Equal("response1", responseBody1);
             Assert.Equal("response2", responseBody2);
             Assert.Equal("response3", responseBody3);
             Assert.Equal("response4", responseBody4);
+            Assert.Equal("{\"method\":\"GET\",\"path\":\"/entity5\",\"id\":\"5\"}", responseBody5);
         }
     }
 }

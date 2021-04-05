@@ -63,5 +63,23 @@
     "Times": {
       "Unlimited": true
     }
+  },
+  {
+    "HttpRequest": {
+      "Method": "GET",
+      "Path": "/entity5",
+      "QueryStringParameters": {
+        "Id": [
+          "5"
+        ]
+      }
+    },
+    "HttpResponseTemplate": {
+      "templateType": "JAVASCRIPT",
+      "template": "return { statusCode: 200, body: JSON.stringify({method: request.method, path: request.path, id: request.queryStringParameters[\"id\"][0]}) };"
+    },
+    "Times": {
+      "Unlimited": true
+    }
   }
 ]

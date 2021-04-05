@@ -19,9 +19,20 @@ namespace MockServerClientNet
             RespondAsync(httpResponse).GetAwaiter().GetResult();
         }
 
+        public void Respond(HttpResponseTemplate httpResponseTemplate)
+        {
+            RespondAsync(httpResponseTemplate).GetAwaiter().GetResult();
+        }
+
         public async Task RespondAsync(HttpResponse httpResponse)
         {
             _expectation.ThenRespond(httpResponse);
+            await _mockServerClient.SendExpectationAsync(_expectation);
+        }
+
+        public async Task RespondAsync(HttpResponseTemplate httpResponseTemplate)
+        {
+            _expectation.ThenRespond(httpResponseTemplate);
             await _mockServerClient.SendExpectationAsync(_expectation);
         }
 
