@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Linq;
-using System.Net;
 
 namespace MockServerClientNet.Model
 {
@@ -9,9 +7,6 @@ namespace MockServerClientNet.Model
     {
         [JsonProperty(PropertyName = "delay")]
         public Delay Delay { get; private set; } = Delay.NoDelay();
-
-        [JsonProperty(PropertyName = "reasonPhrase", NullValueHandling = NullValueHandling.Ignore)]
-        public string ReasonPhrase { get; private set; }
 
         [JsonProperty(PropertyName = "template")]
         public string Template { get; private set; }
@@ -28,12 +23,6 @@ namespace MockServerClientNet.Model
         public static HttpResponseTemplate ResponseTemplate()
         {
             return new HttpResponseTemplate();
-        }
-
-        public HttpResponseTemplate WithReasonPhrase(string reasonPhrase)
-        {
-            ReasonPhrase = reasonPhrase;
-            return this;
         }
 
         public HttpResponseTemplate WithDelay(TimeSpan delay)
