@@ -11,7 +11,7 @@
 
   <!-- All unit tests (.Tests) projects require coverlet.msbuild for coverage. -->
   <ItemGroup Condition="$(MSBuildProjectName.IndexOf('.Tests')) != -1 And $(MSBuildProjectName.IndexOf('DockerCompose')) != -1">
-    <PackageReference Include="coverlet.msbuild" Version="3.0.1">
+    <PackageReference Include="coverlet.msbuild" Version="3.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
