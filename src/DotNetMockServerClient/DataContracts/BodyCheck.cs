@@ -62,6 +62,24 @@ namespace DotNetMockServerClient.DataContracts
         public string XPath { get; set; }
 
         /// <summary>
+        /// Gets or sets the value.
+        /// </summary>
+        /// <value>
+        /// The value.
+        /// </value>
+        [JsonPropertyName("value")]
+        public string Value { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of the match.
+        /// </summary>
+        /// <value>
+        /// The type of the match.
+        /// </value>
+        [JsonPropertyName("matchType")]
+        public string MatchType { get; set; }
+
+        /// <summary>
         /// Gets search data.
         /// </summary>
         /// <param name="regex">the httpForward.</param>
@@ -106,6 +124,36 @@ namespace DotNetMockServerClient.DataContracts
             {
                 Type = "XPATH",
                 XPath = element,
+            };
+        }
+
+        /// <summary>
+        /// With json.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="matchType">Type of the match.</param>
+        /// <returns>response.</returns>
+        public static BodyCheck WithJson(string value, string matchType = "STRICT")
+        {
+            return new BodyCheck
+            {
+                Type = "JSON",
+                Value = value,
+                MatchType = matchType,
+            };
+        }
+
+        /// <summary>
+        /// With json schema.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>response.</returns>
+        public static BodyCheck WithJsonSchema(string value)
+        {
+            return new BodyCheck
+            {
+                Type = "JSON_SCHEMA",
+                Value = value,
             };
         }
     }

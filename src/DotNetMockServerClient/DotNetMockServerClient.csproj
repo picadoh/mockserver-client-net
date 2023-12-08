@@ -23,12 +23,17 @@
   </PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <CodeAnalysisRuleSet>..\..\DotNetMockServerClient.ruleset</CodeAnalysisRuleSet>
+	  <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-	  <CodeAnalysisRuleSet>..\..\DotNetMockServerClient.ruleset</CodeAnalysisRuleSet>
+	  <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
 	</PropertyGroup>
+
+
+	<ItemGroup>
+	  <AdditionalFiles Include="stylecop.json" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
