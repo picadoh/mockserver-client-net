@@ -12,14 +12,19 @@
 		<Description>MockServer Client API written in dotnet</Description>
 		<ProjectUrl>https://github.com/calrom-jtejero/dotnet-mockserver-client</ProjectUrl>
 		<LicenseUrl>https://github.com/calrom-jtejero/dotnet-mockserver-client/blob/master/LICENSE.md</LicenseUrl>
-		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-		<PackageReleaseNotes>First release</PackageReleaseNotes>
-		<Copyright>Copyright 2021 (c) Calrom Ltd. All rights reserved.</Copyright>
+		<PackageReleaseNotes>Added json matcher support</PackageReleaseNotes>
+		<Copyright>Copyright 2023 (c) Calrom Ltd. All rights reserved.</Copyright>
 		<PackageTags>mock mockserver test dotnet dotnetcore netcore mockserverclient client mockserverclientcsharp mockserverclientnet dotnet5 .net dotnetmockserverclient</PackageTags>
 		<AssemblyName>DotNetMockServerClient</AssemblyName>
 	  <ProjectGuid>{0552FDC6-7129-4EC2-BBA8-0021CA406A3D}</ProjectGuid>
 	  <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+	  <PackageProjectUrl></PackageProjectUrl>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <RepositoryUrl>https://github.com/Calrom-Ltd/dotnet-mockserver-client</RepositoryUrl>
+	  <AssemblyVersion>1.2.0.0</AssemblyVersion>
+	  <FileVersion>1.2.0.0</FileVersion>
   </PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -40,6 +45,14 @@
 	</ItemGroup>
     
   <ItemGroup>
+    <None Include="..\..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="LICENSE.txt" Pack="true" PackagePath="" />
 	</ItemGroup>
 </Project>
