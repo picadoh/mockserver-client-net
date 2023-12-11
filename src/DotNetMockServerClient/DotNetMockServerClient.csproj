@@ -4,7 +4,7 @@
 		<OutputType>Library</OutputType>
 		<TargetFramework>net5.0</TargetFramework>
 		<PackageId>DotNetMockServerClient</PackageId>
-		<PackageVersion>1.1.0</PackageVersion>
+		<PackageVersion>1.2.0</PackageVersion>
 		<Authors>Calrom Ltd.</Authors>
 		<Owners>Calrom Ltd.</Owners>
 		<Title>MockServer Client for .NET</Title>
@@ -53,6 +53,5 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Include="LICENSE.txt" Pack="true" PackagePath="" />
 	</ItemGroup>
 </Project>
