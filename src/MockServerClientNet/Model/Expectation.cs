@@ -20,6 +20,9 @@
 
         [JsonProperty(PropertyName = "httpForward", NullValueHandling = NullValueHandling.Ignore)]
         public HttpForward HttpForward { get; private set; }
+        
+        [JsonProperty(PropertyName = "httpForwardTemplate", NullValueHandling = NullValueHandling.Ignore)]
+        public HttpForwardTemplate HttpForwardTemplate { get; private set; }
 
         [JsonProperty(PropertyName = "times")]
         public Times Times { get; private set; }
@@ -45,6 +48,16 @@
             if (httpForward != null)
             {
                 HttpForward = httpForward;
+            }
+
+            return this;
+        }
+
+        public Expectation ThenForwardTemplate(HttpForwardTemplate httpForwardTemplate)
+        {
+            if (httpForwardTemplate != null)
+            {
+                HttpForwardTemplate = httpForwardTemplate;
             }
 
             return this;

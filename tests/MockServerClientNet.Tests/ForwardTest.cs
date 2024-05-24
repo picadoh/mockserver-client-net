@@ -3,6 +3,7 @@ using MockServerClientNet.Model;
 using Xunit;
 using static MockServerClientNet.Model.HttpRequest;
 using static MockServerClientNet.Model.HttpForward;
+using static MockServerClientNet.Model.HttpForwardTemplate;
 
 namespace MockServerClientNet.Tests
 {
@@ -56,6 +57,26 @@ namespace MockServerClientNet.Tests
 
             // assert
             Assert.Equal(2, result.Length);
+        }
+
+        [Fact]
+        public void ShouldForwardRequestUsingHttpTemplate()
+        {
+            // arrange
+            var request = Request().WithMethod("GET").WithPath("/hello");
+
+            MockServerClient
+                .When(request, Times.Exactly(1))
+                .Forward(ForwardTemplate()
+                    .WithTemplate("{'body': '{{{ request.body }}}'}", MustacheTemplateType));
+
+            // act
+            SendRequest(BuildGetRequest("/hello"), out _, out _);
+
+            var result = MockServerClient.RetrieveRecordedRequests(request);
+
+            // assert
+            Assert.Equal(1, result.Length);
         }
     }
 }
