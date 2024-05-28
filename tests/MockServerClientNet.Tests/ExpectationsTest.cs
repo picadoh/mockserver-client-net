@@ -6,6 +6,7 @@ using MockServerClientNet.Model;
 using Xunit;
 using static MockServerClientNet.Model.HttpRequest;
 using static MockServerClientNet.Model.HttpResponse;
+using static MockServerClientNet.Model.HttpResponseTemplate;
 
 namespace MockServerClientNet.Tests
 {
@@ -66,6 +67,25 @@ namespace MockServerClientNet.Tests
 
             // assert
             Assert.Equal(HttpStatusCode.NotFound, response3.StatusCode);
+        }
+
+        [Fact]
+        public async Task ShouldRespondWithTemplate()
+        {
+            // arrange
+            var request = Request().WithMethod(HttpMethod.Post);
+            await MockServerClient
+                .When(request)
+                    .RespondAsync(ResponseTemplate()
+                    .WithTemplate("{\"statusCode\": 200, \"body\": \"Hello from {{request.path}}!\" }",
+                        HttpTemplate.MustacheTemplateType));
+
+            // act
+            var response = await SendRequestAsync(BuildPostRequest());
+
+            // assert
+            var responseContent = await response.Content.ReadAsStringAsync();
+            Assert.Equal("Hello from /customers!", responseContent);
         }
 
         [Fact]
