@@ -4,10 +4,6 @@ namespace MockServerClientNet.Model
 {
     public class HttpForwardTemplate
     {
-        public const string JavascriptTemplateType = "JAVASCRIPT";
-        public const string VelocityTemplateType = "VELOCITY";
-        public const string MustacheTemplateType = "MUSTACHE";
-
         [JsonProperty(PropertyName = "template")]
         public string Template { get; private set; }
 

@@ -68,7 +68,7 @@ namespace MockServerClientNet.Tests
             MockServerClient
                 .When(request, Times.Exactly(1))
                 .Forward(ForwardTemplate()
-                    .WithTemplate("{'body': '{{{ request.body }}}'}", MustacheTemplateType));
+                    .WithTemplate("{'body': '{{{ request.body }}}'}", HttpTemplate.MustacheTemplateType));
 
             // act
             SendRequest(BuildGetRequest("/hello"), out _, out _);
