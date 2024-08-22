@@ -1,12 +1,12 @@
-using MockServerClientNet.Extensions;
 using MockServerClientNet.Model;
 using Xunit;
+using Xunit.Abstractions;
 using static MockServerClientNet.Model.HttpRequest;
 using static MockServerClientNet.Model.HttpForward;
 
 namespace MockServerClientNet.Tests
 {
-    public class ForwardTest : MockServerClientTest
+    public class ForwardTest(MockServerFixture fixture, ITestOutputHelper testOutputHelper) : MockServerClientTest(fixture: fixture)
     {
         [Fact]
         public void ShouldForwardRequestWithStringScheme()
@@ -15,19 +15,20 @@ namespace MockServerClientNet.Tests
             var request = Request().WithMethod("GET").WithPath("/hello");
 
             var host = MockServerClient.ServerAddress().Host;
-            var port = MockServerClient.ServerAddress().Port;
 
             MockServerClient
                 .When(request, Times.Exactly(1))
                 .Forward(Forward()
                     .WithScheme("HTTP")
                     .WithHost(host)
-                    .WithPort(port));
+                    .WithPort(1080));
 
             // act
             SendRequest(BuildGetRequest("/hello"), out _, out _);
 
             var result = MockServerClient.RetrieveRecordedRequests(request);
+
+            testOutputHelper.WriteLine(result.ToString());
 
             // assert
             Assert.Equal(2, result.Length);
@@ -40,14 +41,13 @@ namespace MockServerClientNet.Tests
             var request = Request().WithMethod("GET").WithPath("/hello");
 
             var host = MockServerClient.ServerAddress().Host;
-            var port = MockServerClient.ServerAddress().Port;
 
             MockServerClient
                 .When(request, Times.Exactly(1))
                 .Forward(Forward()
                     .WithScheme(HttpScheme.Https)
                     .WithHost(host)
-                    .WithPort(port));
+                    .WithPort(1080));
 
             // act
             SendRequest(BuildGetRequest("/hello"), out _, out _);

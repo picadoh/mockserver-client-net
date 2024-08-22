@@ -9,7 +9,7 @@ using static MockServerClientNet.Model.HttpResponse;
 
 namespace MockServerClientNet.Tests
 {
-    public class ExpectationsTest : MockServerClientTest
+    public class ExpectationsTest(MockServerFixture fixture) : MockServerClientTest(fixture: fixture)
     {
         [Fact]
         public async Task ShouldRespondAccordingToExpectation()

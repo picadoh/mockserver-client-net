@@ -8,25 +8,21 @@ using Xunit;
 
 namespace MockServerClientNet.Tests
 {
-    [Collection("Sequential")]
-    public class MockServerClientTest : IDisposable
+    [Collection(nameof(MockServerCollection))]
+    public class MockServerClientTest(
+        MockServerFixture fixture,
+        HttpScheme scheme = HttpScheme.Http,
+        HttpClientHandler handler = null
+    ) : IClassFixture<MockServerFixture>, IDisposable
     {
-        private readonly string _mockServerHost =
-            Environment.GetEnvironmentVariable("MOCKSERVER_TEST_HOST") ?? "localhost";
+        protected readonly MockServerClient MockServerClient = new(
+            host: fixture.Host,
+            port: fixture.Port,
+            httpScheme: scheme,
+            httpHandler: handler
+        );
 
-        private readonly int _mockServerPort =
-            int.Parse(Environment.GetEnvironmentVariable("MOCKSERVER_TEST_PORT") ?? "1080");
-
-        protected readonly MockServerClient MockServerClient;
-
-        protected string HostHeader => $"{_mockServerHost}:{_mockServerPort}";
-
-        protected MockServerClientTest(HttpScheme scheme = HttpScheme.Http, HttpClientHandler handler = null)
-        {
-            MockServerClient = new MockServerClient(_mockServerHost, _mockServerPort,
-                httpScheme: scheme, httpHandler: handler);
-            Assert.True(MockServerClient.IsRunning(), "Server is not running");
-        }
+        protected string HostHeader => $"{fixture.Host}:{fixture.Port}";
 
         public void Dispose()
         {

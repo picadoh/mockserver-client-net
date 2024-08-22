@@ -9,13 +9,9 @@ using static MockServerClientNet.Model.HttpResponse;
 
 namespace MockServerClientNet.Tests
 {
-    public class HttpSchemeTest : MockServerClientTest
+    public class HttpSchemeTest(MockServerFixture fixture) : MockServerClientTest(fixture, HttpScheme.Https, Handler)
     {
         private static readonly HttpClientHandler Handler = GetHttpClientHandler();
-
-        public HttpSchemeTest() : base(HttpScheme.Https, Handler)
-        {
-        }
 
         [Fact]
         public async Task ShouldRespondToHttpsRequest()

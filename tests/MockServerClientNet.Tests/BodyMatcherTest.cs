@@ -12,7 +12,7 @@ using static MockServerClientNet.Model.HttpRequest;
 
 namespace MockServerClientNet.Tests
 {
-    public class BodyMatcherTest : MockServerClientTest
+    public class BodyMatcherTest(MockServerFixture fixture) : MockServerClientTest(fixture: fixture)
     {
         [Fact]
         public async Task ShouldMatchExactString()

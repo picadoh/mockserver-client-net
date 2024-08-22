@@ -7,7 +7,7 @@ using static MockServerClientNet.Model.HttpResponse;
 
 namespace MockServerClientNet.Tests
 {
-    public class PriorityTest : MockServerClientTest
+    public class PriorityTest(MockServerFixture fixture) : MockServerClientTest(fixture: fixture)
     {
         [Fact]
         public async Task ShouldMatchSamePriorityUsingOrder()

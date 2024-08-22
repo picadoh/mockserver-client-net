@@ -30,14 +30,10 @@ For more details on using the Docker image, check the [official Mock-Server docu
 
 ### Testing
 
-The below command will run the integration tests against a local running instance of Mock-Server.
+The below command will run the integration tests against 
+a [TestContainers](https://dotnet.testcontainers.org/) Mock-Server instance.
 
     dotnet test
-
-Use the following environment variables to change the target instance of the tests:
-
-- MOCKSERVER\_TEST\_HOST (Defaults to `localhost`)
-- MOCKSERVER\_TEST\_PORT (Defaults to `1080`)
 
 ### How to Contribute
 

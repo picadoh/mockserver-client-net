@@ -8,7 +8,7 @@ using static MockServerClientNet.Model.HttpResponse;
 
 namespace MockServerClientNet.Tests
 {
-    public class VerifyTest : MockServerClientTest
+    public class VerifyTest(MockServerFixture fixture) : MockServerClientTest(fixture: fixture)
     {
         [Fact]
         public void ShouldVerifyOnceSuccess()

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace MockServerClientNet.Tests
 {
-    public class ExpectationFileTest : MockServerClientTest
+    public class ExpectationFileTest(MockServerFixture fixture) : MockServerClientTest(fixture: fixture)
     {
         [Fact]
         public void WhenExpectationsAreLoadedFromFile_ShouldRespondFromTheConfiguredRoutes()
