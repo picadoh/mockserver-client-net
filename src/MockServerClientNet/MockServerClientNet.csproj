@@ -14,6 +14,7 @@
         <Copyright>Copyright 2017 Hugo Picado</Copyright>
         <PackageReleaseNotes>TLS support / Request Matchers / Response Content</PackageReleaseNotes>
         <PackageTags>mock mockserver test dotnet dotnetcore netcore mockserverclient client mockserverclientcsharp mockserverclientnet netstandard .net</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,6 +26,7 @@
             <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
             <PackagePath>/</PackagePath>
         </Content>
+        <None Include="..\..\README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>
