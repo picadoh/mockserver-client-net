@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/picadoh/mockserver-client-net.svg?branch=master)](https://travis-ci.org/picadoh/mockserver-client-net) [![NuGet version](https://badge.fury.io/nu/MockServerClientNet.svg)](https://badge.fury.io/nu/MockServerClientNet) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/picadoh/mockserver-client-net/blob/master/LICENSE.md)
+[![MockServer .NET Client](https://github.com/picadoh/mockserver-client-net/actions/workflows/dotnet-build.yml/badge.svg)](https://github.com/picadoh/mockserver-client-net/actions/workflows/dotnet-build.yml) [![NuGet version](https://badge.fury.io/nu/MockServerClientNet.svg)](https://badge.fury.io/nu/MockServerClientNet) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/picadoh/mockserver-client-net/blob/master/LICENSE.md)
 
 C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/) targeting `.netstandard2.0`.
 
