@@ -1,45 +1,54 @@
-﻿﻿using MockServerClientNet.Extensions;
+﻿namespace MockServerClientNet.Model;
+
+using System;
+using Extensions;
 using Newtonsoft.Json;
 
-namespace MockServerClientNet.Model
+public class HttpForward
 {
-    public class HttpForward
+    [JsonProperty(PropertyName = "host")]
+    public string Host { get; private set; }
+
+    [JsonProperty(PropertyName = "port")]
+    public int Port { get; private set; } = 80;
+
+    [JsonProperty(PropertyName = "scheme")]
+    public string Scheme { get; private set; } = "HTTP";
+
+    [JsonProperty(PropertyName = "delay")]
+    public Delay Delay { get; private set; } = Delay.NoDelay();
+
+    public static HttpForward Forward()
     {
-        [JsonProperty(PropertyName = "host")]
-        public string Host { get; private set; }
+        return new HttpForward();
+    }
 
-        [JsonProperty(PropertyName = "port")]
-        public int Port { get; private set; } = 80;
+    public HttpForward WithHost(string host)
+    {
+        Host = host;
+        return this;
+    }
 
-        [JsonProperty(PropertyName = "scheme")]
-        public string Scheme { get; private set; } = "HTTP";
+    public HttpForward WithPort(int port)
+    {
+        Port = port;
+        return this;
+    }
 
-        public static HttpForward Forward()
-        {
-            return new HttpForward();
-        }
+    public HttpForward WithScheme(string scheme)
+    {
+        Scheme = scheme;
+        return this;
+    }
 
-        public HttpForward WithHost(string host)
-        {
-            Host = host;
-            return this;
-        }
+    public HttpForward WithScheme(HttpScheme scheme)
+    {
+        return WithScheme(scheme.Value().ToUpper());
+    }
 
-        public HttpForward WithPort(int port)
-        {
-            Port = port;
-            return this;
-        }
-
-        public HttpForward WithScheme(string scheme)
-        {
-            Scheme = scheme;
-            return this;
-        }
-
-        public HttpForward WithScheme(HttpScheme scheme)
-        {
-            return WithScheme(scheme.Value().ToUpper());
-        }
+    public HttpForward WithDelay(TimeSpan delay)
+    {
+        Delay = Delay.FromTimeSpan(delay);
+        return this;
     }
 }

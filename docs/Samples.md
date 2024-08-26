@@ -46,6 +46,38 @@ public class Program
 
 </details>
 
+### Adding an Expectation with Response Template
+
+Templates can be used to create dynamic responses based on, for instance, request inputs.
+Currently, [Mustache](https://mustache.github.io/) and [Velocity](https://velocity.apache.org/) templates are supported in this client.
+
+> :information_source: Refer to the official Mock-Server documentation about [Expectations](https://www.mock-server.com/mock_server/creating_expectations.html) for more details. Bear in mind that this is not an official client and does not support all the client-side features of Mock-Server.
+
+<details>
+<summary>Expand/Collapse Code Sample</summary>
+
+```c#
+using MockServerClientNet;
+using MockServerClientNet.Model;
+using static MockServerClientNet.Model.HttpRequest;
+using static MockServerClientNet.Model.HttpTemplate;
+
+public class Program
+{
+    public static async Task Main()
+    {
+        var mockServerClient = new MockServerClient("localhost", 1080);
+
+        await mockServerClient
+            .When(Request().WithMethod(HttpMethod.Get).WithPath("/hello"), Times.Unlimited())
+            .RespondAsync(Template(TemplateType.Mustache)
+                .WithTemplate("{ 'statusCode': 200, body: '{ \"method\": \"{{ request.method }}\" }' }"));
+    }
+}
+```
+
+</details>
+
 ### Verifying Requests
 
 Verifying requests allows to determine whether a request was made to the server or not, as well as how many times that happened. Fluently, this is done in the form "Verify **This** occured exactly/at least/at most **N** times or between **M** and **N** times".
@@ -139,6 +171,56 @@ public class Program
         await mockServerClient.VerifyAsync(
             Request().WithPath("/hello"),
             VerificationTimes.Exactly(2));
+    }
+}
+```
+
+</details>
+
+### Forwarding Requests with Template
+
+Templates can be used to create dynamic forwarding based on, for instance, request inputs.
+Currently, [Mustache](https://mustache.github.io/) and [Velocity](https://velocity.apache.org/) templates are supported in this client.
+
+> :information_source: Refer to the official Mock-Server documentation about [Forward Actions](https://www.mock-server.com/mock_server/getting_started.html#forward_action) for more details. Bear in mind that this is not an official client and does not support all the client-side features of Mock-Server.
+
+<details>
+<summary>Expand/Collapse Code Sample</summary>
+
+```c#
+using MockServerClientNet;
+using MockServerClientNet.Model;
+using static MockServerClientNet.Model.HttpRequest;
+using static MockServerClientNet.Model.HttpTemplate;
+using static MockServerClientNet.Model.HttpResponse;
+
+public class Program
+{
+    public static async Task Main()
+    {
+        var mockServerClient = new MockServerClient("127.0.0.1", 1080);
+
+        await mockServerClient.ResetAsync();
+
+        await mockServerClient
+            .When(Request().WithMethod(HttpMethod.Get).WithPath("/foo"), Times.Unlimited())
+            .RespondAsync(Response()
+                .WithStatusCode(200)
+                .WithBody("{\"foo\":\"bar\"}"));
+
+        await mockServerClient
+            .When(Request().WithMethod(HttpMethod.Get).WithPath("/hello"), Times.Unlimited())
+            .ForwardAsync(Template(TemplateType.Mustache)
+                .WithTemplate(
+                    """
+                    {
+                      "headers": {
+                          "Host": [ "{{ request.queryStringParameters.fw.0 }}:1080" ]
+                      },
+                      "method" : "GET",
+                      "path": "/foo",
+                    }
+                    """));
     }
 }
 ```

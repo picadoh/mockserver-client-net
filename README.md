@@ -1,6 +1,6 @@
 [![MockServer .NET Client](https://github.com/picadoh/mockserver-client-net/actions/workflows/dotnet-build.yml/badge.svg)](https://github.com/picadoh/mockserver-client-net/actions/workflows/dotnet-build.yml) ![NuGet Version](https://img.shields.io/nuget/v/MockServerClientNet) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/picadoh/mockserver-client-net/blob/master/LICENSE.md)
 
-C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/) targeting `.NET 8`.
+Unofficial C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/) targeting `.NET 8`.
 
 This client, available at [MockServerClientNet Repository](https://github.com/picadoh/mockserver-client-net), is written in C# and based on the original Java client Fluent API, available at [Mock-Server Repository](https://github.com/mock-server/mockserver). Thanks to its authors for their contributions to open-source. I am **not** an author of the mentioned Java client and this client is **not** part of the [official Mock-Server clients](https://www.mock-server.com/mock_server/mockserver_clients.html).
 

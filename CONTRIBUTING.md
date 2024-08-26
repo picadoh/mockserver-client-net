@@ -20,3 +20,5 @@ To submit a change, first look for an existing issue on the matter. If none is f
 - Binaries, packages or development auxiliary files (e.g. IDE metadata) must not be pushed to the repository
 - If `.gitignore` is not considering files that must not be present in the repository, it should be edited before the commit
 - Breaking changes shall be avoided
+- Documentation reflects the relevant usages of the API.
+- Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/) specification to ensure proper package versioning.

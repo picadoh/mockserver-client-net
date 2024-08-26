@@ -1,9 +1,10 @@
+namespace MockServerClientNet.Tests;
+
+using System;
 using System.Threading.Tasks;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using Xunit;
-
-namespace MockServerClientNet.Tests;
 
 [CollectionDefinition(nameof(MockServerCollection))]
 public class MockServerCollection : ICollectionFixture<MockServerFixture>;
@@ -19,8 +20,11 @@ public class MockServerFixture : IAsyncLifetime
         )
         .Build();
 
-    public string Host => _container.Hostname;
-    public int Port => _container.GetMappedPublicPort(1080);
+    public string Host => Environment.GetEnvironmentVariable("MOCKSERVER_TEST_HOST")
+                          ?? _container.Hostname;
+
+    public int Port => int.Parse(Environment.GetEnvironmentVariable("MOCKSERVER_TEST_PORT")
+                                 ?? _container.GetMappedPublicPort(1080).ToString());
 
     public Task InitializeAsync()
         => _container.StartAsync();

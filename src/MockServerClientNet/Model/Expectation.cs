@@ -1,53 +1,70 @@
-﻿namespace MockServerClientNet.Model
+﻿namespace MockServerClientNet.Model;
+
+using Newtonsoft.Json;
+
+public class Expectation(HttpRequest httpRequest, Times times, TimeToLive timeToLive, int priority)
 {
-    using Newtonsoft.Json;
+    [JsonProperty(PropertyName = "httpRequest")]
+    public HttpRequest HttpRequest { get; private set; } = httpRequest;
 
-    public class Expectation
+    [JsonProperty(PropertyName = "httpResponse", NullValueHandling = NullValueHandling.Ignore)]
+    public HttpResponse HttpResponse { get; private set; }
+
+    [JsonProperty(PropertyName = "httpResponseTemplate", NullValueHandling = NullValueHandling.Ignore)]
+    public HttpTemplate HttpResponseTemplate { get; private set; }
+
+    [JsonProperty(PropertyName = "httpForward", NullValueHandling = NullValueHandling.Ignore)]
+    public HttpForward HttpForward { get; private set; }
+
+    [JsonProperty(PropertyName = "httpForwardTemplate", NullValueHandling = NullValueHandling.Ignore)]
+    public HttpTemplate HttpForwardTemplate { get; private set; }
+
+    [JsonProperty(PropertyName = "times")]
+    public Times Times { get; private set; } = times;
+
+    [JsonProperty(PropertyName = "timeToLive")]
+    public TimeToLive TimeToLive { get; private set; } = timeToLive;
+
+    [JsonProperty(PropertyName = "priority")]
+    public int Priority { get; private set; } = priority;
+
+    public Expectation ThenRespond(HttpResponse httpResponse)
     {
-        public Expectation(HttpRequest httpRequest, Times times, TimeToLive timeToLive, int priority)
+        if (httpResponse != null)
         {
-            HttpRequest = httpRequest;
-            Times = times;
-            TimeToLive = timeToLive;
-            Priority = priority;
+            HttpResponse = httpResponse;
         }
 
-        [JsonProperty(PropertyName = "httpRequest")]
-        public HttpRequest HttpRequest { get; private set; }
+        return this;
+    }
 
-        [JsonProperty(PropertyName = "httpResponse", NullValueHandling = NullValueHandling.Ignore)]
-        public HttpResponse HttpResponse { get; private set; }
-
-        [JsonProperty(PropertyName = "httpForward", NullValueHandling = NullValueHandling.Ignore)]
-        public HttpForward HttpForward { get; private set; }
-
-        [JsonProperty(PropertyName = "times")]
-        public Times Times { get; private set; }
-
-        [JsonProperty(PropertyName = "timeToLive")]
-        public TimeToLive TimeToLive { get; private set; }
-
-        [JsonProperty(PropertyName = "priority")]
-        public int Priority { get; private set; }
-
-        public Expectation ThenRespond(HttpResponse httpResponse)
+    public Expectation ThenRespond(HttpTemplate httpTemplate)
+    {
+        if (httpTemplate != null)
         {
-            if (httpResponse != null)
-            {
-                HttpResponse = httpResponse;
-            }
-
-            return this;
+            HttpResponseTemplate = httpTemplate;
         }
 
-        public Expectation ThenForward(HttpForward httpForward)
-        {
-            if (httpForward != null)
-            {
-                HttpForward = httpForward;
-            }
+        return this;
+    }
 
-            return this;
+    public Expectation ThenForward(HttpForward httpForward)
+    {
+        if (httpForward != null)
+        {
+            HttpForward = httpForward;
         }
+
+        return this;
+    }
+
+    public Expectation ThenForward(HttpTemplate httpTemplate)
+    {
+        if (httpTemplate != null)
+        {
+            HttpForwardTemplate = httpTemplate;
+        }
+
+        return this;
     }
 }

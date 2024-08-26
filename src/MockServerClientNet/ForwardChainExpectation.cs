@@ -1,39 +1,51 @@
-﻿using System.Threading.Tasks;
-using MockServerClientNet.Model;
+﻿namespace MockServerClientNet;
 
-namespace MockServerClientNet
+using System.Threading.Tasks;
+using Model;
+
+public class ForwardChainExpectation(MockServerClient mockServerClient, Expectation expectation)
 {
-    public class ForwardChainExpectation
+    public void Respond(HttpResponse httpResponse)
     {
-        private readonly MockServerClient _mockServerClient;
-        private readonly Expectation _expectation;
+        RespondAsync(httpResponse).GetAwaiter().GetResult();
+    }
 
-        public ForwardChainExpectation(MockServerClient mockServerClient, Expectation expectation)
-        {
-            _mockServerClient = mockServerClient;
-            _expectation = expectation;
-        }
+    public void Respond(HttpTemplate httpTemplate)
+    {
+        RespondAsync(httpTemplate).GetAwaiter().GetResult();
+    }
 
-        public void Respond(HttpResponse httpResponse)
-        {
-            RespondAsync(httpResponse).GetAwaiter().GetResult();
-        }
+    public async Task RespondAsync(HttpResponse httpResponse)
+    {
+        expectation.ThenRespond(httpResponse);
+        await mockServerClient.SendExpectationAsync(expectation);
+    }
 
-        public async Task RespondAsync(HttpResponse httpResponse)
-        {
-            _expectation.ThenRespond(httpResponse);
-            await _mockServerClient.SendExpectationAsync(_expectation);
-        }
+    public async Task RespondAsync(HttpTemplate httpTemplate)
+    {
+        expectation.ThenRespond(httpTemplate);
+        await mockServerClient.SendExpectationAsync(expectation);
+    }
 
-        public void Forward(HttpForward httpForward)
-        {
-            ForwardAsync(httpForward).GetAwaiter().GetResult();
-        }
+    public void Forward(HttpForward httpForward)
+    {
+        ForwardAsync(httpForward).GetAwaiter().GetResult();
+    }
 
-        public async Task ForwardAsync(HttpForward httpForward)
-        {
-            _expectation.ThenForward(httpForward);
-            await _mockServerClient.SendExpectationAsync(_expectation);
-        }
+    public void Forward(HttpTemplate httpTemplate)
+    {
+        ForwardAsync(httpTemplate).GetAwaiter().GetResult();
+    }
+
+    public async Task ForwardAsync(HttpForward httpForward)
+    {
+        expectation.ThenForward(httpForward);
+        await mockServerClient.SendExpectationAsync(expectation);
+    }
+
+    public async Task ForwardAsync(HttpTemplate httpTemplate)
+    {
+        expectation.ThenForward(httpTemplate);
+        await mockServerClient.SendExpectationAsync(expectation);
     }
 }
