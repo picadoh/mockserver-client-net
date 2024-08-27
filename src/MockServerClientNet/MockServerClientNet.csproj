@@ -11,7 +11,7 @@
     <Description>C# Fluent API for interacting with Mock-Server</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright 2017 Hugo Picado</Copyright>
-    <PackageReleaseNotes>TLS support / Request Matchers / Response Content</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/picadoh/mockserver-client-net/releases</PackageReleaseNotes>
     <PackageTags>mock mockserver test dotnet dotnetcore netcore mockserverclient client mockserverclientcsharp mockserverclientnet netstandard .net</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
