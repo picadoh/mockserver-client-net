@@ -31,8 +31,19 @@ jobs:
     needs: build-and-test
     if: github.ref == 'refs/heads/master'
     steps:
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a # v2.1.0
+        with:
+          app_id: ${{ secrets.RELEASE_APP_ID }}
+          private_key: ${{ secrets.RELEASE_APP_KEY }}
+
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # 4.1.7
+        with:
+          fetch-depth: 0
+          token: ${{ steps.generate_token.outputs.token }}
+          persist-credentials: false
 
       - name: Setup .NET ${{ matrix.dotnet-version }}
         uses: actions/setup-dotnet@6bd8b7f7774af54e05809fcc5431931b3eb1ddee # 4.0.1
@@ -52,7 +63,7 @@ jobs:
             @semantic-release/git
             @semantic-release/exec
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
 
       - name: Publish
         if: ${{ steps.release.outputs.new_release_version }}
@@ -60,4 +71,3 @@ jobs:
           dotnet clean
           dotnet pack src/${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj -c Release -o ${{ env.NUPKG_OUTPUT }}
           dotnet nuget push ${{ env.NUPKG_OUTPUT }}/*.nupkg -k ${{ secrets.NUGET_API_KEY }}
-  
