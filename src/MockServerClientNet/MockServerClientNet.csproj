@@ -1,35 +1,32 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <OutputType>Library</OutputType>
-        <TargetFramework>net8.0</TargetFramework>
-        <PackageId>MockServerClientNet</PackageId>
-        <Version>2.0.0</Version>
-        <Authors>picadoh</Authors>
-        <Title>Mock-Server Client for .NET</Title>
-        <RepositoryUrl>https://github.com/picadoh/mockserver-client-net</RepositoryUrl>
-        <PackageDescription>C# Fluent API for interacting with Mock-Server</PackageDescription>
-        <Description>C# Fluent API for interacting with Mock-Server</Description>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Copyright>Copyright 2017 Hugo Picado</Copyright>
-        <PackageReleaseNotes>TLS support / Request Matchers / Response Content</PackageReleaseNotes>
-        <PackageTags>mock mockserver test dotnet dotnetcore netcore mockserverclient client mockserverclientcsharp mockserverclientnet netstandard .net</PackageTags>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <Content Include="..\..\LICENSE*.md">
-            <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-            <PackagePath>/</PackagePath>
-        </Content>
-        <Content Include="..\..\NOTICE*.md">
-            <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-            <PackagePath>/</PackagePath>
-        </Content>
-        <None Include="..\..\README.md" Pack="true" PackagePath="\" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    </ItemGroup>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <PackageId>MockServerClientNet</PackageId>
+    <Version>2.1.0</Version>
+    <Authors>picadoh</Authors>
+    <Title>Mock-Server Client for .NET</Title>
+    <RepositoryUrl>https://github.com/picadoh/mockserver-client-net</RepositoryUrl>
+    <PackageDescription>C# Fluent API for interacting with Mock-Server</PackageDescription>
+    <Description>C# Fluent API for interacting with Mock-Server</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright 2017 Hugo Picado</Copyright>
+    <PackageReleaseNotes>TLS support / Request Matchers / Response Content</PackageReleaseNotes>
+    <PackageTags>mock mockserver test dotnet dotnetcore netcore mockserverclient client mockserverclientcsharp mockserverclientnet netstandard .net</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="..\..\LICENSE*.md">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <PackagePath>/</PackagePath>
+    </Content>
+    <Content Include="..\..\NOTICE*.md">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <PackagePath>/</PackagePath>
+    </Content>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
 </Project>
