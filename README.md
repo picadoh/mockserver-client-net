@@ -1,4 +1,4 @@
-[![MockServer .NET Client](https://github.com/picadoh/mockserver-client-net/actions/workflows/dotnet-build.yml/badge.svg)](https://github.com/picadoh/mockserver-client-net/actions/workflows/dotnet-build.yml) ![NuGet Version](https://img.shields.io/nuget/v/MockServerClientNet) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/picadoh/mockserver-client-net/blob/master/LICENSE.md)
+[![MockServer .NET Client](https://github.com/picadoh/mockserver-client-net/actions/workflows/dotnet-build.yml/badge.svg)](https://github.com/picadoh/mockserver-client-net/actions/workflows/dotnet-build.yml) [![NuGet Version](https://img.shields.io/nuget/v/MockServerClientNet)](https://www.nuget.org/packages/MockServerClientNet/) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/picadoh/mockserver-client-net/blob/master/LICENSE.md)
 
 Unofficial C# Fluent API for interacting with [Mock-Server](http://www.mock-server.com/) targeting `.NET 8`.
 
