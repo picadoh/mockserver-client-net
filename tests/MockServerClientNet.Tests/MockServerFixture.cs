@@ -26,6 +26,8 @@ public class MockServerFixture : IAsyncLifetime
     public int Port => int.Parse(Environment.GetEnvironmentVariable("MOCKSERVER_TEST_PORT")
                                  ?? _container.GetMappedPublicPort(1080).ToString());
 
+    public string HostHeader => $"{Host}:{Port}";
+    
     public Task InitializeAsync()
         => _container.StartAsync();
 

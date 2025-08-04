@@ -51,6 +51,16 @@ namespace MockServerClientNet
             _httpClient = new HttpClient(httpHandler ?? new HttpClientHandler());
         }
 
+        public MockServerClient(string host, int port, HttpClient httpClient, string contextPath = "",
+            HttpScheme httpScheme = HttpScheme.Http)
+        {
+            _host = host;
+            _port = port;
+            _contextPath = contextPath;
+            _httpScheme = httpScheme;
+            _httpClient = httpClient;
+        }
+
         public void Dispose()
         {
             _httpClient.Dispose();

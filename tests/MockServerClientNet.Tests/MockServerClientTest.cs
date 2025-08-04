@@ -9,20 +9,40 @@ using Xunit;
 namespace MockServerClientNet.Tests
 {
     [Collection(nameof(MockServerCollection))]
-    public class MockServerClientTest(
-        MockServerFixture fixture,
-        HttpScheme scheme = HttpScheme.Http,
-        HttpClientHandler handler = null
-    ) : IClassFixture<MockServerFixture>, IDisposable
+    public class MockServerClientTest : IClassFixture<MockServerFixture>, IDisposable
     {
-        protected readonly MockServerClient MockServerClient = new(
-            host: fixture.Host,
-            port: fixture.Port,
-            httpScheme: scheme,
-            httpHandler: handler
-        );
+        protected readonly MockServerClient MockServerClient;
+        protected readonly string HostHeader;
 
-        protected string HostHeader => $"{fixture.Host}:{fixture.Port}";
+        protected MockServerClientTest(
+            MockServerFixture fixture,
+            HttpScheme scheme = HttpScheme.Http,
+            HttpClientHandler handler = null
+        )
+        {
+            MockServerClient = new(
+                host: fixture.Host,
+                port: fixture.Port,
+                httpScheme: scheme,
+                httpHandler: handler
+            );
+            HostHeader = fixture.HostHeader;
+        }
+
+        protected MockServerClientTest(
+            MockServerFixture fixture,
+            HttpClient httpClient,
+            HttpScheme scheme = HttpScheme.Http
+        )
+        {
+            MockServerClient = new(
+                host: fixture.Host,
+                port: fixture.Port,
+                httpScheme: scheme,
+                httpClient: httpClient
+            );
+            HostHeader = fixture.HostHeader;
+        }
 
         public void Dispose()
         {
@@ -39,10 +59,8 @@ namespace MockServerClientNet.Tests
 
         protected static async Task<HttpResponseMessage> SendRequestAsync(HttpRequestMessage request)
         {
-            using (var client = new HttpClient())
-            {
-                return await client.SendAsync(request);
-            }
+            using var client = new HttpClient();
+            return await client.SendAsync(request);
         }
 
         protected HttpRequestMessage BuildRequest(HttpMethod method, string path, string body)

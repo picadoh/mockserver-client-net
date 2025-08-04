@@ -50,18 +50,17 @@ jobs:
         with:
           dotnet-version: 8.x.x
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Setup semantic-release
+        run: npm install -g semantic-release @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/github @semantic-release/git @semantic-release/exec -D
+        
       - name: Release
         id: release
-        uses: cycjimmy/semantic-release-action@v4
-        with:
-          tag_format: ${version}
-          working_directory: ./src/MockServerClientNet
-          extra_plugins: |
-            @semantic-release/commit-analyzer
-            @semantic-release/release-notes-generator
-            @semantic-release/github
-            @semantic-release/git
-            @semantic-release/exec
+        run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
 

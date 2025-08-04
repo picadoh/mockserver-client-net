@@ -10,6 +10,7 @@
             "prerelease": true
         }
     ],
+    "tagFormat": "${version}",
     "plugins": [
         "@semantic-release/commit-analyzer",
         "@semantic-release/release-notes-generator",
@@ -23,7 +24,8 @@
         [
             "@semantic-release/exec",
             {
-                "prepareCmd": "../../semver.sh '${nextRelease.version}' 'MockServerClientNet.csproj'"
+                "prepareCmd": "./semver.sh '${nextRelease.version}' 'src/MockServerClientNet/MockServerClientNet.csproj'",
+                "successCmd": "echo 'new_release_version=${nextRelease.version}' >> $GITHUB_OUTPUT"
             }
         ],
         [
