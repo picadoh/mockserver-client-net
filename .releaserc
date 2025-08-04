@@ -17,7 +17,7 @@
         [
             "@semantic-release/github",
             {
-                "successComment": false,
+                "successCommentCondition": false,
                 "failTitle": false
             }
         ],
@@ -32,7 +32,7 @@
             "@semantic-release/git",
             {
                 "assets": [
-                    "MockServerClientNet.csproj"
+                    "src/MockServerClientNet/MockServerClientNet.csproj"
                 ],
                 "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
             }

@@ -3,7 +3,7 @@
     <OutputType>Library</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <PackageId>MockServerClientNet</PackageId>
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
     <Authors>picadoh</Authors>
     <Title>Mock-Server Client for .NET</Title>
     <RepositoryUrl>https://github.com/picadoh/mockserver-client-net</RepositoryUrl>
