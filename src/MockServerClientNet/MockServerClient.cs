@@ -191,8 +191,7 @@ namespace MockServerClientNet
                     Encoding.UTF8));
 
             var body = await response.Content.ReadAsStringAsync();
-
-            return _httpRequestSerializer.DeserializeArray(body, new HttpRequest[0]);
+            return _httpRequestSerializer.DeserializeArray(body, []);
         }
 
         public async Task SendExpectationAsync(Expectation expectation)

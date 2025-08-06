@@ -8,10 +8,8 @@ namespace MockServerClientNet.Model.Body
     {
         private const string DefaultTextContentType = MediaTypeNames.Text.Plain;
         private const string DefaultBinaryContentType = MediaTypeNames.Application.Octet;
-
-        // the following are only supported as MediaTypeNames after .netstandard2.1
-        private const string DefaultXmlContentType = "application/xml";
-        private const string DefaultJsonContentType = "application/json";
+        private const string DefaultXmlContentType = MediaTypeNames.Application.Xml;
+        private const string DefaultJsonContentType = MediaTypeNames.Application.Json;
 
         public static BodyContent EmptyText()
         {

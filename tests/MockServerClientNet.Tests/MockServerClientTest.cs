@@ -70,6 +70,14 @@ namespace MockServerClientNet.Tests
                 .WithUri(MockServerClient.ServerAddress(path))
                 .WithBody(body);
         }
+        
+        protected HttpRequestMessage BuildRequest(HttpMethod method, string path, HttpContent content)
+        {
+            return new HttpRequestMessage()
+                .WithMethod(method)
+                .WithUri(MockServerClient.ServerAddress(path))
+                .WithBody(content);
+        }
 
         protected HttpRequestMessage BuildRequest(HttpMethod method, string path, byte[] bytes)
         {
